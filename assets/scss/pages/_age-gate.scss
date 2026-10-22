@@ -1,0 +1,150 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/text-styles' as text;
+@use '../abstracts/mixins' as *;
+
+.age-gate {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--viewport-height);
+  overflow: hidden;
+  background-color: $color-black;
+
+  &__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-color: rgba($color-black, 0.22);
+    }
+  }
+
+  &__picture,
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__img {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__panel {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: rem(28);
+    width: min(100% - #{rem(32)}, rem(520));
+    margin-inline: auto;
+    padding: rem(40) rem(36);
+    background-color: $color-background;
+    color: $color-black;
+    text-align: center;
+
+    @include media-up(md) {
+      gap: rem(32);
+      padding: rem(48) rem(56);
+    }
+  }
+
+  &__question {
+    @include text.heading-face;
+
+    margin: 0;
+    max-width: rem(360);
+    font-size: rem(28);
+    font-weight: 300;
+    letter-spacing: text.ls-em(0);
+    line-height: 1.25;
+    color: $color-black;
+
+    @include media-up(md) {
+      font-size: rem(32);
+    }
+  }
+
+  &__form {
+    width: 100%;
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: rem(12);
+    width: 100%;
+    max-width: rem(320);
+    margin-inline: auto;
+  }
+
+  &__btn {
+    @include text.body-face;
+
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: rem(48);
+    margin: 0;
+    padding: rem(12) rem(20);
+    border-radius: 0;
+    font-size: rem(13);
+    font-weight: 500;
+    letter-spacing: text.ls-em(2);
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.88;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-black;
+      outline-offset: 3px;
+    }
+
+    &--yes {
+      border: 1px solid $color-black;
+      background-color: $color-black;
+      color: $color-background;
+    }
+
+    &--no {
+      border: 1px solid $color-black;
+      background-color: transparent;
+      color: $color-black;
+    }
+  }
+}
+
+.is-age-gate-page {
+  .site-main {
+    padding-block: 0;
+  }
+
+  .site-footer {
+    display: none;
+  }
+
+  .content-area--age-gate {
+    margin: 0;
+    padding: 0;
+  }
+}

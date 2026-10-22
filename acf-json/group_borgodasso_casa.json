@@ -1,0 +1,741 @@
+{
+  "key": "group_borgodasso_casa",
+  "title": "Casa",
+  "fields": [
+    {
+      "key": "field_borgodasso_casa_details_tab",
+      "label": "Apartment details",
+      "name": "",
+      "aria-label": "",
+      "type": "tab",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "placement": "top",
+      "endpoint": 0,
+      "selected": 0
+    },
+    {
+      "key": "field_borgodasso_casa_title",
+      "label": "Apartment title",
+      "name": "casa_title",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "Title used in the Casa page body. Separate from the Page header title above.",
+      "required": 1,
+      "conditional_logic": false,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_casa_description",
+      "label": "Description",
+      "name": "casa_description",
+      "aria-label": "",
+      "type": "textarea",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "rows": 5,
+      "new_lines": "wpautop",
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": ""
+    },
+    {
+      "key": "field_borgodasso_casa_spec_square_meters",
+      "label": "M\u00b2",
+      "name": "spec_square_meters",
+      "aria-label": "",
+      "type": "number",
+      "instructions": "Same apartment specs as the Media block.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "25",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "min": 1,
+      "max": "",
+      "step": 1,
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_casa_spec_bedrooms",
+      "label": "Camere da letto",
+      "name": "spec_bedrooms",
+      "aria-label": "",
+      "type": "number",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "25",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "min": 1,
+      "max": "",
+      "step": 1,
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_casa_spec_bathrooms",
+      "label": "Bagni",
+      "name": "spec_bathrooms",
+      "aria-label": "",
+      "type": "number",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "25",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "min": 1,
+      "max": "",
+      "step": 1,
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_casa_spec_guests",
+      "label": "Ospiti",
+      "name": "spec_guests",
+      "aria-label": "",
+      "type": "number",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "25",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "min": 1,
+      "max": "",
+      "step": 1,
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_casa_prenota",
+      "label": "Prenota",
+      "name": "casa_prenota",
+      "aria-label": "",
+      "type": "link",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "array",
+      "allow_in_bindings": 1
+    },
+    {
+      "key": "field_borgodasso_casa_floor_file",
+      "label": "Floor plan",
+      "name": "casa_floor_file",
+      "aria-label": "",
+      "type": "file",
+      "instructions": "Floor plan file (PDF or image). Included in the mobile full-screen gallery.",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "array",
+      "library": "all",
+      "min_size": "",
+      "max_size": "",
+      "mime_types": "pdf,jpg,jpeg,png,webp",
+      "allow_in_bindings": 1
+    },
+    {
+      "key": "field_borgodasso_casa_more_info_note",
+      "label": "More info",
+      "name": "",
+      "aria-label": "",
+      "type": "message",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "message": "Optional. Mobile only — shown below apartment details: text first, then the image underneath. Not used on desktop.",
+      "new_lines": "wpautop",
+      "esc_html": 0
+    },
+    {
+      "key": "field_borgodasso_casa_more_info_text",
+      "label": "More info text",
+      "name": "casa_more_info_text",
+      "aria-label": "",
+      "type": "textarea",
+      "instructions": "Mobile only. Appears above the More info image.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "60",
+        "class": "",
+        "id": ""
+      },
+      "rows": 4,
+      "new_lines": "wpautop",
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": ""
+    },
+    {
+      "key": "field_borgodasso_casa_more_info_image",
+      "label": "More info image",
+      "name": "casa_more_info_image",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Mobile only. Shown below the More info text.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "40",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_casa_amenities_tab",
+      "label": "Amenities",
+      "name": "",
+      "aria-label": "",
+      "type": "tab",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "placement": "top",
+      "endpoint": 0,
+      "selected": 0
+    },
+    {
+      "key": "field_borgodasso_casa_amenities",
+      "label": "Amenities",
+      "name": "casa_amenities",
+      "aria-label": "",
+      "type": "repeater",
+      "instructions": "e.g. Free Wi-Fi, Fully equipped kitchen, Complimentary bikes.",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "60",
+        "class": "",
+        "id": ""
+      },
+      "layout": "table",
+      "pagination": 0,
+      "min": 1,
+      "max": 0,
+      "collapsed": "field_borgodasso_casa_amenity_label",
+      "button_label": "Add amenity",
+      "rows_per_page": 20,
+      "sub_fields": [
+        {
+          "key": "field_borgodasso_casa_amenity_label",
+          "label": "Label",
+          "name": "label",
+          "aria-label": "",
+          "type": "text",
+          "instructions": "",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "maxlength": "",
+          "placeholder": "",
+          "prepend": "",
+          "append": "",
+          "parent_repeater": "field_borgodasso_casa_amenities"
+        }
+      ]
+    },
+    {
+      "key": "field_borgodasso_casa_amenities_image",
+      "label": "Amenities image",
+      "name": "casa_amenities_image",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Mobile only. Shown beside the amenities list (or the first half when the list is split). Not used on desktop.",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "40",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_casa_amenities_split",
+      "label": "Split the list into two parts",
+      "name": "casa_amenities_split",
+      "aria-label": "",
+      "type": "true_false",
+      "instructions": "When enabled, the amenities list is split in half on mobile. A full-bleed landscape image sits between the two halves, and each half has its own side image.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "message": "",
+      "default_value": 0,
+      "allow_in_bindings": 1,
+      "ui": 1,
+      "ui_on_text": "",
+      "ui_off_text": ""
+    },
+    {
+      "key": "field_borgodasso_casa_amenities_image_2",
+      "label": "Amenities image 2",
+      "name": "casa_amenities_image_2",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Mobile only. Shown beside the second half of the amenities list.",
+      "required": 1,
+      "conditional_logic": [
+        [
+          {
+            "field": "field_borgodasso_casa_amenities_split",
+            "operator": "==",
+            "value": "1"
+          }
+        ]
+      ],
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_casa_mobile_landscape_3",
+      "label": "Landscape image 3",
+      "name": "casa_mobile_landscape_3",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Mobile only. Full-bleed image placed between the two amenities halves.",
+      "required": 1,
+      "conditional_logic": [
+        [
+          {
+            "field": "field_borgodasso_casa_amenities_split",
+            "operator": "==",
+            "value": "1"
+          }
+        ]
+      ],
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_casa_gallery_tab",
+      "label": "Gallery",
+      "name": "",
+      "aria-label": "",
+      "type": "tab",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "placement": "top",
+      "endpoint": 0,
+      "selected": 0
+    },
+    {
+      "key": "field_borgodasso_casa_gallery",
+      "label": "Media gallery",
+      "name": "casa_gallery",
+      "aria-label": "",
+      "type": "gallery",
+      "instructions": "Slider images for the Casa gallery.",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "preview_size": "medium",
+      "insert": "append",
+      "library": "all",
+      "min": 2,
+      "max": 0,
+      "min_width": 0,
+      "min_height": 0,
+      "min_size": 0,
+      "max_width": 0,
+      "max_height": 0,
+      "max_size": 0,
+      "mime_types": ""
+    },
+    {
+      "key": "field_borgodasso_casa_cta_tab",
+      "label": "Call to action",
+      "name": "",
+      "aria-label": "",
+      "type": "tab",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "placement": "top",
+      "endpoint": 0,
+      "selected": 0
+    },
+    {
+      "key": "field_borgodasso_casa_cta_title",
+      "label": "Title",
+      "name": "casa_cta_title",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_casa_cta_description",
+      "label": "Description",
+      "name": "casa_cta_description",
+      "aria-label": "",
+      "type": "textarea",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "rows": 4,
+      "new_lines": "wpautop",
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": ""
+    },
+    {
+      "key": "field_borgodasso_casa_cta_link",
+      "label": "Link",
+      "name": "casa_cta_link",
+      "aria-label": "",
+      "type": "link",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "array",
+      "allow_in_bindings": 1
+    },
+    {
+      "key": "field_borgodasso_casa_cta_image",
+      "label": "Image (mobile)",
+      "name": "casa_cta_image",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Mobile only. Shown full bleed directly above the call to action; not used on desktop.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_casa_mobile_images_tab",
+      "label": "Mobile images",
+      "name": "",
+      "aria-label": "",
+      "type": "tab",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "placement": "top",
+      "endpoint": 0,
+      "selected": 0
+    },
+    {
+      "key": "field_borgodasso_casa_mobile_images_note",
+      "label": "Mobile-only mosaic",
+      "name": "",
+      "aria-label": "",
+      "type": "message",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "message": "These four images are used only on mobile, between the Prenota / floor links. On mobile the gallery becomes a link that opens a full-screen gallery with all gallery images plus the floor plan file.",
+      "new_lines": "wpautop",
+      "esc_html": 0
+    },
+    {
+      "key": "field_borgodasso_casa_mobile_landscape_1",
+      "label": "Landscape image 1",
+      "name": "casa_mobile_landscape_1",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_casa_mobile_landscape_2",
+      "label": "Landscape image 2",
+      "name": "casa_mobile_landscape_2",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_casa_mobile_portrait_1",
+      "label": "Portrait image 1",
+      "name": "casa_mobile_portrait_1",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_casa_mobile_portrait_2",
+      "label": "Portrait image 2",
+      "name": "casa_mobile_portrait_2",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "page_template",
+        "operator": "==",
+        "value": "page-templates/casa.php"
+      }
+    ]
+  ],
+  "menu_order": 1,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": ["the_content"],
+  "active": true,
+  "description": "Content for Casa template pages. Desktop and mobile layouts share these fields.",
+  "show_in_rest": 0,
+  "display_title": "",
+  "allow_ai_access": false,
+  "ai_description": "",
+  "modified": 1788457487
+}

@@ -1,0 +1,148 @@
+{
+  "fileName": "Borgo d'Asso",
+  "textStyles": [
+    {
+      "name": "Hero",
+      "fontFamily": "PP Editorial New",
+      "fontWeight": "Ultralight",
+      "fontSize": 84,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Heading H1 (big)",
+      "fontFamily": "PP Editorial New",
+      "fontWeight": "Ultralight",
+      "fontSize": 75,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": -0.30000001192092896
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Heading 1",
+      "fontFamily": "PP Editorial New",
+      "fontWeight": "Ultralight",
+      "fontSize": 60,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Heading 2",
+      "fontFamily": "PP Editorial New",
+      "fontWeight": "Ultralight",
+      "fontSize": 60,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": -0.4000000059604645
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Heading 3",
+      "fontFamily": "PP Editorial New",
+      "fontWeight": "Ultralight",
+      "fontSize": 48,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0.5
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Heading 4",
+      "fontFamily": "PP Editorial New",
+      "fontWeight": "Ultralight",
+      "fontSize": 28,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Heading 5",
+      "fontFamily": "PP Editorial New",
+      "fontWeight": "Ultralight",
+      "fontSize": 24,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Body",
+      "fontFamily": "PP Neue Montreal",
+      "fontWeight": "Regular",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 1.5
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Listing",
+      "fontFamily": "PP Neue Montreal",
+      "fontWeight": "Medium",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 1
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Menu",
+      "fontFamily": "PP Neue Montreal",
+      "fontWeight": "Medium",
+      "fontSize": 12,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 8
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Label",
+      "fontFamily": "PP Neue Montreal",
+      "fontWeight": "Medium",
+      "fontSize": 12,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 4
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Body (small)",
+      "fontFamily": "PP Neue Montreal",
+      "fontWeight": "Regular",
+      "fontSize": 14,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "Button",
+      "fontFamily": "PP Neue Montreal",
+      "fontWeight": "Medium",
+      "fontSize": 12,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 4
+      },
+      "textCase": "ORIGINAL"
+    }
+  ]
+}

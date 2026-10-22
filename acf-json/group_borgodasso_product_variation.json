@@ -1,0 +1,48 @@
+{
+  "key": "group_borgodasso_product_variation",
+  "title": "Product variation",
+  "fields": [
+    {
+      "key": "field_borgodasso_variation_sale_format_label",
+      "label": "Sale format label",
+      "name": "sale_format_label",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "PDP label when this variation is selected. Example: “Cassa da 6 (6 × 250 ml)”. Leave empty to use the parent product label.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "Cassa da 6 (6 × 250 ml)",
+      "prepend": "",
+      "append": ""
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "product_variation"
+      }
+    ]
+  ],
+  "menu_order": 5,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Per-variation sale format for olive oil and other multi-size products.",
+  "show_in_rest": 0,
+  "display_title": "",
+  "allow_ai_access": false,
+  "ai_description": "",
+  "modified": 1791900001
+}

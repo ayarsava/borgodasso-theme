@@ -1,0 +1,281 @@
+{
+  "key": "group_borgodasso_product",
+  "title": "Product",
+  "fields": [
+    {
+      "key": "field_borgodasso_product_sale_format_label",
+      "label": "Sale format label",
+      "name": "sale_format_label",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "Parent product: catalog card line (e.g. “Cassa da 6 bottiglie”) and PDP fallback. Variation: PDP label when that size is selected (e.g. “Cassa da 6 (6 × 250 ml)”). Pasta/legumes: pack size (e.g. “500 g”).",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "Cassa da 6 bottiglie",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_product_formato_display",
+      "label": "Formato display (static)",
+      "name": "formato_display",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "Static Formato control on wine PDPs (not a WooCommerce variation). Leave empty for olive oil (uses pa_formato) or products without a formato row.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "750 ml",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_product_schede_tecniche",
+      "label": "Schede tecniche (per annata)",
+      "name": "schede_tecniche",
+      "aria-label": "",
+      "type": "repeater",
+      "instructions": "Wine and olive oil only. One PDF per vintage year. Shown in the product info side panel under Scheda tecnica.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "layout": "table",
+      "pagination": 0,
+      "min": 0,
+      "max": 0,
+      "collapsed": "field_borgodasso_product_scheda_annata",
+      "button_label": "Add vintage sheet",
+      "rows_per_page": 20,
+      "sub_fields": [
+        {
+          "key": "field_borgodasso_product_scheda_annata",
+          "label": "Annata",
+          "name": "annata",
+          "aria-label": "",
+          "type": "text",
+          "instructions": "",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "30",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "maxlength": "",
+          "placeholder": "2022",
+          "prepend": "",
+          "append": "",
+          "parent_repeater": "field_borgodasso_product_schede_tecniche"
+        },
+        {
+          "key": "field_borgodasso_product_scheda_file",
+          "label": "PDF",
+          "name": "file",
+          "aria-label": "",
+          "type": "file",
+          "instructions": "",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "70",
+            "class": "",
+            "id": ""
+          },
+          "return_format": "array",
+          "library": "all",
+          "min_size": "",
+          "max_size": "",
+          "mime_types": "pdf",
+          "parent_repeater": "field_borgodasso_product_schede_tecniche"
+        }
+      ]
+    },
+    {
+      "key": "field_borgodasso_product_varieta",
+      "label": "Varietà",
+      "name": "varieta",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "Shown in the info side panel. Example: Cabernet Sauvignon, Cabernet Franc, Carménère.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "Cabernet Sauvignon, Cabernet Franc, Carménère",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_product_ingredienti",
+      "label": "Ingredienti",
+      "name": "ingredienti",
+      "aria-label": "",
+      "type": "wysiwyg",
+      "instructions": "Shown in the info side panel. Example lines: Materia prima: Uve biologiche",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "tabs": "visual",
+      "toolbar": "basic",
+      "media_upload": 0,
+      "delay": 0
+    },
+    {
+      "key": "field_borgodasso_product_valori_title",
+      "label": "Valori nutrizionali — title",
+      "name": "valori_nutrizionali_title",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "Valori nutrizionali medi per 100 ml",
+      "maxlength": "",
+      "placeholder": "Valori nutrizionali medi per 100 ml",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_product_valori_rows",
+      "label": "Valori nutrizionali — rows",
+      "name": "valori_nutrizionali_rows",
+      "aria-label": "",
+      "type": "repeater",
+      "instructions": "One row per nutrient line in the side-panel table.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "layout": "table",
+      "pagination": 0,
+      "min": 0,
+      "max": 0,
+      "collapsed": "field_borgodasso_product_valori_label",
+      "button_label": "Add row",
+      "rows_per_page": 20,
+      "sub_fields": [
+        {
+          "key": "field_borgodasso_product_valori_label",
+          "label": "Label",
+          "name": "label",
+          "aria-label": "",
+          "type": "text",
+          "instructions": "",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "maxlength": "",
+          "placeholder": "Energia",
+          "prepend": "",
+          "append": "",
+          "parent_repeater": "field_borgodasso_product_valori_rows"
+        },
+        {
+          "key": "field_borgodasso_product_valori_value",
+          "label": "Value",
+          "name": "value",
+          "aria-label": "",
+          "type": "text",
+          "instructions": "",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "maxlength": "",
+          "placeholder": "393 kJ / 94 kcal",
+          "prepend": "",
+          "append": "",
+          "parent_repeater": "field_borgodasso_product_valori_rows"
+        },
+        {
+          "key": "field_borgodasso_product_valori_indent",
+          "label": "Indented",
+          "name": "indent",
+          "aria-label": "",
+          "type": "true_false",
+          "instructions": "Use for sub-rows (e.g. di cui zuccheri).",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "20",
+            "class": "",
+            "id": ""
+          },
+          "message": "",
+          "default_value": 0,
+          "ui": 1,
+          "ui_on_text": "",
+          "ui_off_text": "",
+          "parent_repeater": "field_borgodasso_product_valori_rows"
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "product"
+      }
+    ]
+  ],
+  "menu_order": 5,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Editorial PDP fields only — keep price, SKU, stock, and variations in WooCommerce.",
+  "show_in_rest": 0,
+  "display_title": "",
+  "allow_ai_access": false,
+  "ai_description": "",
+  "modified": 1791900000
+}

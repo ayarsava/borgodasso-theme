@@ -1,0 +1,97 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/text-styles' as text;
+
+body {
+  @include text.text-body;
+
+  color: $color-text;
+  background-color: $color-background;
+}
+
+h1 {
+  @include text.text-h1;
+}
+
+h2 {
+  @include text.text-h2;
+}
+
+h3 {
+  @include text.text-h3;
+}
+
+h4 {
+  @include text.text-h4;
+}
+
+h5 {
+  @include text.text-h5;
+}
+
+h6 {
+  @include text.text-h5;
+
+  font-size: rem(20);
+}
+
+a {
+  color: inherit;
+}
+
+// Utility classes — match textStyles.json names.
+.text-hero {
+  @include text.text-hero;
+}
+
+.text-hero-mobile {
+  @include text.text-hero-mobile;
+}
+
+.text-h1-big {
+  @include text.text-h1-big;
+}
+
+.text-h1 {
+  @include text.text-h1;
+}
+
+.text-h2 {
+  @include text.text-h2;
+}
+
+.text-h3 {
+  @include text.text-h3;
+}
+
+.text-h4 {
+  @include text.text-h4;
+}
+
+.text-h5 {
+  @include text.text-h5;
+}
+
+.text-body {
+  @include text.text-body;
+}
+
+.text-body-small {
+  @include text.text-body-small;
+}
+
+.text-listing {
+  @include text.text-listing;
+}
+
+.text-menu {
+  @include text.text-menu;
+}
+
+.text-label {
+  @include text.text-label;
+}
+
+.text-button {
+  @include text.text-button;
+}

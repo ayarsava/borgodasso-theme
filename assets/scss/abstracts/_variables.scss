@@ -1,0 +1,114 @@
+// Design tokens.
+
+$color-text: #1a1a1a;
+$color-white: #fff;
+$color-black: #000;
+$color-background: #eae5dc;
+$color-muted: #444;
+$font-heading: 'PP Editorial New', georgia, 'Times New Roman', serif;
+$font-body: 'PP Neue Montreal', 'Helvetica Neue', helvetica, arial, sans-serif;
+
+// Legacy aliases — prefer $font-heading / $font-body.
+$font-serif: $font-heading;
+$font-sans: $font-body;
+$space-unit: 1rem;
+$space-xs: 0.5rem; // 8px
+$space-s: 1rem; // 16px
+$space-m: 2rem; // 32px
+$space-l: 3rem; // 48px
+$space-xl: 4rem; // 64px
+$space-2xl: 5rem; // 80px
+$space-3xl: 6rem; // 96px
+$space-4xl: 10rem; // 160px
+$space-5xl: 12rem; // 192px
+$space-6xl: 13rem; // 208px
+$gutter: 2.5rem; // 40px
+
+// Breakpoints — change px values here only. Use media-up / media-down mixins.
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+$breakpoints: (
+  sm: $bp-sm,
+  md: $bp-md,
+  lg: $bp-lg,
+  xl: $bp-xl,
+);
+
+:root {
+  --font-heading: #{$font-heading};
+  --font-body: #{$font-body};
+  --space-xs: #{$space-xs};
+  --space-s: #{$space-s};
+  --space-m: #{$space-m};
+  --space-l: #{$space-l};
+  --space-xl: #{$space-xl};
+  --space-2xl: #{$space-2xl};
+  --space-3xl: #{$space-3xl};
+  --space-4xl: #{$space-4xl};
+  --space-5xl: #{$space-5xl};
+  --space-6xl: #{$space-6xl};
+  --gutter: #{$gutter};
+
+  // Product catalog (PDP “Tutti i prodotti”).
+  --product-catalog-offset: 15.75rem; // 252px — gap after PDP
+  --product-catalog-title-gap: 5.8125rem; // 93px — title → grid
+  --product-catalog-col-gap: 2.3125rem; // 37px
+  --product-catalog-row-gap: 5.625rem; // 90px
+  --product-card-media-gap: 1.5rem; // 24px
+  --product-card-title-gap: 1.5rem; // 24px
+  --product-card-meta-gap: 0.25rem; // 4px
+
+  // Below lg ($bp-lg - 1).
+  @media (max-width: #{$bp-lg - 1px}) {
+    --space-3xl: 4rem;
+    --space-5xl: 6rem;
+    --product-catalog-offset: var(--space-4xl);
+    --product-catalog-title-gap: var(--space-xl);
+    --product-catalog-col-gap: var(--space-s);
+    --product-catalog-row-gap: var(--space-2xl);
+    --gutter: 2rem; // 32px
+  }
+
+  --container-xs: 20rem;
+  --container-sm: 24rem;
+  --container-md: 28rem;
+  --container-lg: 32rem;
+  --container-xl: 36rem;
+  --container-2xl: 42rem;
+  --container-4xl: 56rem;
+  --container-5xl: 64rem;
+  --container-7xl: 80rem;
+  --container-8xl: 88rem;
+  --site-max-width: var(--container-8xl);
+  --site-inline-margin: 1.875rem;
+
+  // Full-viewport layouts (home, page header). Zero when logged out.
+  --admin-bar-height: 0px;
+  --viewport-height: 100svh;
+  --header-height: 5rem;
+
+  // Below lg ($bp-lg - 1) — same pattern as space tokens above (no mixins here).
+  @media (max-width: #{$bp-lg - 1px}) {
+    --header-height: 5.375rem;
+  }
+
+  @supports (height: 100dvh) {
+    --viewport-height: 100dvh;
+  }
+}
+
+// WP pushes the document down via html { margin-top: 32px } — subtract the same amount from full-height blocks.
+body.admin-bar {
+  --admin-bar-height: 32px;
+  --viewport-height: calc(100svh - var(--admin-bar-height));
+
+  @supports (height: 100dvh) {
+    --viewport-height: calc(100dvh - var(--admin-bar-height));
+  }
+
+  @media screen and (width <= 782px) {
+    --admin-bar-height: 46px;
+  }
+}

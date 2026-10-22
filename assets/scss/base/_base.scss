@@ -1,0 +1,15 @@
+@use '../abstracts/mixins' as *;
+
+.screen-reader-text {
+  @include visually-hidden;
+
+  &:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+}

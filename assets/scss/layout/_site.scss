@@ -1,0 +1,76 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// Sticky footer: main grows so the footer sits at the bottom on short pages.
+.site {
+  display: flex;
+  flex-direction: column;
+  min-height: var(--viewport-height);
+}
+
+.site-main {
+  flex: 1 0 auto;
+  min-height: 0;
+  padding-top: 11rem;
+  padding-bottom: 11rem;
+
+  @include media-down(lg) {
+    padding-top: 9rem;
+    padding-bottom: 9rem;
+  }
+}
+
+.content-area {
+  width: 100%;
+
+  &--front {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    height: var(--viewport-height);
+  }
+}
+
+.is-front-page {
+  overflow: hidden;
+
+  .site {
+    position: relative;
+  }
+
+  // Full-bleed hero under the overlay header — no main padding band.
+  .site-main {
+    height: var(--viewport-height);
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .site-footer {
+    display: none;
+  }
+}
+
+.page-builder {
+  overflow-x: clip;
+}
+
+.has-page-header {
+  overflow-x: hidden;
+
+  .site {
+    position: relative;
+  }
+
+  // Page headers own their vertical spacing under the overlay header.
+  .site-main {
+    min-height: 0;
+    padding-block: 0;
+  }
+
+  .content-area--page {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}

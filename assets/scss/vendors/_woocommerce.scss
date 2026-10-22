@@ -1,0 +1,627 @@
+// WooCommerce core class overrides (not BEM — Stylelint pattern disabled for vendors/).
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/text-styles' as text;
+@use '../abstracts/mixins' as *;
+
+.product-pdp {
+  .woocommerce-product-gallery,
+  .summary {
+    float: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    clear: none !important;
+  }
+
+  .product_title {
+    @include text.text-h1;
+
+    margin: 0 0 var(--space-xs);
+    text-transform: none;
+    color: $color-black;
+  }
+
+  .product-pdp__sale-price,
+  .product-pdp__sale-price .amount,
+  .product-pdp__sale-price .woocommerce-Price-amount,
+  .product-pdp__sale-price ins,
+  .price {
+    color: $color-black !important;
+    font-size: 1rem;
+    letter-spacing: 0.005em;
+    line-height: 1.4;
+  }
+
+  .product-pdp__add.button,
+  .product-pdp__add.single_add_to_cart_button {
+    @include text.body-face;
+
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 3.25rem;
+    margin: 0;
+    padding: 0.85rem 1.25rem;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background-color: $color-black !important;
+    color: $color-white !important;
+    font-size: rem(13);
+    letter-spacing: text.ls-em(1.5);
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    box-shadow: none !important;
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      opacity: 0.88;
+      background-color: $color-black !important;
+      color: $color-white !important;
+    }
+
+    &.disabled,
+    &:disabled,
+    &.wc-variation-selection-needed {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+
+  .quantity,
+  .stock,
+  .woocommerce-variation,
+  .woocommerce-variation-availability,
+  .woocommerce-variation-description,
+  .woocommerce-variation-price,
+  .reset_variations {
+    display: none !important;
+  }
+}
+
+// ————————————————————————————————————————————————
+// Cart / Checkout shell (site-contained, same as shop/account)
+// ————————————————————————————————————————————————
+
+.commerce-shell {
+  position: relative;
+  background-color: $color-background;
+  color: $color-black;
+
+  &__inner {
+    @include site-contained;
+
+    position: relative;
+  }
+}
+
+.is-commerce-page {
+  .content-area.content-area--commerce {
+    position: relative;
+    width: 100%;
+    margin: 0;
+  }
+
+  .page__header,
+  .page__title {
+    display: none;
+  }
+
+  .woocommerce-order.order-received {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: rem(560);
+    margin-inline: auto;
+  }
+
+  .woocommerce-order-overview {
+    display: none;
+  }
+}
+
+// ————————————————————————————————————————————————
+// Shop forms — transparent fields (cart / checkout / account)
+// ————————————————————————————————————————————————
+
+.woocommerce,
+.woocommerce-page,
+.woocommerce-cart,
+.woocommerce-checkout,
+.woocommerce-account {
+  // Beat WC core white backgrounds on form controls.
+  form .form-row .input-text,
+  form .form-row input.input-text,
+  form .form-row textarea.input-text,
+  form .form-row select,
+  form .input-text,
+  form input.input-text,
+  form textarea.input-text,
+  form select,
+  form input[type='text'],
+  form input[type='email'],
+  form input[type='tel'],
+  form input[type='password'],
+  form input[type='number'],
+  form input[type='search'],
+  form input[type='url'],
+  .select2-container--default .select2-selection--single,
+  .select2-container--default .select2-selection--multiple {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none;
+  }
+
+  form .form-row .input-text,
+  form .form-row select,
+  form .input-text,
+  form select {
+    @include text.body-face;
+
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    min-height: 2rem;
+    margin: 0;
+    padding: 1.15rem 1rem 0.25rem 0.65rem;
+    border: 1px solid $color-black;
+    border-radius: 0;
+    color: $color-black;
+    font-size: rem(15);
+    font-weight: 400;
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.3;
+    appearance: none;
+
+    &:focus,
+    &:focus-visible {
+      outline: 1px solid $color-black;
+      outline-offset: 2px;
+    }
+
+    // Chrome/Safari autofill can’t be truly transparent — match page cream.
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-text-fill-color: $color-black !important;
+      caret-color: $color-black;
+      box-shadow: 0 0 0 1000px $color-background inset !important;
+      transition: background-color 99999s ease-out;
+    }
+  }
+
+  form .form-row textarea.input-text,
+  form textarea.input-text {
+    min-height: rem(120);
+    padding-top: rem(32);
+    resize: vertical;
+  }
+
+  .select2-container--default .select2-selection--single {
+    border: 1px solid $color-black !important;
+    border-radius: 0 !important;
+    height: auto !important;
+    min-height: 3rem;
+
+    .select2-selection__rendered {
+      color: $color-black !important;
+      line-height: 3rem !important;
+      padding-inline: 0.65rem !important;
+    }
+
+    .select2-selection__arrow {
+      height: 100% !important;
+    }
+  }
+
+  .select2-dropdown {
+    background-color: $color-background !important;
+    border: 1px solid $color-black !important;
+    border-radius: 0 !important;
+  }
+}
+
+// ————————————————————————————————————————————————
+// My Account / login / register
+// ————————————————————————————————————————————————
+
+.woocommerce-account {
+  // WC frontend JS wraps password fields and injects .show-password-input (second eye).
+
+  .password-input {
+    display: block;
+    position: relative;
+    width: 100%;
+  }
+
+  .show-password-input {
+    display: none !important;
+  }
+
+  .woocommerce-MyAccount-navigation {
+    float: none !important;
+    margin: 0 !important;
+  }
+
+  // Sidebar nav on endpoint pages — shrink to label width, don’t fill the row.
+  .account--logged-in:not(.account--hub) .woocommerce-MyAccount-navigation {
+    width: max-content !important;
+    max-width: 100% !important;
+  }
+
+  // Hub (/my-account/) — same column width as Profilo content.
+  .account--hub .woocommerce-MyAccount-navigation.account-nav {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: rem(480) !important;
+    padding-inline: rem(20);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    @include media-down(lg) {
+      padding-inline: 0;
+    }
+  }
+
+  .account-button.button,
+  .button,
+  button.button,
+  input.button {
+    @include text.body-face;
+
+    box-sizing: border-box;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: rem(12);
+    width: 100%;
+    min-height: rem(45);
+    margin: 0;
+    padding: rem(14) rem(20);
+    border: 0 !important;
+    border-radius: 0 !important;
+    background-color: $color-black !important;
+    color: $color-background !important;
+    font-size: rem(13);
+    letter-spacing: text.ls-em(10);
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    box-shadow: none !important;
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      opacity: 0.88;
+      background-color: $color-black !important;
+      color: $color-white !important;
+    }
+  }
+
+  .account-button.account-button--outline.button {
+    border: 1px solid $color-black !important;
+    background-color: transparent !important;
+    color: $color-black !important;
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      background-color: transparent !important;
+      color: $color-black !important;
+    }
+
+    &:disabled,
+    &[aria-disabled='true'] {
+      opacity: 1;
+      cursor: not-allowed;
+    }
+  }
+
+  .woocommerce-MyAccount-content {
+    float: none !important;
+    width: 100% !important;
+    max-width: rem(480) !important;
+    margin-inline: auto !important;
+
+    &:has(.account-orders-list) {
+      max-width: rem(893) !important;
+    }
+
+    &:has(.order-detail) {
+      max-width: rem(560) !important;
+    }
+
+    // WC default headings only — leave themed account titles to _account.scss.
+    h2:not(.account-section__title),
+    .woocommerce-order-details__title {
+      @include text.heading-face;
+
+      margin: 0 0 rem(28);
+      font-size: rem(36);
+      letter-spacing: text.ls-em(0);
+      line-height: 1.15;
+      text-align: center;
+    }
+
+    .woocommerce-Addresses {
+      display: flex;
+      flex-direction: column;
+      gap: rem(64);
+      width: 100%;
+    }
+
+    .woocommerce-Address {
+      float: none !important;
+      width: 100% !important;
+      margin: 0;
+
+      &.account-section {
+        margin-bottom: 0;
+
+        address {
+          border: solid 1px;
+          padding: 1.5rem;
+          text-align: left;
+        }
+      }
+
+      .woocommerce-Address-title {
+        margin: 0 0 rem(20);
+      }
+
+      address {
+        @include text.body-face;
+
+        display: block;
+        margin: 0 0 rem(20);
+        font-size: rem(15);
+        letter-spacing: text.ls-em(0.2);
+        line-height: 1.5;
+        font-style: normal;
+        text-align: center;
+      }
+
+      .account-form__actions {
+        margin-top: 0;
+      }
+    }
+
+    .woocommerce-orders-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th,
+      td {
+        @include text.body-face;
+
+        padding: rem(14) rem(10);
+        border-bottom: 1px solid rgba($color-black, 0.2);
+        font-size: rem(13);
+        letter-spacing: text.ls-em(0.4);
+        text-align: left;
+      }
+
+      th {
+        text-transform: uppercase;
+      }
+    }
+
+    // Address / generic WC form rows → floating-label field chrome.
+    .form-row {
+      position: relative;
+      margin: 0 0 rem(8);
+      float: none !important;
+      width: 100% !important;
+
+      label {
+        @include text.body-face;
+
+        position: absolute;
+        top: rem(10);
+        left: rem(14);
+        z-index: 1;
+        font-size: rem(8);
+        letter-spacing: text.ls-em(10);
+        line-height: 1.2;
+        text-transform: uppercase;
+        color: $color-black;
+        pointer-events: none;
+
+        .required {
+          display: none;
+        }
+      }
+    }
+
+    .clear {
+      display: none;
+    }
+  }
+
+  .woocommerce-notices-wrapper:not(:empty, [data-wc-notice]) {
+    @include site-contained;
+
+    padding-top: rem(24);
+  }
+}
+
+// Toast notices — fixed on the notice itself (success / errors only).
+// `.woocommerce-info` stays in-page (empty orders, email-confirm, etc.).
+.wc-notice-toast,
+.woocommerce-message.wc-notice-toast,
+.woocommerce-error.wc-notice-toast {
+  @include text.body-face;
+
+  position: fixed !important;
+  inset: auto auto rem(28) 50% !important;
+  z-index: 100;
+  box-sizing: border-box;
+  display: block;
+  width: 90%;
+  max-width: rem(350);
+  margin: 0 !important;
+  padding: rem(16) rem(20);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0;
+  outline: none;
+  font-size: rem(15);
+  letter-spacing: text.ls-em(0.3);
+  line-height: 1.4;
+  text-align: center;
+  list-style: none;
+  box-shadow: none !important;
+  pointer-events: auto;
+  opacity: 1;
+  float: none !important;
+  clear: both !important;
+  transform: translateX(-50%);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+
+  @include media-down(lg) {
+    bottom: rem(20) !important;
+  }
+
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  &::before {
+    display: none !important;
+  }
+
+  &.is-hiding {
+    opacity: 0;
+    transform: translateX(-50%) translate3d(0, 0.35rem, 0);
+    pointer-events: none;
+  }
+
+  a,
+  .button,
+  .wc-forward {
+    display: inline;
+    width: auto;
+    min-height: 0;
+    margin: 0 0 0 rem(8);
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent !important;
+    color: inherit !important;
+    font-size: inherit;
+    letter-spacing: inherit;
+    text-transform: none;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    box-shadow: none !important;
+
+    &:focus,
+    &:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  }
+}
+
+.woocommerce-message.wc-notice-toast {
+  border-color: #2f6b3a !important;
+  background-color: #e8f3ea !important;
+  color: #1e4626 !important;
+}
+
+.woocommerce-error.wc-notice-toast {
+  border-color: #a33a3a !important;
+  background-color: #f8eaea !important;
+  color: #5c1f1f !important;
+}
+
+// In-page info (orders empty state, email confirm, etc.) — not a toast.
+.woocommerce-info:not(.wc-notice-toast) {
+  @include text.body-face;
+
+  box-sizing: border-box;
+  margin: 0 0 rem(24);
+  padding: rem(16) rem(20);
+  border: 1px solid #3a5f8a;
+  border-radius: 0;
+  background-color: transparent;
+  color: #1e3550;
+  font-size: rem(15);
+  letter-spacing: text.ls-em(0.2);
+  line-height: 1.4;
+  text-align: center;
+  list-style: none;
+
+  &::before {
+    display: none !important;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+// PDP add-to-cart notice host — no layout shift; toast is fixed on the notice itself.
+.product-pdp__notice {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.woocommerce form.checkout_coupon,
+.woocommerce form.login,
+.woocommerce form.register {
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin: auto 0;
+}
+
+.woocommerce form .form-row label.checkbox,
+.woocommerce-page form .form-row label.checkbox {
+  display: flex;
+  align-items: center;
+  gap: rem(12);
+  font-size: rem(14);
+  letter-spacing: text.ls-em(0.2);
+  line-height: 1.45;
+  text-transform: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.woocommerce-form-login__submit.button.woocommerce-button {
+  @include text.text-button;
+
+  color: $color-white;
+  background-color: $color-black;
+  border: none;
+  border-radius: 0;
+  padding: 0.85rem 1.25rem;
+  font-size: rem(13);
+  letter-spacing: text.ls-em(1.5);
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+form.woocommerce-form.woocommerce-form-login.login {
+  padding: 0;
+  margin-bottom: var(--gutter);
+}

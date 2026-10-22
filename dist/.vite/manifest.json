@@ -1,0 +1,213 @@
+{
+  "_embla-carousel.esm.js": {
+    "file": "assets/embla-carousel.esm.js",
+    "name": "embla-carousel.esm"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-Italic.woff": {
+    "file": "assets/PPEditorialNew-Italic.woff",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-Italic.woff"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-Italic.woff2": {
+    "file": "assets/PPEditorialNew-Italic.woff2",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-Italic.woff2"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-Regular.woff": {
+    "file": "assets/PPEditorialNew-Regular.woff",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-Regular.woff"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-Regular.woff2": {
+    "file": "assets/PPEditorialNew-Regular.woff2",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-Regular.woff2"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-Thin.woff": {
+    "file": "assets/PPEditorialNew-Thin.woff",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-Thin.woff"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-Thin.woff2": {
+    "file": "assets/PPEditorialNew-Thin.woff2",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-Thin.woff2"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-ThinItalic.woff": {
+    "file": "assets/PPEditorialNew-ThinItalic.woff",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-ThinItalic.woff"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-ThinItalic.woff2": {
+    "file": "assets/PPEditorialNew-ThinItalic.woff2",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-ThinItalic.woff2"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-Ultralight.woff": {
+    "file": "assets/PPEditorialNew-Ultralight.woff",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-Ultralight.woff"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-Ultralight.woff2": {
+    "file": "assets/PPEditorialNew-Ultralight.woff2",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-Ultralight.woff2"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-UltralightItalic.woff": {
+    "file": "assets/PPEditorialNew-UltralightItalic.woff",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-UltralightItalic.woff"
+  },
+  "assets/fonts/PP Editorial New/PPEditorialNew-UltralightItalic.woff2": {
+    "file": "assets/PPEditorialNew-UltralightItalic.woff2",
+    "src": "assets/fonts/PP Editorial New/PPEditorialNew-UltralightItalic.woff2"
+  },
+  "assets/fonts/PP Neue Montreal/PPNeueMontreal-Medium.ttf": {
+    "file": "assets/PPNeueMontreal-Medium.ttf",
+    "src": "assets/fonts/PP Neue Montreal/PPNeueMontreal-Medium.ttf"
+  },
+  "assets/fonts/PP Neue Montreal/PPNeueMontreal-Medium.woff": {
+    "file": "assets/PPNeueMontreal-Medium.woff",
+    "src": "assets/fonts/PP Neue Montreal/PPNeueMontreal-Medium.woff"
+  },
+  "assets/fonts/PP Neue Montreal/PPNeueMontreal-Regular.ttf": {
+    "file": "assets/PPNeueMontreal-Regular.ttf",
+    "src": "assets/fonts/PP Neue Montreal/PPNeueMontreal-Regular.ttf"
+  },
+  "assets/fonts/PP Neue Montreal/PPNeueMontreal-Regular.woff": {
+    "file": "assets/PPNeueMontreal-Regular.woff",
+    "src": "assets/fonts/PP Neue Montreal/PPNeueMontreal-Regular.woff"
+  },
+  "assets/js/main.ts": {
+    "file": "assets/main.js",
+    "name": "main",
+    "src": "assets/js/main.ts",
+    "isEntry": true,
+    "dynamicImports": [
+      "assets/js/modules/nav.ts",
+      "assets/js/modules/home.ts",
+      "assets/js/modules/site-header-scroll.ts",
+      "assets/js/modules/page-header.ts",
+      "assets/js/modules/story-mosaic.ts",
+      "assets/js/modules/btn-line.ts",
+      "assets/js/modules/media-gallery.ts",
+      "assets/js/modules/casa-gallery.ts",
+      "assets/js/modules/product-pdp.ts",
+      "assets/js/modules/account-forms.ts",
+      "assets/js/modules/account-orders.ts",
+      "assets/js/modules/cart-drawer.ts",
+      "assets/js/modules/wc-notices.ts",
+      "assets/js/modules/checkout.ts",
+      "assets/js/modules/pay-once.ts"
+    ],
+    "css": [
+      "assets/main.css"
+    ],
+    "assets": [
+      "assets/PPEditorialNew-Thin.woff2",
+      "assets/PPEditorialNew-Thin.woff",
+      "assets/PPEditorialNew-Ultralight.woff2",
+      "assets/PPEditorialNew-Ultralight.woff",
+      "assets/PPEditorialNew-Regular.woff2",
+      "assets/PPEditorialNew-Regular.woff",
+      "assets/PPEditorialNew-Italic.woff2",
+      "assets/PPEditorialNew-Italic.woff",
+      "assets/PPEditorialNew-ThinItalic.woff2",
+      "assets/PPEditorialNew-ThinItalic.woff",
+      "assets/PPEditorialNew-UltralightItalic.woff2",
+      "assets/PPEditorialNew-UltralightItalic.woff",
+      "assets/PPNeueMontreal-Regular.woff",
+      "assets/PPNeueMontreal-Regular.ttf",
+      "assets/PPNeueMontreal-Medium.woff",
+      "assets/PPNeueMontreal-Medium.ttf"
+    ]
+  },
+  "assets/js/modules/account-forms.ts": {
+    "file": "assets/account-forms.js",
+    "name": "account-forms",
+    "src": "assets/js/modules/account-forms.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/account-orders.ts": {
+    "file": "assets/account-orders.js",
+    "name": "account-orders",
+    "src": "assets/js/modules/account-orders.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_embla-carousel.esm.js"
+    ]
+  },
+  "assets/js/modules/btn-line.ts": {
+    "file": "assets/btn-line.js",
+    "name": "btn-line",
+    "src": "assets/js/modules/btn-line.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/cart-drawer.ts": {
+    "file": "assets/cart-drawer.js",
+    "name": "cart-drawer",
+    "src": "assets/js/modules/cart-drawer.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/casa-gallery.ts": {
+    "file": "assets/casa-gallery.js",
+    "name": "casa-gallery",
+    "src": "assets/js/modules/casa-gallery.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/checkout.ts": {
+    "file": "assets/checkout.js",
+    "name": "checkout",
+    "src": "assets/js/modules/checkout.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/home.ts": {
+    "file": "assets/home.js",
+    "name": "home",
+    "src": "assets/js/modules/home.ts",
+    "isDynamicEntry": true,
+    "css": [
+      "assets/home.css"
+    ]
+  },
+  "assets/js/modules/media-gallery.ts": {
+    "file": "assets/media-gallery.js",
+    "name": "media-gallery",
+    "src": "assets/js/modules/media-gallery.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_embla-carousel.esm.js"
+    ]
+  },
+  "assets/js/modules/nav.ts": {
+    "file": "assets/nav.js",
+    "name": "nav",
+    "src": "assets/js/modules/nav.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/page-header.ts": {
+    "file": "assets/page-header.js",
+    "name": "page-header",
+    "src": "assets/js/modules/page-header.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/pay-once.ts": {
+    "file": "assets/pay-once.js",
+    "name": "pay-once",
+    "src": "assets/js/modules/pay-once.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/product-pdp.ts": {
+    "file": "assets/product-pdp.js",
+    "name": "product-pdp",
+    "src": "assets/js/modules/product-pdp.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/site-header-scroll.ts": {
+    "file": "assets/site-header-scroll.js",
+    "name": "site-header-scroll",
+    "src": "assets/js/modules/site-header-scroll.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/story-mosaic.ts": {
+    "file": "assets/story-mosaic.js",
+    "name": "story-mosaic",
+    "src": "assets/js/modules/story-mosaic.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/wc-notices.ts": {
+    "file": "assets/wc-notices.js",
+    "name": "wc-notices",
+    "src": "assets/js/modules/wc-notices.ts",
+    "isDynamicEntry": true
+  }
+}

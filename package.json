@@ -1,0 +1,34 @@
+{
+  "name": "borgodasso-theme",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n build,reload -c blue,green \"vite build --watch\" \"npm run reload\"",
+    "watch": "vite build --watch",
+    "reload": "node ./scripts/reload.mjs",
+    "build": "tsc --noEmit && vite build",
+    "lint:js": "eslint \"assets/js/**/*.{ts,js}\" \"*.{ts,js,mjs,cjs}\"",
+    "lint:css": "stylelint \"assets/scss/**/*.{scss,css}\"",
+    "lint": "npm run lint:js && npm run lint:css",
+    "format": "prettier --write \"**/*.{ts,js,json,yml,yaml,md,scss,css}\" --ignore-path ../../../.prettierignore",
+    "format:check": "prettier --check \"**/*.{ts,js,json,yml,yaml,md,scss,css}\" --ignore-path ../../../.prettierignore"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/node": "^26.3.0",
+    "browser-sync": "^3.0.4",
+    "concurrently": "^9.2.4",
+    "embla-carousel": "^8.6.0",
+    "eslint": "^9.22.0",
+    "gsap": "^3.15.0",
+    "prettier": "^3.5.3",
+    "sass": "^1.85.1",
+    "stylelint": "^16.15.0",
+    "stylelint-config-standard-scss": "^14.0.0",
+    "swiper": "^14.2.0",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^6.2.1"
+  }
+}

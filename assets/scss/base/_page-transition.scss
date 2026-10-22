@@ -1,0 +1,29 @@
+@use '../abstracts/variables' as *;
+
+// Exit / enter page fade (see page-transition.ts).
+// Pending class is on <html> from first byte (header.php) to avoid a visible flash.
+$page-transition-duration: 0.42s;
+$page-transition-ease: cubic-bezier(0.19, 1, 0.22, 1);
+
+html.is-page-pending body,
+html.js.is-page-exiting body {
+  opacity: 0;
+}
+
+html.js.is-page-ready body {
+  opacity: 1;
+}
+
+// Only animate once JS has taken over — never transition the initial pending hide.
+html.js.is-page-ready body,
+html.js.is-page-exiting body {
+  @media (prefers-reduced-motion: no-preference) {
+    transition: opacity $page-transition-duration $page-transition-ease;
+  }
+}
+
+// Cream canvas while body is invisible (avoids a white flash).
+html.is-page-pending,
+html.js.is-page-exiting {
+  background-color: $color-background;
+}

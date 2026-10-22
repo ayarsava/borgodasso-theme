@@ -1,0 +1,294 @@
+{
+  "key": "group_borgodasso_page_header",
+  "title": "Page header",
+  "fields": [
+    {
+      "key": "field_borgodasso_page_header_enable",
+      "label": "Show page header",
+      "name": "page_header_enable",
+      "aria-label": "",
+      "type": "true_false",
+      "instructions": "Title, description, and image composition. Image layouts need separate desktop and mobile images.",
+      "required": false,
+      "conditional_logic": false,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": 1,
+      "ui": 1,
+      "message": "",
+      "ui_on_text": "",
+      "ui_off_text": ""
+    },
+    {
+      "key": "field_borgodasso_page_header_title",
+      "label": "Header title",
+      "name": "page_header_title",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "Optional. Leave empty to hide the title (Contact never falls back to the WordPress page title). On other pages, empty falls back to the page title. Separate from Casa apartment title.",
+      "required": false,
+      "conditional_logic": false,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_page_header_description",
+      "label": "Short description",
+      "name": "page_header_description",
+      "aria-label": "",
+      "type": "textarea",
+      "instructions": "",
+      "required": false,
+      "conditional_logic": [
+        [
+          {
+            "field": "field_borgodasso_page_header_image_layout",
+            "operator": "!=",
+            "value": "hero"
+          }
+        ]
+      ],
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "rows": 6,
+      "new_lines": "wpautop",
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": ""
+    },
+    {
+      "key": "field_borgodasso_page_header_image_layout",
+      "label": "Page header layout",
+      "name": "page_header_image_layout",
+      "aria-label": "",
+      "type": "select",
+      "instructions": "Text only: centered title and description. Full screen: viewport image with overlay. 1 image: split layout. 2 images: text with composition below. Image layouts require a separate mobile image.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "100",
+        "class": "",
+        "id": ""
+      },
+      "choices": {
+        "text": "Text only",
+        "hero": "Full screen image",
+        "single": "1 image",
+        "dual": "2 images"
+      },
+      "default_value": "single",
+      "return_format": "value",
+      "multiple": 0,
+      "allow_null": 0,
+      "allow_in_bindings": 1,
+      "ui": 0,
+      "ajax": 0,
+      "placeholder": "",
+      "create_options": 0,
+      "save_options": 0
+    },
+    {
+      "key": "field_borgodasso_page_header_image",
+      "label": "Image (desktop)",
+      "name": "page_header_image",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Desktop and tablet. Set alt text in the Media Library.",
+      "required": 1,
+      "conditional_logic": [
+        [
+          {
+            "field": "field_borgodasso_page_header_image_layout",
+            "operator": "==",
+            "value": "single"
+          }
+        ],
+        [
+          {
+            "field": "field_borgodasso_page_header_image_layout",
+            "operator": "==",
+            "value": "hero"
+          }
+        ]
+      ],
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_page_header_image_primary",
+      "label": "Image 1 (desktop)",
+      "name": "page_header_image_primary",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Primary image (572×873 ratio). Desktop only.",
+      "required": 1,
+      "conditional_logic": [
+        [
+          {
+            "field": "field_borgodasso_page_header_image_layout",
+            "operator": "==",
+            "value": "dual"
+          }
+        ]
+      ],
+      "wrapper": {
+        "width": "33",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_page_header_image_secondary",
+      "label": "Image 2 (desktop)",
+      "name": "page_header_image_secondary",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Secondary image (389×873 ratio). Desktop only.",
+      "required": 1,
+      "conditional_logic": [
+        [
+          {
+            "field": "field_borgodasso_page_header_image_layout",
+            "operator": "==",
+            "value": "dual"
+          }
+        ]
+      ],
+      "wrapper": {
+        "width": "33",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_page_header_image_mobile",
+      "label": "Image (mobile)",
+      "name": "page_header_image_mobile",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Required. Used below 768px for every image layout.",
+      "required": 1,
+      "conditional_logic": [
+        [
+          {
+            "field": "field_borgodasso_page_header_image_layout",
+            "operator": "==",
+            "value": "hero"
+          }
+        ],
+        [
+          {
+            "field": "field_borgodasso_page_header_image_layout",
+            "operator": "==",
+            "value": "single"
+          }
+        ],
+        [
+          {
+            "field": "field_borgodasso_page_header_image_layout",
+            "operator": "==",
+            "value": "dual"
+          }
+        ]
+      ],
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "page"
+      },
+      {
+        "param": "page",
+        "operator": "!=",
+        "value": "19"
+      },
+      {
+        "param": "post_template",
+        "operator": "!=",
+        "value": "page-templates\/legal-drinking-age.php"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": ["the_content"],
+  "active": true,
+  "description": "",
+  "show_in_rest": 0,
+  "display_title": "",
+  "allow_ai_access": false,
+  "ai_description": "",
+  "modified": 1792095325
+}

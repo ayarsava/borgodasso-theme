@@ -1,0 +1,245 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/text-styles' as *;
+
+.media-gallery {
+  --media-gallery-height: 660px;
+  --media-gallery-gap: #{$space-m};
+
+  @include media-down(lg) {
+    --media-gallery-gap: #{$space-xs};
+  }
+
+  background-color: $color-background;
+
+  &--height-660 {
+    --media-gallery-height: 660px;
+
+    @include media-down(lg) {
+      --media-gallery-height: min(660px, 334px);
+    }
+  }
+
+  &--height-595 {
+    --media-gallery-height: 595px;
+
+    @include media-down(lg) {
+      --media-gallery-height: min(595px, 70vw);
+    }
+  }
+
+  &--height-758 {
+    --media-gallery-height: 758px;
+
+    @include media-down(lg) {
+      --media-gallery-height: min(758px, 70vw);
+    }
+  }
+
+  &__frame {
+    position: relative;
+  }
+
+  &__viewport {
+    width: 100%;
+    overflow: hidden;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  &__container {
+    display: flex;
+    height: var(--media-gallery-height);
+    margin-left: calc(var(--media-gallery-gap) * -1);
+    touch-action: pan-y pinch-zoom;
+
+    @media (prefers-reduced-motion: no-preference) {
+      &.is-hinting {
+        animation: media-gallery-hint 1.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+    }
+  }
+
+  &__slide {
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    min-width: 0;
+    height: var(--media-gallery-height);
+
+    // Padding-based gaps keep spacing between last ↔ first in loop mode
+    // (CSS gap does not apply across the loop seam).
+    padding-left: var(--media-gallery-gap);
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    // Hide only after Embla is ready — avoids blank gallery while waiting on images.
+    html.js &.is-ready &__slide {
+      opacity: 0;
+      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html.js &.is-ready &__slide.is-seen {
+      opacity: 1;
+    }
+  }
+
+  &__media {
+    display: block;
+    width: auto;
+    height: 100%;
+    margin: 0;
+  }
+
+  &__img {
+    display: block;
+    width: auto;
+    max-width: none;
+    height: var(--media-gallery-height);
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 3.125rem;
+    height: 3.125rem;
+    padding: 0;
+    color: $color-text;
+    cursor: pointer;
+    background: rgba($color-white, 0.25);
+    border: 1px solid $color-white;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition: opacity 0.2s ease;
+
+    &--prev {
+      left: var(--space-m);
+    }
+
+    &--next {
+      right: var(--space-m);
+    }
+
+    @include media-down(md) {
+      display: none;
+    }
+  }
+
+  &__arrow-icon {
+    display: block;
+    width: 1.25rem;
+    height: auto;
+    color: $color-white;
+
+    &--prev {
+      transform: rotate(-180deg);
+    }
+  }
+
+  &__pagination {
+    position: absolute;
+    bottom: -2.75rem;
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    gap: 2.3125rem;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transform: translateX(-50%);
+  }
+
+  &--pagination-none &__pagination {
+    display: none;
+  }
+
+  // Mobile: match pagination-none — no dots, peek prev/next slides.
+  &--pagination-numbers {
+    @include media-down(md) {
+      --media-gallery-height: auto;
+
+      .media-gallery__pagination {
+        display: none;
+      }
+
+      .media-gallery__container,
+      .media-gallery__slide {
+        height: auto;
+      }
+
+      .media-gallery__media,
+      .media-gallery__img {
+        width: 80vw;
+        max-width: 80vw;
+        height: auto;
+        aspect-ratio: 16 / 11;
+      }
+
+      .media-gallery__img {
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+  }
+
+  &__bullet {
+    @include heading-face-regular;
+
+    font-size: rem(13);
+    pointer-events: auto;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    color: $color-black;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    opacity: 0.7;
+    transition:
+      font-size 0.25s ease,
+      opacity 0.25s ease,
+      transform 0.25s ease;
+
+    &.is-active {
+      font-size: rem(15);
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+
+  &__counter {
+    @include heading-face-regular;
+
+    color: $color-black;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+}
+
+@keyframes media-gallery-hint {
+  0%,
+  100% {
+    margin-left: calc(var(--media-gallery-gap) * -1);
+  }
+
+  40% {
+    margin-left: calc(var(--media-gallery-gap) * -1 - 1.75rem);
+  }
+
+  70% {
+    margin-left: calc(var(--media-gallery-gap) * -1 + 0.4rem);
+  }
+}

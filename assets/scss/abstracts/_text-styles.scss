@@ -1,0 +1,232 @@
+// Text styles — synced with abstracts/textStyles.json (Figma export).
+@use 'functions' as *;
+@use 'variables' as *;
+@use 'mixins' as *;
+
+@function ls-em($percent) {
+  @return $percent * 0.01em;
+}
+
+// Match Figma rendering on macOS (avoid subpixel heaviness).
+@mixin font-render {
+  font-style: normal;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// PP Editorial New Thin (lightest cut in this family).
+@mixin heading-face-thin {
+  @include font-render;
+
+  font-family: $font-heading;
+  font-weight: 100;
+}
+
+// PP Editorial New Ultralight.
+@mixin heading-face {
+  @include font-render;
+
+  font-family: $font-heading;
+  font-weight: 200;
+}
+
+// PP Editorial New Regular.
+@mixin heading-face-regular {
+  @include font-render;
+
+  font-family: $font-heading;
+  font-weight: 400;
+}
+
+// PP Editorial New Thin Italic.
+@mixin heading-face-thin-italic {
+  font-family: $font-heading;
+  font-weight: 100;
+  font-style: italic;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// PP Editorial New Ultralight Italic (pairs with heading-face).
+@mixin heading-face-italic {
+  font-family: $font-heading;
+  font-weight: 200;
+  font-style: italic;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// PP Editorial New Regular Italic.
+@mixin heading-face-regular-italic {
+  font-family: $font-heading;
+  font-weight: 400;
+  font-style: italic;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// PP Neue Montreal.
+@mixin body-face {
+  @include font-render;
+
+  font-family: $font-body;
+}
+
+@mixin text-hero {
+  @include heading-face;
+
+  font-size: rem(84);
+  letter-spacing: ls-em(0);
+  line-height: 1.05;
+  text-transform: none;
+}
+
+@mixin text-hero-mobile {
+  @include heading-face;
+
+  font-size: rem(55);
+  letter-spacing: ls-em(0);
+  line-height: 1.12;
+  text-transform: none;
+}
+
+@mixin text-h1-big {
+  @include heading-face;
+
+  font-size: rem(75);
+  letter-spacing: ls-em(-0.3);
+  line-height: 1.05;
+  text-transform: none;
+
+  @include media-down(xl) {
+    font-size: rem(60);
+  }
+  @include media-down(lg) {
+    font-size: rem(48);
+  }
+
+  @include media-down(md) {
+    font-size: rem(36);
+  }
+}
+
+@mixin text-h1 {
+  @include heading-face;
+
+  font-size: rem(60);
+  letter-spacing: ls-em(0);
+  line-height: 1.08;
+  text-transform: none;
+
+  @include media-down(lg) {
+    font-size: 2.625rem;
+  }
+}
+
+@mixin text-h2 {
+  @include heading-face;
+
+  font-size: rem(60);
+  letter-spacing: ls-em(-0.4);
+  line-height: 1.08;
+  text-transform: none;
+
+  @include media-down(lg) {
+    font-size: 2.25rem;
+  }
+}
+
+@mixin text-h3 {
+  @include heading-face;
+
+  font-size: rem(48);
+  letter-spacing: ls-em(0.5);
+  line-height: 1.375;
+  text-transform: none;
+}
+
+@mixin text-h4 {
+  @include heading-face;
+
+  font-size: rem(29);
+  letter-spacing: ls-em(0);
+  line-height: 1.15;
+  text-transform: none;
+}
+
+@mixin text-h5 {
+  @include heading-face;
+
+  font-size: rem(20);
+  letter-spacing: ls-em(0);
+  line-height: 1.2;
+  text-transform: none;
+}
+
+@mixin text-body {
+  @include body-face;
+
+  font-size: rem(16);
+  font-weight: 400;
+  letter-spacing: ls-em(1.5);
+  line-height: 1.6875;
+  text-transform: none;
+}
+
+@mixin text-body-small {
+  @include body-face;
+
+  font-size: rem(14);
+  font-weight: 400;
+  letter-spacing: ls-em(0);
+  line-height: 1.5;
+  text-transform: none;
+}
+
+@mixin text-listing {
+  @include body-face;
+
+  font-size: rem(16);
+  font-weight: 500;
+  letter-spacing: ls-em(1);
+  line-height: 1.2;
+  text-transform: none;
+}
+
+@mixin text-menu {
+  @include body-face;
+
+  font-size: rem(12);
+  font-weight: 500;
+  letter-spacing: ls-em(8);
+  line-height: 1.2;
+  text-transform: uppercase;
+
+  @include media-down(md) {
+    letter-spacing: ls-em(2);
+  }
+}
+
+@mixin text-label {
+  @include body-face;
+
+  font-size: rem(12);
+  font-weight: 500;
+  letter-spacing: ls-em(4);
+  line-height: 1.2;
+  text-transform: none;
+}
+
+@mixin text-button {
+  @include body-face;
+
+  font-size: rem(12);
+  font-weight: 500;
+  letter-spacing: ls-em(4);
+  line-height: 1.2;
+  text-transform: uppercase;
+}

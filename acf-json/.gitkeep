@@ -1,0 +1,5 @@
+# ACF Local JSON
+
+Field group JSON files are saved here when ACF Pro is installed and active.
+
+Do not create ACF fields that duplicate WooCommerce-native product data (price, SKU, stock, variations, weight, etc.).

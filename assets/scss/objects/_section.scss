@@ -1,0 +1,39 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/mixins' as *;
+
+.section {
+  $class: &;
+
+  padding-top: var(--space-5xl);
+  padding-bottom: var(--space-5xl);
+
+  @include media-down(md) {
+    padding-top: var(--space-l);
+    padding-bottom: var(--space-l);
+  }
+
+  #{$class} + & {
+    padding-top: 0;
+  }
+
+  .page-builder > &:first-child {
+    @include media-down(md) {
+      padding-top: 0;
+    }
+  }
+
+  // Text-only page header already has its own vertical padding.
+  .has-page-header-text .page-builder > &:first-child {
+    padding-top: 0;
+  }
+
+  // Full-screen hero: explicit top spacing before the first builder section.
+  .has-page-header-hero .page-builder > &:first-child {
+    padding-top: rem(192);
+
+    @include media-down(md) {
+      padding-top: var(--space-l);
+    }
+  }
+}

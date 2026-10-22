@@ -1,0 +1,1266 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/text-styles' as text;
+@use '../abstracts/mixins' as *;
+@use '../objects/button' as button;
+
+.account {
+  background-color: $color-background;
+  color: $color-black;
+
+  &__inner {
+    @include site-contained;
+
+    max-width: 98rem;
+  }
+
+  &--logged-in &__inner {
+    position: relative;
+  }
+
+  &--logged-out &__inner {
+    display: grid;
+    justify-items: center;
+    position: relative;
+  }
+
+  &--hub &__inner {
+    display: grid;
+    justify-items: center;
+  }
+
+  &__content {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: rem(480);
+    margin-inline: auto;
+  }
+
+  // Orders list — matches slider max width (3 cards + peek).
+  &--logged-in:not(.account--hub) &__content:has(.account-orders-list) {
+    max-width: rem(893);
+  }
+
+  // Order detail — narrower reading column, centered under account chrome.
+  &--logged-in:not(.account--hub) &__content:has(.order-detail) {
+    max-width: rem(560);
+  }
+
+  form {
+    padding: 0 !important;
+  }
+}
+
+.account-nav {
+  // Desktop endpoints: float over the left gutter, content stays page-centered.
+  @include media-up(lg) {
+    .account--logged-in:not(.account--hub) & {
+      position: absolute;
+      top: 0;
+      left: var(--site-inline-margin);
+      width: max-content;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: rem(24);
+    }
+  }
+
+  // Endpoint pages (Profilo, Indirizzi, Ordini): menu lives on the hub — hide on mobile.
+  @include media-down(lg) {
+    .account--logged-in:not(.account--hub) & {
+      display: none;
+    }
+  }
+
+  &__title {
+    @include text.text-h4;
+
+    color: $color-black;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: rem(0);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    margin: 0;
+  }
+
+  // Hub (/my-account/) — bordered rows with breathing room between items.
+  // Hub width is enforced in vendors/_woocommerce.scss (beats WC `width: auto !important`).
+  .account--hub & {
+    box-sizing: border-box;
+
+    &__title {
+      text-align: center;
+    }
+
+    &__item {
+      border-top: 1px solid $color-black;
+
+      &:last-child {
+        border-bottom: 1px solid $color-black;
+      }
+    }
+
+    &__link {
+      padding-block: rem(24);
+    }
+  }
+
+  &__link {
+    @include text.text-menu;
+
+    display: inline-flex;
+    align-items: center;
+    gap: rem(10);
+    color: $color-black;
+    text-decoration: none;
+    text-transform: uppercase;
+    justify-content: space-between;
+    width: 100%;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.7;
+    }
+
+    &[aria-current='page'] {
+      opacity: 1;
+      text-decoration: underline;
+      text-underline-offset: 0.3em;
+    }
+  }
+
+  &__icon {
+    display: block;
+    width: rem(16);
+    height: auto;
+    flex-shrink: 0;
+
+    @include media-down(md) {
+      display: none;
+    }
+  }
+}
+
+.account-section {
+  margin: 0 0 rem(96);
+
+  @include media-down(lg) {
+    margin: 0 0 rem(64);
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &__title {
+    @include text.text-h4;
+
+    margin: 0 0 rem(40);
+    text-align: center;
+    color: $color-black;
+  }
+}
+
+.account-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: rem(72);
+  width: 100%;
+}
+
+.account-order {
+  width: 100%;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: rem(16);
+    margin-bottom: rem(20);
+  }
+
+  &__heading {
+    min-width: 0;
+  }
+
+  &__status {
+    @include text.text-h4;
+
+    margin: 0 0 rem(8);
+    font-size: rem(29);
+    line-height: 1.15;
+    color: $color-black;
+  }
+
+  &__meta {
+    @include text.body-face;
+
+    margin: 0;
+    font-size: rem(11);
+    font-weight: 500;
+    letter-spacing: text.ls-em(4);
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: $color-black;
+  }
+
+  &__view {
+    margin: rem(12) 0 0;
+  }
+
+  &__view-link {
+    @include text.body-face;
+
+    font-size: rem(13);
+    letter-spacing: text.ls-em(1.5);
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: $color-black;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.7;
+    }
+  }
+
+  &__tracking {
+    @include text.body-face;
+
+    margin: rem(10) 0 0;
+    font-size: rem(13);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.4;
+    color: $color-black;
+  }
+
+  &__tracking-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.7;
+    }
+  }
+
+  &__actions {
+    margin: rem(20) 0 0;
+  }
+
+  &__pay.btn--solid {
+    width: 100%;
+  }
+
+  &__pay-status {
+    @include text.body-face;
+
+    margin: rem(16) 0;
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.4;
+    color: $color-black;
+  }
+
+  &__arrows {
+    display: none;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem(20);
+    margin-top: rem(6);
+
+    @include media-up(lg) {
+      display: inline-flex;
+    }
+  }
+
+  &__arrow {
+    display: grid;
+    place-items: center;
+    width: rem(28);
+    height: rem(28);
+    margin: 0;
+    padding: 0;
+    color: $color-black;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.65;
+    }
+
+    &.is-disabled,
+    &:disabled {
+      opacity: 0.25;
+      pointer-events: none;
+    }
+  }
+
+  &__arrow-icon {
+    display: block;
+    width: rem(14);
+    height: auto;
+
+    &--prev {
+      transform: scaleX(-1);
+    }
+  }
+
+  &__slider {
+    width: 100%;
+    max-width: rem(893);
+
+    // Mobile: left-aligned with content, bleed to the right screen edge.
+    @include media-down(lg) {
+      &:not(.account-order__slider--single) {
+        width: calc(100% + var(--site-inline-margin));
+        max-width: none;
+      }
+    }
+  }
+
+  &__viewport {
+    overflow: hidden;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    // While dragging, links must not receive the release click.
+    &.is-dragging .account-order__product {
+      pointer-events: none;
+    }
+  }
+
+  &__track {
+    display: flex;
+    touch-action: pan-y pinch-zoom;
+  }
+
+  &__slide {
+    flex: 0 0 auto;
+    box-sizing: content-box;
+
+    // Mobile: ~2 cards + peek of the third across the bleed width.
+    width: calc((100vw - var(--site-inline-margin) - #{rem(14)}) / 2.2);
+    min-width: 0;
+    padding-right: rem(14);
+
+    // Desktop: 277px cards + 14px gap → 3 full + peek of 4th in 893px.
+    @include media-up(lg) {
+      width: rem(277);
+      padding-right: rem(14);
+    }
+  }
+
+  &__product {
+    display: block;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 277 / 428;
+    object-fit: cover;
+    object-position: center;
+    background-color: rgba($color-black, 0.04);
+    pointer-events: none;
+    user-select: none;
+
+    &--placeholder {
+      background-color: rgba($color-black, 0.08);
+    }
+  }
+
+  &__slider--single &__slide {
+    width: 100%;
+    max-width: rem(277);
+    padding-right: 0;
+
+    @include media-up(lg) {
+      width: rem(277);
+    }
+  }
+}
+
+.account-orders-pagination {
+  display: flex;
+  gap: rem(12);
+  margin-top: rem(48);
+}
+
+.account-orders-empty {
+  text-align: center;
+
+  &__title {
+    @include text.text-h5;
+
+    margin: 0 0 rem(16);
+    font-size: 1.75rem;
+    color: $color-black;
+  }
+
+  &__text {
+    @include text.body-face;
+
+    margin: 0 0 rem(32);
+    font-size: rem(15);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.45;
+    color: $color-black;
+  }
+
+  .account-form__actions {
+    margin-top: 0;
+  }
+}
+
+.account-orders-verify {
+  margin-top: rem(40);
+  text-align: center;
+
+  &__text {
+    @include text.body-face;
+
+    margin: rem(16) 0;
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.45;
+    color: $color-black;
+  }
+
+  .account-form__actions {
+    margin-top: 0;
+  }
+
+  .account-orders-empty & {
+    margin-top: 0;
+  }
+
+  .account-orders-empty &__text {
+    margin-top: rem(16);
+  }
+}
+
+.account-auth {
+  width: 100%;
+}
+
+.account-form {
+  margin: 0;
+
+  &__actions {
+    margin: rem(28) 0 0;
+  }
+
+  &__links {
+    @include text.body-face;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem(16);
+    margin: rem(20) 0 0;
+    font-size: rem(12);
+    letter-spacing: text.ls-em(10);
+    text-transform: uppercase;
+    font-weight: 500;
+
+    a {
+      color: $color-black;
+      text-decoration: none;
+
+      &:hover,
+      &:focus-visible {
+        opacity: 0.7;
+      }
+    }
+
+    &--single {
+      display: block;
+      margin-top: rem(12);
+      font-size: inherit;
+      letter-spacing: normal;
+      text-transform: none;
+
+      .account-button {
+        width: 100%;
+      }
+
+      .account-button:hover,
+      .account-button:focus,
+      .account-button:focus-visible {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__divider {
+    @include text.body-face;
+
+    display: flex;
+    align-items: center;
+    gap: rem(12);
+    margin: rem(40) 0 rem(24);
+    font-size: rem(13);
+    letter-spacing: text.ls-em(0.2);
+    color: $color-muted;
+    padding: 0;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1 1 auto;
+      height: 1px;
+      background-color: $color-black;
+    }
+
+    span {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+  }
+
+  &__note {
+    @include text.body-face;
+
+    margin: 0 0 rem(24);
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.45;
+    text-align: center;
+    color: $color-black;
+  }
+}
+
+.account-field {
+  position: relative;
+  margin: 0 0 rem(16);
+
+  &__label {
+    @include text.body-face;
+
+    position: absolute;
+    top: rem(10);
+    left: rem(14);
+    z-index: 1;
+    font-size: rem(8);
+    letter-spacing: text.ls-em(10);
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: $color-black;
+    pointer-events: none;
+  }
+
+  &__control {
+    position: relative;
+    display: block;
+    min-height: rem(45);
+  }
+
+  &__input {
+    @include text.body-face;
+
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    min-height: rem(64);
+    margin: 0;
+    padding: rem(28) rem(16) rem(12);
+    border: 1px solid $color-black;
+    border-radius: 0;
+    background: transparent !important;
+    background-color: transparent !important;
+    color: $color-black;
+    font-size: rem(15);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.3;
+    appearance: none;
+    box-shadow: none !important;
+
+    &::placeholder {
+      color: $color-black;
+      opacity: 0.55;
+    }
+
+    &:focus,
+    &:focus-visible {
+      outline: 1px solid $color-black;
+      outline-offset: 2px;
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-text-fill-color: $color-black !important;
+      caret-color: $color-black;
+
+      // Autofill can’t stay transparent — match page cream instead of browser blue.
+      box-shadow: 0 0 0 1000px $color-background inset !important;
+      transition: background-color 99999s ease-out;
+    }
+  }
+
+  &--password &__input {
+    padding-right: rem(48);
+
+    // Hide Edge/Chrome native password reveal (we use .account-field__toggle).
+    &::-ms-reveal,
+    &::-ms-clear {
+      display: none;
+    }
+
+    &::-webkit-credentials-auto-fill-button,
+    &::-webkit-contacts-auto-fill-button,
+    &::-webkit-strong-password-auto-fill-button {
+      /* stylelint-disable-next-line property-no-vendor-prefix */
+      -webkit-appearance: none;
+      display: none !important;
+      visibility: hidden;
+      pointer-events: none;
+      margin: 0;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  &__toggle {
+    position: absolute;
+    top: 23px;
+    right: rem(12);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(28);
+    height: rem(28);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: $color-black;
+    cursor: pointer;
+    transform: translateY(-50%);
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.7;
+    }
+  }
+
+  &__toggle-icon {
+    display: block;
+    width: rem(16);
+    height: auto;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    &--visible {
+      display: none;
+    }
+  }
+
+  &__toggle.is-active &__toggle-icon--masked {
+    display: none;
+  }
+
+  &__toggle.is-active &__toggle-icon--visible {
+    display: block;
+  }
+}
+
+.account-button {
+  @include button.btn-solid;
+
+  &__icon {
+    display: block;
+    width: rem(16);
+    height: rem(16);
+    flex-shrink: 0;
+  }
+
+  &--outline {
+    border: 1px solid $color-black;
+    background-color: transparent;
+    color: $color-black;
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      opacity: 1;
+      background-color: $color-black;
+      color: $color-white;
+    }
+  }
+
+  &--pending:disabled {
+    cursor: not-allowed;
+    opacity: 1;
+  }
+
+  &--google {
+    background-color: $color-white;
+    color: $color-black;
+    margin: 0 20px;
+  }
+}
+
+.is-account-page {
+  .content-area.content-area--account {
+    position: relative;
+    width: 100%;
+    margin: auto 0;
+  }
+
+  .page__header,
+  .page__title {
+    display: none;
+  }
+}
+
+// —— Order detail (view-order + thankyou) ——
+
+.order-received {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: rem(560);
+  margin-inline: auto;
+  padding-block: rem(48) rem(96);
+
+  @include media-down(lg) {
+    padding-block: rem(32) rem(64);
+  }
+
+  // Match account order-detail column inside the commerce shell.
+  .commerce-shell & {
+    padding-block: rem(8) rem(64);
+  }
+}
+
+.order-detail {
+  width: 100%;
+  color: $color-black;
+
+  &__title {
+    @include text.text-h4;
+
+    margin: 0 0 rem(40);
+    text-align: center;
+    color: $color-black;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 rem(32);
+  }
+
+  &__pay.btn--solid {
+    width: auto;
+    min-width: rem(200);
+  }
+
+  &__pay-status {
+    @include text.body-face;
+
+    margin: 0 0 rem(32);
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.45;
+    text-align: center;
+    color: $color-black;
+  }
+
+  &__tracking {
+    margin: 0 0 rem(32);
+    padding: rem(20) 0;
+    border-top: 1px solid $color-black;
+    border-bottom: 1px solid $color-black;
+  }
+
+  &__tracking-title {
+    @include text.body-face;
+
+    margin: 0 0 rem(12);
+    font-size: rem(11);
+    font-weight: 500;
+    letter-spacing: text.ls-em(4);
+    line-height: 1.3;
+    text-transform: uppercase;
+    text-align: center;
+    color: $color-black;
+  }
+
+  &__tracking-line {
+    @include text.body-face;
+
+    display: flex;
+    justify-content: space-between;
+    gap: rem(16);
+    margin: 0 0 rem(8);
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.4;
+  }
+
+  &__tracking-label {
+    color: $color-black;
+  }
+
+  &__tracking-value {
+    text-align: right;
+    word-break: break-all;
+  }
+
+  &__tracking-action {
+    margin: rem(12) 0 0;
+    text-align: center;
+  }
+
+  &__tracking-link {
+    @include text.body-face;
+
+    font-size: rem(13);
+    letter-spacing: text.ls-em(1.5);
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: $color-black;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.7;
+    }
+  }
+
+  // Fulfilment stepper — 4 nodes on a hairline (mock).
+  &__stepper {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin: 0 0 rem(40);
+    padding: 0;
+    list-style: none;
+  }
+
+  &__step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: rem(12);
+    text-align: center;
+
+    // Connector line between dots (centered on the 10px node).
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: rem(4);
+      left: calc(50% + #{rem(10)});
+      right: calc(-50% + #{rem(10)});
+      height: 1px;
+      background-color: $color-black;
+      pointer-events: none;
+    }
+  }
+
+  &__step-dot {
+    box-sizing: border-box;
+    display: block;
+    width: rem(10);
+    height: rem(10);
+    border: 1px solid $color-black;
+    border-radius: 50%;
+    background-color: transparent;
+    flex-shrink: 0;
+
+    .order-detail__step.is-done & {
+      background-color: $color-black;
+    }
+  }
+
+  &__step-label {
+    @include text.body-face;
+
+    max-width: 100%;
+    font-size: rem(11);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.3;
+    color: $color-black;
+  }
+
+  &__meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: rem(16);
+    padding-block: rem(20);
+    border-bottom: 1px solid $color-black;
+  }
+
+  &__meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: rem(6);
+
+    &--end {
+      text-align: right;
+      align-items: flex-end;
+    }
+  }
+
+  &__meta-label {
+    @include text.body-face;
+
+    font-size: rem(11);
+    font-weight: 500;
+    letter-spacing: text.ls-em(6);
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  &__meta-value {
+    @include text.body-face;
+
+    font-size: rem(15);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.3;
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: rem(28);
+    margin: 0;
+    padding: rem(32) 0;
+    list-style: none;
+    border-bottom: 1px solid $color-black;
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: rem(72) minmax(0, 1fr);
+    gap: rem(20);
+    align-items: start;
+  }
+
+  &__thumb {
+    width: rem(72);
+  }
+
+  &__thumb-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    background-color: rgba($color-black, 0.04);
+
+    &--placeholder {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: rem(4);
+    min-width: 0;
+    padding-top: rem(2);
+  }
+
+  &__name {
+    @include text.heading-face;
+
+    font-size: rem(28);
+    letter-spacing: text.ls-em(0);
+    line-height: 1.15;
+    color: $color-black;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: $color-black;
+      opacity: 0.75;
+    }
+  }
+
+  &__price {
+    @include text.body-face;
+
+    margin-top: rem(4);
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.35;
+
+    /* stylelint-disable selector-class-pattern -- WooCommerce price markup */
+    .amount,
+    .woocommerce-Price-amount {
+      font-weight: inherit;
+    }
+    /* stylelint-enable selector-class-pattern */
+  }
+
+  &__attr {
+    @include text.body-face;
+
+    font-size: rem(13);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.4;
+    color: $color-black;
+  }
+
+  &__totals {
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+    padding-block: rem(28);
+    border-bottom: 1px solid $color-black;
+  }
+
+  &__total-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: rem(16);
+
+    &--grand {
+      margin-top: rem(4);
+
+      .order-detail__total-label,
+      .order-detail__total-value {
+        font-weight: 500;
+      }
+    }
+  }
+
+  &__total-label,
+  &__total-value {
+    @include text.body-face;
+
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.35;
+  }
+
+  &__total-value {
+    text-align: right;
+    white-space: nowrap;
+
+    /* stylelint-disable selector-class-pattern -- WooCommerce price markup */
+    .amount,
+    .woocommerce-Price-amount {
+      font-weight: inherit;
+    }
+    /* stylelint-enable selector-class-pattern */
+  }
+
+  &__data {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid $color-black;
+
+    &[open] .order-detail__data-icon::before {
+      content: '−';
+    }
+  }
+
+  &__data-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem(16);
+    padding-block: rem(24);
+    list-style: none;
+    cursor: pointer;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::marker {
+      content: '';
+    }
+  }
+
+  &__data-title {
+    @include text.heading-face;
+
+    font-size: rem(28);
+    letter-spacing: text.ls-em(0);
+    line-height: 1.15;
+  }
+
+  &__data-icon {
+    @include text.body-face;
+
+    flex-shrink: 0;
+    font-size: rem(22);
+    line-height: 1;
+
+    &::before {
+      content: '+';
+    }
+  }
+
+  &__data-body {
+    display: flex;
+    flex-direction: column;
+    gap: rem(28);
+    padding: 0 0 rem(32);
+  }
+
+  &__block {
+    margin: 0;
+  }
+
+  &__block-label {
+    @include text.text-menu;
+
+    margin: 0 0 rem(10);
+    text-align: left;
+    color: $color-black;
+  }
+
+  &__address {
+    @include text.body-face;
+
+    margin: 0;
+    font-size: rem(14);
+    font-style: normal;
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.5;
+    text-align: left;
+  }
+
+  &__payment {
+    @include text.body-face;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: rem(6);
+    margin: 0;
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.4;
+    text-align: left;
+  }
+
+  &__payment-row {
+    display: inline-flex;
+    align-items: center;
+    gap: rem(10);
+  }
+
+  &__payment-icon {
+    display: block;
+    width: rem(40);
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  &__payment-holder {
+    @include text.body-face;
+
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.35;
+    color: $color-black;
+  }
+
+  &__payment-mask {
+    @include text.body-face;
+
+    margin: 0;
+    font-size: rem(14);
+    letter-spacing: text.ls-em(1);
+    line-height: 1.35;
+    color: $color-black;
+  }
+
+  &__notes {
+    margin-top: rem(40);
+  }
+
+  &__notes-title {
+    @include text.heading-face;
+
+    margin: 0 0 rem(16);
+    font-size: rem(24);
+    line-height: 1.2;
+  }
+
+  &__notes-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__note {
+    margin: 0 0 rem(20);
+    padding-bottom: rem(20);
+    border-bottom: 1px solid rgba($color-black, 0.15);
+
+    &:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+  }
+
+  &__note-meta {
+    @include text.body-face;
+
+    margin: 0 0 rem(8);
+    font-size: rem(11);
+    letter-spacing: text.ls-em(4);
+    text-transform: uppercase;
+  }
+
+  &__note-body {
+    @include text.body-face;
+
+    font-size: rem(14);
+    line-height: 1.45;
+
+    p {
+      margin: 0 0 rem(8);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

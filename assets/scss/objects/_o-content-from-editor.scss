@@ -1,0 +1,326 @@
+@use 'sass:list';
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/text-styles' as text;
+@use '../abstracts/mixins' as *;
+
+:where(.o-content-from-editor) {
+  // Dummy content prefill available from: http://www.wpfill.me/ or http://wpfill.sbx.so/
+
+  /* HTML elements
+  ================================================== */
+
+  h2 {
+    @include text.text-h4;
+  }
+
+  p + h1,
+  p + h2,
+  p + h3,
+  p + h4,
+  p + h5,
+  p + h6,
+  ul + h2,
+  ul + h3,
+  ul + h4,
+  ul + p,
+  ol + h2,
+  ol + h3,
+  ol + h4,
+  ol + p {
+    margin-top: var(--space-l);
+  }
+
+  h1 + p,
+  h2 + p,
+  h3 + p,
+  h4 + p,
+  h5 + p,
+  h6 + p,
+  p + p {
+    margin-top: var(--space-s);
+  }
+
+  p + p {
+    margin-top: var(--space-s);
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  /* Miscellaneous
+  ================================================== */
+  address {
+    @include text.text-body;
+
+    font-style: italic;
+    margin-bottom: var(--space-m);
+  }
+
+  cite {
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  q {
+    font-style: italic;
+  }
+
+  /* Code
+    ================================================== */
+  code,
+  pre,
+  var {
+    font-family: Consolas, monospace;
+    font-size: 12px;
+  }
+
+  code {
+    padding: 2px 4px;
+    white-space: nowrap;
+  }
+
+  pre {
+    display: block;
+    line-height: 18px;
+    margin: 0 0 10px;
+    padding: 9.5px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+
+  pre code {
+    background-color: transparent;
+    border: 0;
+    color: inherit;
+    padding: 0;
+    white-space: pre-wrap;
+  }
+
+  /* Lists
+    ================================================== */
+  // Some blocks use <ol> or <ul>, we don't want to style those like traditional lists!
+  ol:not([class*='wp-block-']) {
+    list-style: decimal;
+
+    ul {
+      list-style: disc;
+    }
+
+    ol {
+      list-style: lower-latin;
+    }
+  }
+
+  /* stylelint-disable-next-line */
+  ul:not([class*='wp-block-']) {
+    list-style: disc;
+
+    ul {
+      list-style: circle;
+    }
+
+    ol {
+      list-style: decimal;
+    }
+  }
+
+  /* stylelint-disable-next-line */
+  ol:not([class*='wp-block-']),
+  ul:not([class*='wp-block-']) {
+    @include text.text-body;
+
+    margin-top: var(--space-m);
+    padding-left: 30px;
+
+    &.aligncenter {
+      list-style-position: inside;
+      padding: 0;
+      text-align: center;
+    }
+
+    &.alignright {
+      list-style-position: inside;
+      padding: 0;
+      text-align: right;
+    }
+
+    ol,
+    ul {
+      margin-top: 0;
+    }
+
+    li {
+      margin-bottom: var(--space-xs);
+      padding-left: var(--space-xs);
+    }
+  }
+
+  /* Tables
+    ================================================== */
+  table {
+    @include text.text-body;
+
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: var(--space-xl);
+    width: 100%;
+
+    td,
+    th {
+      border: 1px solid var(--black);
+      box-sizing: border-box;
+      padding: var(--space-xxs) var(--space-xs);
+    }
+
+    th {
+      font-weight: 600;
+    }
+
+    td {
+      text-align: center;
+    }
+
+    /* Cells in even rows (2,4,6...) are one color */
+    tr:nth-child(even) td {
+      background-color: #efefef;
+    }
+  }
+
+  iframe {
+    aspect-ratio: 16 / 9;
+    border: 0;
+    height: auto;
+    width: calc(100% + 6rem);
+    margin: 1rem -3rem;
+
+    @include media-down(md) {
+      width: calc(100% + 2.5rem);
+      margin: 1rem -1.25rem;
+    }
+  }
+
+  /* Spacing
+  ================================================== */
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* Images
+  ================================================== */
+  img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+
+  /* Captioned Images
+  ================================================== */
+  .wp-caption {
+    color: $color-black;
+    display: inline-block;
+    margin: 0 var(--space-l) var(--space-l) 0;
+
+    img {
+      display: block;
+      height: auto;
+      max-width: 100%;
+    }
+  }
+
+  .wp-caption-text {
+    @include text.text-body;
+
+    margin-top: var(--space-xxs);
+    text-align: left;
+    vertical-align: top;
+
+    p:last-child,
+    ul:last-child,
+    ol:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  /* Aligned Images
+  ================================================== */
+  .alignleft {
+    float: left;
+    margin: var(--space-xs) var(--space-l) 0 0;
+
+    .wp-caption-text {
+      padding-left: 0;
+      text-align: left;
+    }
+  }
+
+  .aligncenter {
+    display: block;
+    margin: var(--space-m) auto var(--space-l);
+
+    .wp-caption-text {
+      text-align: center;
+    }
+  }
+
+  .alignright {
+    float: right;
+    margin: var(--space-xs) 0 0 var(--space-l);
+
+    .wp-caption-text {
+      padding-right: 0;
+      text-align: right;
+    }
+  }
+
+  .alignnone {
+    display: block;
+    height: auto;
+    margin: var(--space-xs) 0 0;
+    max-width: 100%;
+
+    .wp-caption-text {
+      padding-left: 0;
+    }
+  }
+
+  .alignleft,
+  .alignright,
+  .alignnone {
+    @include media-down(md) {
+      display: block;
+      float: none;
+      margin-bottom: var(--space-m);
+      margin-left: 0;
+    }
+
+    .wp-caption-text {
+      @include media-down(md) {
+        padding-left: 0;
+        text-align: left;
+      }
+    }
+  }
+
+  /* Wordpress Galleries - Ew!
+  ================================================== */
+  .gallery {
+    display: block;
+    margin-bottom: var(--space-l);
+  }
+
+  .gallery-item {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .gallery-columns-3 .gallery-item {
+    // width : calc(100% / 3);
+  }
+}

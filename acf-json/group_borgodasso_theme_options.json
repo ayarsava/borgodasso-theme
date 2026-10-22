@@ -1,0 +1,332 @@
+{
+  "key": "group_borgodasso_theme_options",
+  "title": "Theme Options",
+  "fields": [
+    {
+      "key": "field_borgodasso_to_tab_header",
+      "label": "Header",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_borgodasso_to_header_menu",
+      "label": "Menu items",
+      "name": "header_menu_items",
+      "type": "repeater",
+      "layout": "block",
+      "button_label": "Add menu item",
+      "sub_fields": [
+        {
+          "key": "field_borgodasso_to_header_menu_label",
+          "label": "Label",
+          "name": "label",
+          "type": "text"
+        },
+        {
+          "key": "field_borgodasso_to_header_menu_link",
+          "label": "Link",
+          "name": "link",
+          "type": "link",
+          "return_format": "array"
+        },
+        {
+          "key": "field_borgodasso_to_header_menu_image",
+          "label": "Image",
+          "name": "image",
+          "type": "image",
+          "return_format": "id",
+          "preview_size": "medium",
+          "instructions": "Desktop menu panel image (1140×642 recommended)."
+        }
+      ]
+    },
+    {
+      "key": "field_borgodasso_to_header_desktop_actions",
+      "label": "Desktop actions",
+      "name": "header_desktop_actions",
+      "type": "repeater",
+      "layout": "table",
+      "button_label": "Add action",
+      "instructions": "Links on the right side of the desktop header. Drag rows to reorder.",
+      "sub_fields": [
+        {
+          "key": "field_borgodasso_to_header_desktop_label",
+          "label": "Label",
+          "name": "label",
+          "type": "text"
+        },
+        {
+          "key": "field_borgodasso_to_header_desktop_link",
+          "label": "Link",
+          "name": "link",
+          "type": "link",
+          "return_format": "array",
+          "instructions": "Ignored for Cart style (uses WooCommerce cart URL)."
+        },
+        {
+          "key": "field_borgodasso_to_header_desktop_style",
+          "label": "Style",
+          "name": "style",
+          "type": "select",
+          "choices": {
+            "text": "Text",
+            "button": "Button (Prenota)",
+            "cart": "Cart"
+          },
+          "default_value": "text",
+          "return_format": "value",
+          "instructions": "Cart: use %d in the label for the item count."
+        }
+      ]
+    },
+    {
+      "key": "field_borgodasso_to_header_mobile_icons",
+      "label": "Mobile icons",
+      "name": "header_mobile_icons",
+      "type": "repeater",
+      "layout": "table",
+      "button_label": "Add icon",
+      "instructions": "Icons on the right of the mobile header. Drag rows to set order (independent from desktop actions).",
+      "sub_fields": [
+        {
+          "key": "field_borgodasso_to_header_mobile_icon_label",
+          "label": "Label",
+          "name": "label",
+          "type": "text",
+          "instructions": "Used for accessibility (aria-label)."
+        },
+        {
+          "key": "field_borgodasso_to_header_mobile_icon_link",
+          "label": "Link",
+          "name": "link",
+          "type": "link",
+          "return_format": "array"
+        },
+        {
+          "key": "field_borgodasso_to_header_mobile_icon_icon",
+          "label": "Icon",
+          "name": "icon",
+          "type": "select",
+          "choices": {
+            "bedrooms": "Bedrooms (book)",
+            "account": "Account",
+            "shop": "Shop"
+          },
+          "default_value": "bedrooms",
+          "return_format": "value"
+        }
+      ]
+    },
+    {
+      "key": "field_borgodasso_to_header_mobile_secondary",
+      "label": "Mobile secondary links",
+      "name": "header_mobile_secondary",
+      "type": "repeater",
+      "layout": "table",
+      "button_label": "Add link",
+      "instructions": "Links in the mobile menu footer, above Cantina (separate from desktop actions).",
+      "sub_fields": [
+        {
+          "key": "field_borgodasso_to_header_mobile_sec_label",
+          "label": "Label",
+          "name": "label",
+          "type": "text"
+        },
+        {
+          "key": "field_borgodasso_to_header_mobile_sec_link",
+          "label": "Link",
+          "name": "link",
+          "type": "link",
+          "return_format": "array",
+          "instructions": "Open in a new tab to show the external arrow."
+        }
+      ]
+    },
+    {
+      "key": "field_borgodasso_to_header_cantina",
+      "label": "Cantina Ser'Enzo link",
+      "name": "header_cantina_link",
+      "type": "link",
+      "return_format": "array",
+      "instructions": "External link shown in the mobile menu."
+    },
+    {
+      "key": "field_borgodasso_to_tab_footer",
+      "label": "Footer",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_borgodasso_to_footer_col1",
+      "label": "Column 1 — Brand / address",
+      "name": "footer_column_1",
+      "type": "group",
+      "layout": "block",
+      "sub_fields": [
+        {
+          "key": "field_borgodasso_to_f1_title",
+          "label": "Title",
+          "name": "title",
+          "type": "text",
+          "default_value": "Borgo d’Asso"
+        },
+        {
+          "key": "field_borgodasso_to_f1_address",
+          "label": "Address",
+          "name": "address",
+          "type": "textarea",
+          "rows": 3,
+          "new_lines": "br",
+          "instructions": "One line per row, e.g. street/CAP then city/region."
+        },
+        {
+          "key": "field_borgodasso_to_f1_maps",
+          "label": "Maps link",
+          "name": "maps_link",
+          "type": "link",
+          "return_format": "array",
+          "instructions": "Label e.g. “Google Maps”."
+        },
+        {
+          "key": "field_borgodasso_to_f1_vat",
+          "label": "VAT / P. IVA",
+          "name": "vat",
+          "type": "text",
+          "instructions": "Shown at the bottom of this column."
+        }
+      ]
+    },
+    {
+      "key": "field_borgodasso_to_footer_col2",
+      "label": "Column 2 — Contacts",
+      "name": "footer_column_2",
+      "type": "group",
+      "layout": "block",
+      "sub_fields": [
+        {
+          "key": "field_borgodasso_to_f2_title",
+          "label": "Title",
+          "name": "title",
+          "type": "text",
+          "default_value": "Contatti"
+        },
+        {
+          "key": "field_borgodasso_to_f2_email",
+          "label": "Email",
+          "name": "email",
+          "type": "email"
+        },
+        {
+          "key": "field_borgodasso_to_f2_phone",
+          "label": "Phone",
+          "name": "phone",
+          "type": "text"
+        },
+        {
+          "key": "field_borgodasso_to_f2_instagram",
+          "label": "Instagram",
+          "name": "instagram",
+          "type": "link",
+          "return_format": "array",
+          "instructions": "Use the link title for the handle (e.g. @borgodasso)."
+        },
+        {
+          "key": "field_borgodasso_to_f2_terms",
+          "label": "Terms link",
+          "name": "terms_link",
+          "type": "link",
+          "return_format": "array",
+          "instructions": "Bottom of column, e.g. Condizioni di vendita."
+        }
+      ]
+    },
+    {
+      "key": "field_borgodasso_to_footer_col3",
+      "label": "Column 3 — Cantina",
+      "name": "footer_column_3",
+      "type": "group",
+      "layout": "block",
+      "sub_fields": [
+        {
+          "key": "field_borgodasso_to_f3_title",
+          "label": "Title",
+          "name": "title",
+          "type": "text",
+          "default_value": "Cantina Ser’Enzo"
+        },
+        {
+          "key": "field_borgodasso_to_f3_text",
+          "label": "Text",
+          "name": "text",
+          "type": "textarea",
+          "rows": 4,
+          "new_lines": ""
+        },
+        {
+          "key": "field_borgodasso_to_f3_website",
+          "label": "Website",
+          "name": "website",
+          "type": "link",
+          "return_format": "array",
+          "instructions": "Linked after the text (e.g. www.serenzo.it)."
+        },
+        {
+          "key": "field_borgodasso_to_f3_privacy",
+          "label": "Privacy policy",
+          "name": "privacy_link",
+          "type": "link",
+          "return_format": "array"
+        },
+        {
+          "key": "field_borgodasso_to_f3_cookies",
+          "label": "Cookies",
+          "name": "cookies_link",
+          "type": "link",
+          "return_format": "array"
+        }
+      ]
+    },
+    {
+      "key": "field_borgodasso_to_footer_mobile_links",
+      "label": "Mobile footer links",
+      "name": "footer_mobile_links",
+      "type": "repeater",
+      "layout": "table",
+      "button_label": "Add link",
+      "instructions": "Shown only on mobile, split into two columns.",
+      "sub_fields": [
+        {
+          "key": "field_borgodasso_to_footer_mobile_label",
+          "label": "Label",
+          "name": "label",
+          "type": "text"
+        },
+        {
+          "key": "field_borgodasso_to_footer_mobile_link",
+          "label": "Link",
+          "name": "link",
+          "type": "link",
+          "return_format": "array"
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "options_page",
+        "operator": "==",
+        "value": "borgodasso-theme-options"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "active": true,
+  "modified": 1788361200
+}

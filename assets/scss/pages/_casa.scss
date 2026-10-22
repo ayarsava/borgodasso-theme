@@ -1,0 +1,623 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/text-styles' as text;
+@use '../abstracts/mixins' as *;
+
+/// Centered 9/12 of the site max-width track.
+@mixin casa-rail-9 {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--site-max-width) * 9 / 12);
+  margin-inline: auto;
+  padding-inline: var(--site-inline-margin);
+  align-items: center;
+}
+
+.casa {
+  &__desktop {
+    @include media-down(md) {
+      display: none;
+    }
+  }
+
+  &__mobile {
+    display: none;
+
+    @include media-down(md) {
+      display: block;
+    }
+  }
+}
+
+html.is-casa-gallery-open {
+  overflow: hidden;
+}
+
+.casa-intro {
+  &__rail {
+    @include casa-rail-9;
+
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, auto);
+    align-items: start;
+    grid-auto-flow: column;
+    align-content: space-between;
+    gap: 82px;
+  }
+
+  &__amenities {
+    margin: auto 0 auto auto;
+  }
+}
+
+.casa-intro__line {
+  width: 1px;
+  height: 100%;
+  background-color: $color-text;
+}
+
+.casa-details {
+  &__inner {
+    padding-inline: var(--site-inline-margin);
+  }
+
+  &__title {
+    margin: 0 0 var(--space-m);
+    color: $color-black;
+  }
+
+  &__specs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin: 0 0 var(--space-m);
+    padding: 0;
+    list-style: none;
+
+    @include media-down(lg) {
+      gap: 1rem;
+    }
+  }
+
+  &__spec {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    margin: 0;
+
+    @include media-down(lg) {
+      gap: 0.35rem;
+    }
+
+    &--bathrooms {
+      @include media-down(md) {
+        display: none;
+      }
+    }
+  }
+
+  &__spec-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: flex-end;
+    height: 16px;
+    color: $color-text;
+  }
+
+  &__spec-svg {
+    display: block;
+    width: auto;
+    height: 16px;
+  }
+
+  &__spec-text {
+    @include text.text-menu;
+
+    font-size: 11px;
+    color: $color-text;
+    text-transform: uppercase;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+
+  &__description {
+    margin: 0 0 var(--space-m);
+    color: $color-text;
+
+    p {
+      margin: 0 0 1em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xl);
+    color: $color-black;
+  }
+}
+
+.casa-more-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+
+  &__text {
+    padding-inline: var(--site-inline-margin);
+    color: $color-text;
+
+    > *:first-child {
+      margin-top: 0;
+    }
+
+    > *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__media {
+    margin: 0;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
+.casa-amenities {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    @include text.text-listing;
+
+    margin: 0 0 0.75em;
+    color: $color-text;
+
+    @include media-down(lg) {
+      margin-bottom: 0.5em;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.casa-cta {
+  &--desktop {
+    text-align: center;
+
+    .casa-cta__rail {
+      @include casa-rail-9;
+    }
+
+    .casa-cta__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-m);
+    }
+  }
+
+  &--mobile {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+
+    .casa-cta__inner {
+      padding-inline: var(--site-inline-margin);
+    }
+
+    .casa-cta__content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-m);
+    }
+  }
+
+  // Full-bleed image sits flush at the top of the mobile CTA.
+  &--has-media {
+    padding-top: 0;
+  }
+
+  &__media {
+    margin-bottom: var(--space-l);
+  }
+
+  &__title {
+    margin: 0;
+    color: $color-black;
+  }
+
+  &__description {
+    margin: 0;
+    color: $color-text;
+
+    p {
+      margin: 0 0 1em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.casa-related {
+  // Section-level reveal stays a trigger; motion is on each card.
+  &.reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  &__inner {
+    @include site-contained;
+  }
+
+  &__heading {
+    margin: 0 0 var(--space-xl);
+    color: $color-black;
+    text-align: left;
+
+    @media (prefers-reduced-motion: no-preference) {
+      html.js .casa-related:not(.is-visible) & {
+        opacity: 0;
+        transform: translate3d(0, 1rem, 0);
+      }
+
+      html.js .casa-related.is-visible & {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        transition:
+          opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-m);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include media-down(lg) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: var(--space-xl);
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: var(--space-s);
+    align-items: flex-start;
+
+    @media (prefers-reduced-motion: no-preference) {
+      html.js .casa-related:not(.is-visible) & {
+        opacity: 0;
+        transform: translate3d(0, 1rem, 0);
+      }
+
+      html.js .casa-related.is-visible & {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        transition:
+          opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      @for $i from 1 through 4 {
+        html.js .casa-related.is-visible &:nth-child(#{$i}) {
+          transition-delay: #{0.12 + ($i - 1) * 0.1s};
+        }
+      }
+    }
+  }
+
+  &__media {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    margin-bottom: var(--space-s);
+  }
+
+  &__figure {
+    margin: 0;
+    overflow: hidden;
+    aspect-ratio: 330 / 494;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
+
+  &__item:hover &__img,
+  &__item:focus-within &__img {
+    @media (prefers-reduced-motion: no-preference) {
+      transform: scale(1.04);
+    }
+  }
+
+  &__title {
+    margin: 0;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+}
+
+.casa-bleed {
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
+
+.casa-action-link {
+  display: flex;
+  justify-content: center;
+  padding-inline: var(--site-inline-margin);
+}
+
+// Keep arrow + underline visible on mobile for Galleria / Mappa / CTA.
+.casa-cta__btn {
+  cursor: pointer;
+
+  .btn__icon {
+    @include media-down(md) {
+      display: block;
+    }
+  }
+}
+
+.casa-amenities-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  gap: 0;
+
+  &__list {
+    display: flex;
+    align-items: center;
+    padding: var(--space-l) var(--site-inline-margin) var(--space-l) var(--site-inline-margin);
+  }
+
+  &__media {
+    margin: 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 16rem;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.casa-portraits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-s);
+  padding-block: var(--space-l);
+  padding-inline: 0;
+
+  &__item {
+    margin: 0;
+    overflow: hidden;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.casa-fs-gallery {
+  box-sizing: border-box;
+  width: 100vw;
+  max-width: 100vw;
+  height: var(--viewport-height);
+  max-height: var(--viewport-height);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: $color-black;
+  color: $color-background;
+
+  &::backdrop {
+    background: rgb(0 0 0 / 92%);
+  }
+
+  &[open] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__bar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-m) var(--site-inline-margin);
+    pointer-events: none;
+  }
+
+  &__counter {
+    @include text.text-menu;
+
+    pointer-events: none;
+  }
+
+  &__close {
+    @include text.text-h3;
+
+    pointer-events: auto;
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    border: 0;
+    background: none;
+    color: inherit;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  &__hint {
+    position: absolute;
+    bottom: calc(var(--space-l) + env(safe-area-inset-bottom, 0px));
+    left: 0;
+    right: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+
+    &.is-visible {
+      opacity: 0.9;
+    }
+  }
+
+  &__hint-arrow {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: rem(11);
+    height: rem(7);
+
+    &--fade {
+      opacity: 0.4;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .casa-fs-gallery__hint.is-visible & {
+        animation: casa-fs-gallery-hint-bob 1.5s ease-in-out infinite;
+      }
+    }
+  }
+
+  &__hint-icon {
+    display: block;
+    width: rem(11);
+    height: rem(7);
+    color: $color-white;
+
+    // scroll.svg points up by default; flip both chevrons downward.
+    transform: scaleY(-1);
+  }
+
+  &__scroller {
+    flex: 1 1 auto;
+
+    // Flex items default to min-height: auto and grow with content,
+    // which prevents overflow scrolling inside the dialog.
+    min-height: 0;
+    height: 100%;
+    overflow: hidden auto;
+    overscroll-behavior: contain;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+
+    @media (prefers-reduced-motion: no-preference) {
+      &.is-hinting {
+        animation: casa-fs-gallery-hint 1.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+    }
+  }
+
+  &__slide {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--viewport-height);
+    margin: 0;
+    padding: var(--space-3xl) var(--space-s);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  &__img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+@keyframes casa-fs-gallery-hint {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-2rem);
+  }
+
+  70% {
+    transform: translateY(0.35rem);
+  }
+}
+
+@keyframes casa-fs-gallery-hint-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(0.35rem);
+  }
+}

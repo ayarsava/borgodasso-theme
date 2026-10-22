@@ -1,0 +1,881 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/text-styles' as text;
+@use '../abstracts/mixins' as *;
+
+// ————————————————————————————————————————————————
+// Checkout — two-column layout (form + summary)
+// ————————————————————————————————————————————————
+
+.checkout-layout {
+  display: grid;
+  gap: rem(64);
+  align-items: start;
+  width: 100%;
+
+  @include media-up(lg) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, rem(420));
+    gap: rem(80);
+  }
+}
+
+.checkout-layout__primary {
+  min-width: 0;
+  max-width: rem(560);
+}
+
+.checkout-layout__summary {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 0;
+
+  @include media-up(lg) {
+    position: sticky;
+
+    // Clear WP admin bar + site header, plus a small breathing gap.
+    top: calc(
+      var(--admin-bar-height) + var(--site-header-height, var(--header-height)) + #{rem(32)}
+    );
+  }
+}
+
+.checkout-section {
+  margin: 0 0 rem(48);
+
+  &:last-of-type {
+    margin-bottom: rem(32);
+  }
+
+  &__heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: rem(16);
+    margin: 0 0 rem(24);
+  }
+
+  &__heading &__title {
+    margin-bottom: 0;
+  }
+
+  &__title {
+    @include text.heading-face;
+
+    margin: 0 0 rem(24);
+    font-size: rem(28);
+    letter-spacing: text.ls-em(0);
+    line-height: 1.15;
+    color: $color-black;
+  }
+
+  &__action {
+    @include text.body-face;
+
+    flex-shrink: 0;
+    font-size: rem(13);
+    letter-spacing: text.ls-em(0.4);
+    line-height: 1.2;
+    color: $color-black;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.7;
+    }
+
+    &--static {
+      text-decoration: none;
+      pointer-events: none;
+
+      &:hover,
+      &:focus-visible {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__fields {
+    display: block;
+  }
+}
+
+.checkout-ship-to-different {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.checkout-form {
+  // Floating labels (match account address fields).
+  // Skip payment-box rows (Stripe save-card checkbox, etc.).
+  .form-row:not(
+    .woocommerce-SavedPaymentMethods-saveNew,
+    .checkout-billing-choice__option,
+    .checkout-remember
+  ) {
+    position: relative;
+    float: none !important;
+    width: 100% !important;
+    margin: 0 0 rem(12);
+
+    label:not(.woocommerce-form__label-for-checkbox, .checkbox) {
+      @include text.body-face;
+
+      position: absolute;
+      top: rem(10);
+      left: rem(14);
+      z-index: 1;
+      font-size: rem(8);
+      letter-spacing: text.ls-em(10);
+      line-height: 1.2;
+      text-transform: uppercase;
+      color: $color-black;
+      pointer-events: none;
+
+      .required,
+      .optional {
+        display: none;
+      }
+    }
+
+    .input-text,
+    select {
+      box-sizing: border-box;
+      min-height: rem(48) !important;
+      height: rem(48) !important;
+      padding: rem(20) rem(14) rem(6) !important;
+      line-height: 1.25 !important;
+      background: transparent !important;
+    }
+
+    // Select2 (country / state) — same height as text inputs (beat WC vendor 3rem).
+    .select2-container {
+      width: 100% !important;
+    }
+
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single {
+      box-sizing: border-box !important;
+      height: rem(48) !important;
+      min-height: rem(48) !important;
+      padding: 0 !important;
+      border: 1px solid $color-black !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+
+      .select2-selection__rendered {
+        display: block !important;
+        box-sizing: border-box !important;
+        height: rem(48) !important;
+        min-height: rem(48) !important;
+        padding: rem(20) rem(36) rem(6) rem(14) !important;
+        line-height: 1.25 !important;
+        color: $color-black !important;
+      }
+
+      .select2-selection__arrow {
+        top: 0 !important;
+        right: rem(8) !important;
+        width: rem(24) !important;
+        height: rem(48) !important;
+      }
+    }
+  }
+
+  .payment_box .form-row {
+    label:not(.woocommerce-form__label-for-checkbox, .checkbox) {
+      position: static;
+      font-size: rem(14);
+      letter-spacing: text.ls-em(0.2);
+      line-height: 1.45;
+      text-transform: none;
+      pointer-events: auto;
+    }
+  }
+
+  .form-row-first,
+  .form-row-last {
+    @include media-up(md) {
+      width: calc(50% - #{rem(6)}) !important;
+      float: left !important;
+
+      &.form-row-first {
+        margin-right: rem(12);
+      }
+    }
+  }
+
+  .woocommerce-billing-fields__field-wrapper,
+  .woocommerce-shipping-fields__field-wrapper {
+    @include media-up(md) {
+      &::after {
+        content: '';
+        display: table;
+        clear: both;
+      }
+    }
+  }
+
+  // Keep shipping fields open (WC JS otherwise may collapse them).
+  .shipping_address {
+    display: block !important;
+    height: auto !important;
+  }
+}
+
+.checkout-shipping-methods {
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $color-black;
+  }
+
+  &__item {
+    @include text.body-face;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem(16);
+    margin: 0;
+    padding: rem(18) rem(16);
+    border: 0;
+    border-bottom: 1px solid $color-black;
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.35;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    label {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: rem(16);
+      width: 100%;
+      cursor: pointer;
+    }
+
+    input.shipping_method {
+      flex-shrink: 0;
+      margin: 0 rem(12) 0 0;
+    }
+
+    // Single hidden method — still show as a bordered row.
+    &:only-child input[type='hidden'].shipping_method {
+      display: none;
+    }
+  }
+
+  // One method rendered alone (no <ul> when empty message).
+  > .checkout-shipping-methods__item,
+  &:not(:has(ul)) {
+    border: 1px solid $color-black;
+  }
+
+  &__empty {
+    @include text.body-face;
+
+    margin: 0;
+    padding: rem(18) rem(16);
+    border: 1px solid $color-black;
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.45;
+    color: $color-muted;
+  }
+}
+
+// Kill WC core purple wash / padding on the payment box.
+#add_payment_method #payment,
+.woocommerce-cart #payment,
+.woocommerce-checkout #payment {
+  background: transparent;
+  border-radius: 0;
+
+  ul.payment_methods {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    list-style: none;
+  }
+
+  div.payment_box {
+    background: transparent;
+    color: inherit;
+
+    &::before {
+      display: none;
+    }
+  }
+}
+
+.woocommerce-checkout-payment {
+  background: transparent;
+  border: solid 1px $color-black;
+
+  .wc_payment_methods {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $color-black;
+  }
+
+  .wc_payment_method {
+    @include text.body-face;
+
+    margin: 0;
+    padding: rem(18) rem(16);
+    border: 0;
+    border-bottom: 1px solid $color-black;
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.35;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    input + label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: rem(12);
+      width: auto;
+      cursor: pointer;
+    }
+
+    > label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: rem(12);
+      width: 100%;
+      cursor: pointer;
+      line-height: 1;
+
+      img {
+        max-height: rem(24);
+        width: auto;
+      }
+    }
+
+    > input.input-radio {
+      float: left;
+      margin: 0.5em 0.5em 0 0 !important;
+    }
+
+    .payment_box {
+      clear: both;
+      margin: rem(14) 0 0;
+      padding: rem(16);
+      border: 1px solid $color-black;
+      background: rgba($color-black, 0.03);
+
+      p {
+        margin: 0 0 rem(8);
+      }
+
+      fieldset {
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      // Stripe “Save payment information…” — checkbox + label on one line.
+      .woocommerce-SavedPaymentMethods-saveNew,
+      .form-row:has(> input[type='checkbox']) {
+        @include text.body-face;
+
+        display: flex;
+        align-items: flex-start;
+        gap: rem(12);
+        margin: rem(12) 0 0;
+        font-size: rem(14);
+        letter-spacing: text.ls-em(0.2);
+        line-height: 1.45;
+
+        input[type='checkbox'] {
+          width: auto !important;
+          min-width: rem(16);
+          margin: rem(3) 0 0;
+          flex-shrink: 0;
+        }
+
+        label {
+          display: inline !important;
+          position: static !important;
+          margin: 0;
+          padding: 0;
+          font-size: inherit;
+          letter-spacing: inherit;
+          line-height: inherit;
+          text-transform: none;
+          pointer-events: auto;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+.checkout-legal {
+  display: flex;
+  flex-direction: column;
+  gap: rem(12);
+
+  &__row {
+    margin: 0 !important;
+  }
+
+  .woocommerce-form__label-for-checkbox {
+    @include text.body-face;
+
+    position: static !important;
+    display: flex;
+    align-items: flex-start;
+    gap: rem(12);
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.45;
+    text-transform: none;
+    pointer-events: auto;
+    cursor: pointer;
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+
+    .required {
+      display: inline;
+    }
+  }
+
+  input[type='checkbox'] {
+    margin-top: rem(3);
+    flex-shrink: 0;
+  }
+}
+
+// Billing radios + optional form — one bordered panel (design mock).
+.checkout-billing-panel {
+  box-sizing: border-box;
+  padding: rem(18) rem(16);
+  border: 1px solid $color-black;
+
+  &__fields {
+    margin-top: rem(16);
+    padding-top: rem(4);
+  }
+}
+
+.checkout-billing-choice {
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  &__option {
+    margin: 0 0 rem(14) !important;
+    padding: 0 !important;
+
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  .woocommerce-form__label-for-checkbox {
+    @include text.body-face;
+
+    position: static !important;
+    display: flex;
+    align-items: flex-start;
+    gap: rem(12);
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.45;
+    text-transform: none;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  input[type='radio'] {
+    // margin-top: rem(3);
+    flex-shrink: 0;
+  }
+}
+
+.checkout-remember-panel {
+  box-sizing: border-box;
+  padding: rem(18) rem(16);
+  border: 1px solid $color-black;
+}
+
+.checkout-remember {
+  margin: 0 !important;
+
+  .woocommerce-form__label-for-checkbox {
+    @include text.body-face;
+
+    position: static !important;
+    display: flex;
+    align-items: flex-start;
+    gap: rem(12);
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.45;
+    text-transform: none;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  &__fields {
+    margin-top: rem(16);
+  }
+}
+
+.checkout-secure {
+  @include text.body-face;
+
+  margin: 0 0 rem(20);
+  font-size: rem(12);
+  letter-spacing: text.ls-em(0.4);
+  line-height: 1.4;
+  color: $color-muted;
+}
+
+.checkout-place-order,
+.checkout-form #place_order {
+  @include text.body-face;
+
+  box-sizing: border-box;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: rem(45);
+  margin: 0;
+  padding: rem(14) rem(20);
+  border: 0 !important;
+  border-radius: 0 !important;
+  background-color: $color-black !important;
+  color: $color-background !important;
+  font-size: rem(13);
+  letter-spacing: text.ls-em(10);
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: none !important;
+
+  &:hover,
+  &:focus,
+  &:focus-visible {
+    opacity: 0.88;
+    background-color: $color-black !important;
+    color: $color-white !important;
+  }
+}
+
+// —— Summary column ——
+
+.checkout-summary {
+  &__title {
+    @include text.heading-face;
+
+    margin: 0 0 rem(24);
+    font-size: rem(28);
+    letter-spacing: text.ls-em(0);
+    line-height: 1.15;
+    color: $color-black;
+  }
+
+  &__totals {
+    display: flex;
+    flex-direction: column;
+    gap: rem(12);
+    margin: 0 0 rem(80);
+  }
+
+  &__row {
+    @include text.body-face;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: rem(16);
+    font-size: rem(13);
+    letter-spacing: text.ls-em(0.4);
+    line-height: 1.35;
+  }
+
+  &__label {
+    color: $color-black;
+  }
+
+  &__value {
+    text-align: right;
+    color: $color-black;
+    white-space: nowrap;
+
+    &--shipping {
+      white-space: normal;
+      max-width: 55%;
+    }
+  }
+
+  &__row--subtotal,
+  &__row--shipping {
+    font-weight: 400;
+    font-size: rem(16);
+  }
+
+  &__row--total {
+    font-weight: 500;
+    font-size: rem(18);
+  }
+
+  &__articles-title {
+    @include text.heading-face;
+
+    margin: 0 0 rem(24);
+    font-size: rem(28);
+    letter-spacing: text.ls-em(0);
+    line-height: 1.15;
+    color: $color-black;
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: rem(20);
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: rem(84) minmax(0, 1fr);
+    gap: rem(14);
+    align-items: start;
+  }
+
+  &__thumb {
+    position: relative;
+    width: rem(84);
+    aspect-ratio: 4 / 6;
+    overflow: hidden;
+    background-color: rgba($color-black, 0.06);
+  }
+
+  &__thumb-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  &__thumb-link img,
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: rem(4);
+    min-width: 0;
+  }
+
+  &__name {
+    @include text.heading-face;
+
+    display: block;
+    margin: 0;
+    color: $color-black;
+    font-size: rem(22);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.3;
+    text-decoration: none;
+    font-weight: 300;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.75;
+    }
+  }
+
+  &__price {
+    @include text.body-face;
+
+    margin: 0;
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.3;
+    color: $color-black;
+  }
+
+  &__meta,
+  &__qty {
+    @include text.body-face;
+
+    margin: 0;
+    font-size: rem(14);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.35;
+    color: $color-black;
+  }
+}
+
+.checkout-coupon {
+  // WC checkout.js hides `.checkout_coupon` until “Have a coupon?” — keep ours open.
+  display: block !important;
+  margin: 0 0 rem(28) !important;
+  padding: 0 !important;
+
+  &__row.form-row {
+    padding: 0 !important;
+  }
+
+  &__label {
+    @include text.body-face;
+
+    display: block;
+    margin: 0 0 rem(10);
+    font-size: rem(11);
+    font-weight: 500;
+    letter-spacing: text.ls-em(10);
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: $color-black;
+  }
+
+  &__controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: rem(8);
+  }
+
+  &__input {
+    min-height: rem(45) !important;
+    padding: rem(12) rem(14) !important;
+  }
+
+  &__apply {
+    @include text.body-face;
+
+    box-sizing: border-box;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: rem(45);
+    margin: 0;
+    padding: rem(14) rem(48) !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background-color: $color-black !important;
+    color: $color-background !important;
+    font-size: rem(13) !important;
+    letter-spacing: text.ls-em(10);
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: none !important;
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      opacity: 0.88;
+      background-color: $color-black !important;
+      color: $color-white !important;
+    }
+  }
+}
+
+// Hide default WC “Have a coupon?” toggle if a plugin re-adds it.
+.woocommerce-checkout .woocommerce-form-coupon-toggle {
+  display: none;
+}
+
+// Login prompt above the two-column layout (links to My Account).
+.woocommerce-checkout .woocommerce-form-login-toggle {
+  max-width: rem(560);
+  margin-bottom: rem(40);
+}
+
+// WC blockUI uses inline `background: #fff` while payment / update_order_review
+// run — that flashes white over the cream page. Match the site background.
+.woocommerce-checkout,
+.woocommerce-order-pay {
+  .blockUI.blockOverlay {
+    background: $color-background !important;
+    opacity: 0.72 !important;
+  }
+}
+
+// —— Pay for order ——
+
+.checkout-pay {
+  width: 100%;
+}
+
+.checkout-pay__submit {
+  margin: 0;
+  padding: 0;
+}
+
+// WC guest-order warning (printed before the form) — in-page, not a toast.
+.woocommerce-order-pay .woocommerce > .woocommerce-error:not(.wc-notice-toast),
+.woocommerce-order-pay .woocommerce-error.checkout-pay-notice {
+  @include text.body-face;
+
+  box-sizing: border-box;
+  max-width: rem(560);
+  margin: 0 0 rem(32);
+  padding: rem(16) rem(20);
+  border: 1px solid $color-black;
+  border-radius: 0;
+  background-color: transparent;
+  color: $color-black;
+  font-size: rem(14);
+  letter-spacing: text.ls-em(0.2);
+  line-height: 1.45;
+  text-align: left;
+  list-style: none;
+
+  &::before {
+    display: none !important;
+  }
+
+  li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}

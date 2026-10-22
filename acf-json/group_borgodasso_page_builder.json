@@ -1,0 +1,1071 @@
+{
+  "key": "group_borgodasso_page_builder",
+  "title": "Page builder",
+  "fields": [
+    {
+      "key": "field_borgodasso_page_builder",
+      "label": "Content",
+      "name": "page_builder",
+      "aria-label": "",
+      "type": "flexible_content",
+      "instructions": "Add and reorder page sections.",
+      "required": false,
+      "conditional_logic": false,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "button_label": "Add section",
+      "layouts": {
+        "layout_borgodasso_pb_text_block": {
+          "key": "layout_borgodasso_pb_text_block",
+          "name": "text_block",
+          "label": "Text block",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_borgodasso_pb_text_eyebrow",
+              "label": "Eyebrow",
+              "name": "eyebrow",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "Optional small label above the title.",
+              "required": false,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_borgodasso_pb_text_title",
+              "label": "Title",
+              "name": "title",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "",
+              "required": false,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_borgodasso_pb_text_content",
+              "label": "Content",
+              "name": "content",
+              "aria-label": "",
+              "type": "wysiwyg",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "allow_in_bindings": 1,
+              "tabs": "all",
+              "toolbar": "full",
+              "media_upload": 0,
+              "delay": 0
+            },
+            {
+              "key": "field_borgodasso_pb_text_align",
+              "label": "Alignment",
+              "name": "align",
+              "aria-label": "",
+              "type": "select",
+              "instructions": "",
+              "required": false,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "choices": {
+                "left": "Left",
+                "center": "Center"
+              },
+              "default_value": "left",
+              "return_format": "value",
+              "multiple": 0,
+              "allow_null": 0,
+              "ui": 0,
+              "ajax": 0,
+              "placeholder": "",
+              "create_options": 0,
+              "save_options": 0
+            }
+          ],
+          "min": "",
+          "max": ""
+        },
+        "layout_borgodasso_pb_blockquote": {
+          "key": "layout_borgodasso_pb_blockquote",
+          "name": "blockquote",
+          "label": "Blockquote",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_borgodasso_pb_bq_quote",
+              "label": "Quote",
+              "name": "quote",
+              "aria-label": "",
+              "type": "textarea",
+              "instructions": "",
+              "required": 1,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "rows": 4,
+              "new_lines": "",
+              "default_value": "",
+              "maxlength": "",
+              "placeholder": ""
+            },
+            {
+              "key": "field_borgodasso_pb_bq_source",
+              "label": "Source",
+              "name": "source",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "Optional attribution.",
+              "required": false,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            }
+          ],
+          "min": "",
+          "max": ""
+        },
+        "layout_borgodasso_pb_call_to_action": {
+          "key": "layout_borgodasso_pb_call_to_action",
+          "name": "call_to_action",
+          "label": "Call to action",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_borgodasso_pb_cta_title",
+              "label": "Title",
+              "name": "title",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "",
+              "required": 1,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_borgodasso_pb_cta_text",
+              "label": "Text",
+              "name": "text",
+              "aria-label": "",
+              "type": "textarea",
+              "instructions": "",
+              "required": false,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "rows": 3,
+              "new_lines": "br",
+              "default_value": "",
+              "maxlength": "",
+              "placeholder": ""
+            },
+            {
+              "key": "field_borgodasso_pb_cta_button",
+              "label": "Button",
+              "name": "button",
+              "aria-label": "",
+              "type": "link",
+              "instructions": "",
+              "required": false,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "array"
+            },
+            {
+              "key": "field_borgodasso_pb_cta_image",
+              "label": "Image",
+              "name": "image",
+              "aria-label": "",
+              "type": "image",
+              "instructions": "Optional. Set alt text in the Media Library. Leave empty for a text-only CTA.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "id",
+              "library": "all",
+              "min_width": "",
+              "min_height": "",
+              "min_size": "",
+              "max_width": "",
+              "max_height": "",
+              "max_size": "",
+              "mime_types": "",
+              "allow_in_bindings": 1,
+              "preview_size": "medium"
+            },
+            {
+              "key": "field_borgodasso_pb_cta_visibility",
+              "label": "Show image on",
+              "name": "visibility",
+              "aria-label": "",
+              "type": "select",
+              "instructions": "The CTA text and button always show. This only controls where the image appears.",
+              "required": 0,
+              "conditional_logic": [
+                [
+                  {
+                    "field": "field_borgodasso_pb_cta_image",
+                    "operator": "!=empty"
+                  }
+                ]
+              ],
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "choices": {
+                "both": "Desktop and mobile",
+                "desktop": "Desktop only",
+                "mobile": "Mobile only"
+              },
+              "default_value": "both",
+              "return_format": "value",
+              "multiple": 0,
+              "allow_null": 0,
+              "allow_in_bindings": 1,
+              "ui": 0,
+              "ajax": 0,
+              "placeholder": "",
+              "create_options": 0,
+              "save_options": 0
+            },
+            {
+              "key": "field_borgodasso_pb_cta_desktop_image_position",
+              "label": "Desktop image position",
+              "name": "desktop_image_position",
+              "aria-label": "",
+              "type": "select",
+              "instructions": "Where the image sits relative to the text on desktop.",
+              "required": 0,
+              "conditional_logic": [
+                [
+                  {
+                    "field": "field_borgodasso_pb_cta_image",
+                    "operator": "!=empty"
+                  }
+                ]
+              ],
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "choices": {
+                "right": "Right of text",
+                "left": "Left of text"
+              },
+              "default_value": "right",
+              "return_format": "value",
+              "multiple": 0,
+              "allow_null": 0,
+              "allow_in_bindings": 1,
+              "ui": 0,
+              "ajax": 0,
+              "placeholder": "",
+              "create_options": 0,
+              "save_options": 0
+            },
+            {
+              "key": "field_borgodasso_pb_cta_mobile_image_position",
+              "label": "Mobile image position",
+              "name": "mobile_image_position",
+              "aria-label": "",
+              "type": "select",
+              "instructions": "Where the image sits relative to the text on mobile.",
+              "required": 0,
+              "conditional_logic": [
+                [
+                  {
+                    "field": "field_borgodasso_pb_cta_image",
+                    "operator": "!=empty"
+                  }
+                ]
+              ],
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "choices": {
+                "above": "Above text",
+                "below": "Below text"
+              },
+              "default_value": "above",
+              "return_format": "value",
+              "multiple": 0,
+              "allow_null": 0,
+              "allow_in_bindings": 1,
+              "ui": 0,
+              "ajax": 0,
+              "placeholder": "",
+              "create_options": 0,
+              "save_options": 0
+            }
+          ],
+          "min": "",
+          "max": ""
+        },
+        "layout_borgodasso_pb_media_block": {
+          "key": "layout_borgodasso_pb_media_block",
+          "name": "media_block",
+          "label": "Media block",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_borgodasso_pb_mb_title",
+              "label": "Title",
+              "name": "title",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "",
+              "required": 1,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_borgodasso_pb_mb_description",
+              "label": "Description",
+              "name": "description",
+              "aria-label": "",
+              "type": "textarea",
+              "instructions": "",
+              "required": 1,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "rows": 5,
+              "new_lines": "wpautop",
+              "default_value": "",
+              "maxlength": "",
+              "placeholder": ""
+            },
+            {
+              "key": "field_borgodasso_pb_mb_spec_square_meters",
+              "label": "M²",
+              "name": "spec_square_meters",
+              "aria-label": "",
+              "type": "number",
+              "instructions": "Optional room specifications. Shown inline when filled.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "min": 1,
+              "max": "",
+              "step": 1,
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_borgodasso_pb_mb_spec_bedrooms",
+              "label": "Camere da letto",
+              "name": "spec_bedrooms",
+              "aria-label": "",
+              "type": "number",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "min": 1,
+              "max": "",
+              "step": 1,
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_borgodasso_pb_mb_spec_bathrooms",
+              "label": "Bagni",
+              "name": "spec_bathrooms",
+              "aria-label": "",
+              "type": "number",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "min": 1,
+              "max": "",
+              "step": 1,
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_borgodasso_pb_mb_spec_guests",
+              "label": "Ospiti",
+              "name": "spec_guests",
+              "aria-label": "",
+              "type": "number",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "min": 1,
+              "max": "",
+              "step": 1,
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_borgodasso_pb_mb_link",
+              "label": "Link",
+              "name": "link",
+              "aria-label": "",
+              "type": "link",
+              "instructions": "",
+              "required": false,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "array"
+            },
+            {
+              "key": "field_borgodasso_pb_mb_acc_desktop",
+              "label": "Desktop image",
+              "name": "",
+              "aria-label": "",
+              "type": "accordion",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "open": 1,
+              "multi_expand": 1,
+              "endpoint": 0
+            },
+            {
+              "key": "field_borgodasso_pb_mb_image",
+              "label": "Image (desktop)",
+              "name": "image",
+              "aria-label": "",
+              "type": "image",
+              "instructions": "Set alt text in the Media Library for accessibility.",
+              "required": 1,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "id",
+              "library": "all",
+              "min_width": "",
+              "min_height": "",
+              "min_size": "",
+              "max_width": "",
+              "max_height": "",
+              "max_size": "",
+              "mime_types": "",
+              "allow_in_bindings": 1,
+              "preview_size": "medium"
+            },
+            {
+              "key": "field_borgodasso_pb_mb_image_position",
+              "label": "Image position",
+              "name": "image_position",
+              "aria-label": "",
+              "type": "select",
+              "instructions": "Left or right of the content on desktop.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "choices": {
+                "right": "Right",
+                "left": "Left"
+              },
+              "default_value": "right",
+              "return_format": "value",
+              "multiple": 0,
+              "allow_null": 0,
+              "allow_in_bindings": 1,
+              "ui": 0,
+              "ajax": 0,
+              "placeholder": "",
+              "create_options": 0,
+              "save_options": 0
+            },
+            {
+              "key": "field_borgodasso_pb_mb_image_layout",
+              "label": "Image width",
+              "name": "image_layout",
+              "aria-label": "",
+              "type": "select",
+              "instructions": "Desktop layout only.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "choices": {
+                "edge": "Span 7 columns, bleed to viewport edge",
+                "container": "Span 7 columns inside container"
+              },
+              "default_value": "edge",
+              "return_format": "value",
+              "multiple": 0,
+              "allow_null": 0,
+              "allow_in_bindings": 1,
+              "ui": 0,
+              "ajax": 0,
+              "placeholder": "",
+              "create_options": 0,
+              "save_options": 0
+            },
+            {
+              "key": "field_borgodasso_pb_mb_acc_mobile",
+              "label": "Mobile image",
+              "name": "",
+              "aria-label": "",
+              "type": "accordion",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "open": 1,
+              "multi_expand": 1,
+              "endpoint": 0
+            },
+            {
+              "key": "field_borgodasso_pb_mb_image_mobile",
+              "label": "Image (mobile)",
+              "name": "image_mobile",
+              "aria-label": "",
+              "type": "image",
+              "instructions": "Optional. Used below 768px; falls back to desktop image.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "id",
+              "library": "all",
+              "min_width": "",
+              "min_height": "",
+              "min_size": "",
+              "max_width": "",
+              "max_height": "",
+              "max_size": "",
+              "mime_types": "",
+              "allow_in_bindings": 1,
+              "preview_size": "medium"
+            },
+            {
+              "key": "field_borgodasso_pb_mb_mobile_image_position",
+              "label": "Mobile image position",
+              "name": "mobile_image_position",
+              "aria-label": "",
+              "type": "select",
+              "instructions": "Above or below the text on mobile.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "choices": {
+                "above": "Above content",
+                "below": "Below content"
+              },
+              "default_value": "above",
+              "return_format": "value",
+              "multiple": 0,
+              "allow_null": 0,
+              "allow_in_bindings": 1,
+              "ui": 0,
+              "ajax": 0,
+              "placeholder": "",
+              "create_options": 0,
+              "save_options": 0
+            },
+            {
+              "key": "field_borgodasso_pb_mb_acc_end",
+              "label": "",
+              "name": "",
+              "aria-label": "",
+              "type": "accordion",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "open": 0,
+              "multi_expand": 0,
+              "endpoint": 1
+            }
+          ],
+          "min": "",
+          "max": ""
+        },
+        "layout_borgodasso_pb_story_mosaic": {
+          "key": "layout_borgodasso_pb_story_mosaic",
+          "name": "story_mosaic",
+          "label": "Story mosaic",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_borgodasso_pb_sm_text",
+              "label": "Text",
+              "name": "text",
+              "aria-label": "",
+              "type": "textarea",
+              "instructions": "",
+              "required": 1,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "rows": 6,
+              "new_lines": "wpautop",
+              "default_value": "",
+              "maxlength": "",
+              "placeholder": ""
+            },
+            {
+              "key": "field_borgodasso_pb_sm_image_left_top",
+              "label": "Left image (top)",
+              "name": "image_left_top",
+              "aria-label": "",
+              "type": "image",
+              "instructions": "Landscape crop. Set alt text in the Media Library.",
+              "required": 1,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "id",
+              "preview_size": "medium",
+              "library": "all",
+              "min_width": 0,
+              "min_height": 0,
+              "min_size": 0,
+              "max_width": 0,
+              "max_height": 0,
+              "max_size": 0,
+              "mime_types": ""
+            },
+            {
+              "key": "field_borgodasso_pb_sm_image_left_bottom",
+              "label": "Left image (bottom)",
+              "name": "image_left_bottom",
+              "aria-label": "",
+              "type": "image",
+              "instructions": "Landscape crop. Set alt text in the Media Library.",
+              "required": 1,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "id",
+              "preview_size": "medium",
+              "library": "all",
+              "min_width": 0,
+              "min_height": 0,
+              "min_size": 0,
+              "max_width": 0,
+              "max_height": 0,
+              "max_size": 0,
+              "mime_types": ""
+            },
+            {
+              "key": "field_borgodasso_pb_sm_image_right",
+              "label": "Right image",
+              "name": "image_right",
+              "aria-label": "",
+              "type": "image",
+              "instructions": "Portrait crop. Include any numeral in the artwork itself.",
+              "required": 1,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "id",
+              "preview_size": "medium",
+              "library": "all",
+              "min_width": 0,
+              "min_height": 0,
+              "min_size": 0,
+              "max_width": 0,
+              "max_height": 0,
+              "max_size": 0,
+              "mime_types": ""
+            }
+          ],
+          "min": "",
+          "max": ""
+        },
+        "layout_borgodasso_pb_media_gallery": {
+          "key": "layout_borgodasso_pb_media_gallery",
+          "name": "media_gallery",
+          "label": "Media gallery",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_borgodasso_pb_mg_images",
+              "label": "Images",
+              "name": "images",
+              "aria-label": "",
+              "type": "gallery",
+              "instructions": "Centered slider. Images keep their aspect ratio at the selected height.",
+              "required": 1,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "id",
+              "preview_size": "medium",
+              "insert": "append",
+              "library": "all",
+              "min": 2,
+              "max": 0,
+              "min_width": 0,
+              "min_height": 0,
+              "min_size": 0,
+              "max_width": 0,
+              "max_height": 0,
+              "max_size": 0,
+              "mime_types": ""
+            },
+            {
+              "key": "field_borgodasso_pb_mg_height",
+              "label": "Image height",
+              "name": "height",
+              "aria-label": "",
+              "type": "select",
+              "instructions": "",
+              "required": 1,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "choices": {
+                "660": "660px",
+                "595": "595px",
+                "758": "758px"
+              },
+              "default_value": 660,
+              "return_format": "value",
+              "multiple": 0,
+              "allow_null": 0,
+              "allow_in_bindings": 1,
+              "ui": 0,
+              "ajax": 0,
+              "placeholder": "",
+              "create_options": 0,
+              "save_options": 0
+            },
+            {
+              "key": "field_borgodasso_pb_mg_pagination",
+              "label": "Pagination",
+              "name": "pagination",
+              "aria-label": "",
+              "type": "select",
+              "instructions": "Typical pairings: 660 + none, 595 + numbers, 758 + counter.",
+              "required": 1,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+              },
+              "choices": {
+                "none": "None (arrows only)",
+                "numbers": "Number list (01, 02, …)",
+                "counter": "Counter (01\/12)"
+              },
+              "default_value": "none",
+              "return_format": "value",
+              "multiple": 0,
+              "allow_null": 0,
+              "allow_in_bindings": 1,
+              "ui": 0,
+              "ajax": 0,
+              "placeholder": "",
+              "create_options": 0,
+              "save_options": 0
+            }
+          ],
+          "min": "",
+          "max": ""
+        },
+        "layout_borgodasso_pb_card_list": {
+          "key": "layout_borgodasso_pb_card_list",
+          "name": "card_list",
+          "label": "Card list",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_borgodasso_pb_card_list_cards",
+              "label": "Cards",
+              "name": "cards",
+              "aria-label": "",
+              "type": "repeater",
+              "instructions": "Three cards per row on desktop. Image 445×298 recommended.",
+              "required": 1,
+              "conditional_logic": false,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "layout": "block",
+              "pagination": 0,
+              "min": 1,
+              "max": 0,
+              "collapsed": "field_borgodasso_pb_card_list_title",
+              "button_label": "Add card",
+              "rows_per_page": 20,
+              "sub_fields": [
+                {
+                  "key": "field_borgodasso_pb_card_list_image",
+                  "label": "Image",
+                  "name": "image",
+                  "aria-label": "",
+                  "type": "image",
+                  "instructions": "445×298 recommended.",
+                  "required": 1,
+                  "conditional_logic": false,
+                  "wrapper": {
+                    "width": "30",
+                    "class": "",
+                    "id": ""
+                  },
+                  "return_format": "id",
+                  "library": "all",
+                  "min_width": "",
+                  "min_height": "",
+                  "min_size": "",
+                  "max_width": "",
+                  "max_height": "",
+                  "max_size": "",
+                  "mime_types": "",
+                  "allow_in_bindings": 1,
+                  "preview_size": "medium",
+                  "parent_repeater": "field_borgodasso_pb_card_list_cards"
+                },
+                {
+                  "key": "field_borgodasso_pb_card_list_title",
+                  "label": "Title",
+                  "name": "title",
+                  "aria-label": "",
+                  "type": "text",
+                  "instructions": "",
+                  "required": 1,
+                  "conditional_logic": false,
+                  "wrapper": {
+                    "width": "70",
+                    "class": "",
+                    "id": ""
+                  },
+                  "default_value": "",
+                  "maxlength": "",
+                  "placeholder": "",
+                  "prepend": "",
+                  "append": "",
+                  "parent_repeater": "field_borgodasso_pb_card_list_cards"
+                },
+                {
+                  "key": "field_borgodasso_pb_card_list_description",
+                  "label": "Description",
+                  "name": "description",
+                  "aria-label": "",
+                  "type": "textarea",
+                  "instructions": "",
+                  "required": 0,
+                  "conditional_logic": false,
+                  "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                  },
+                  "default_value": "",
+                  "maxlength": "",
+                  "rows": 4,
+                  "placeholder": "",
+                  "new_lines": "wpautop",
+                  "parent_repeater": "field_borgodasso_pb_card_list_cards"
+                }
+              ]
+            }
+          ],
+          "min": "",
+          "max": ""
+        }
+      },
+      "min": "",
+      "max": ""
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "page"
+      },
+      {
+        "param": "page_type",
+        "operator": "!=",
+        "value": "front_page"
+      },
+      {
+        "param": "page_template",
+        "operator": "!=",
+        "value": "page-templates\/casa.php"
+      },
+      {
+        "param": "page_template",
+        "operator": "!=",
+        "value": "page-templates\/contact.php"
+      },
+      {
+        "param": "page_template",
+        "operator": "!=",
+        "value": "page-templates\/legal-drinking-age.php"
+      }
+    ]
+  ],
+  "menu_order": 5,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "",
+  "show_in_rest": 0,
+  "display_title": "",
+  "allow_ai_access": false,
+  "ai_description": "",
+  "modified": 1792095367
+}

@@ -1,0 +1,19 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/mixins' as *;
+@use '../abstracts/text-styles' as text;
+
+.text-block {
+  &__inner {
+    @include site-contained;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    max-width: var(--container-4xl);
+  }
+}
+
+.text-block--center .text-block__inner {
+  text-align: center;
+}

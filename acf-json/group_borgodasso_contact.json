@@ -1,0 +1,169 @@
+{
+  "key": "group_borgodasso_contact",
+  "title": "Contact",
+  "fields": [
+    {
+      "key": "field_borgodasso_contact_blocks_note",
+      "label": "Info blocks",
+      "name": "",
+      "aria-label": "",
+      "type": "message",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "message": "Background and optional page title come from the <strong>Page header</strong> fields above — enable it, choose <strong>Full screen</strong>, and set desktop + mobile images. Leave Header title empty to hide the title. These three blocks (max 236px each) sit centered over that image.",
+      "new_lines": "wpautop",
+      "esc_html": 0
+    },
+    {
+      "key": "field_borgodasso_contact_block_1_title",
+      "label": "Block 1 — Title",
+      "name": "contact_block_1_title",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "40",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "Borgo d’Asso",
+      "maxlength": "",
+      "placeholder": "Borgo d’Asso",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_contact_block_1_content",
+      "label": "Block 1 — Content",
+      "name": "contact_block_1_content",
+      "aria-label": "",
+      "type": "wysiwyg",
+      "instructions": "Links and basic formatting (bold, italic, underline).",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "60",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "allow_in_bindings": 1,
+      "tabs": "visual",
+      "toolbar": "basic",
+      "media_upload": 0,
+      "delay": 0
+    },
+    {
+      "key": "field_borgodasso_contact_block_2_title",
+      "label": "Block 2 — Title",
+      "name": "contact_block_2_title",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "40",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "Contatti",
+      "maxlength": "",
+      "placeholder": "Contatti",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_contact_block_2_content",
+      "label": "Block 2 — Content",
+      "name": "contact_block_2_content",
+      "aria-label": "",
+      "type": "wysiwyg",
+      "instructions": "Links and basic formatting (bold, italic, underline).",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "60",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "allow_in_bindings": 1,
+      "tabs": "visual",
+      "toolbar": "basic",
+      "media_upload": 0,
+      "delay": 0
+    },
+    {
+      "key": "field_borgodasso_contact_block_3_title",
+      "label": "Block 3 — Title",
+      "name": "contact_block_3_title",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "40",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "Cantina Ser’Enzo",
+      "maxlength": "",
+      "placeholder": "Cantina Ser’Enzo",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_contact_block_3_content",
+      "label": "Block 3 — Content",
+      "name": "contact_block_3_content",
+      "aria-label": "",
+      "type": "wysiwyg",
+      "instructions": "Links and basic formatting (bold, italic, underline).",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "60",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "allow_in_bindings": 1,
+      "tabs": "visual",
+      "toolbar": "basic",
+      "media_upload": 0,
+      "delay": 0
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "page_template",
+        "operator": "==",
+        "value": "page-templates/contact.php"
+      }
+    ]
+  ],
+  "menu_order": 1,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": ["the_content"],
+  "active": true,
+  "description": "Three centered info blocks for the Contact template. Background and optional title come from Page header (Full screen).",
+  "show_in_rest": 0,
+  "display_title": "",
+  "allow_ai_access": false,
+  "ai_description": "",
+  "modified": 1788467737
+}

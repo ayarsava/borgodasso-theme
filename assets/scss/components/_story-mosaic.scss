@@ -1,0 +1,133 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+$mosaic-media-ease: cubic-bezier(0.19, 1, 0.22, 1);
+$mosaic-media-duration: 2s;
+
+.story-mosaic {
+  overflow-x: clip;
+  background-color: $color-background;
+
+  &__inner {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: stretch;
+
+    // Full-viewport 12-col track:
+    // col 1 = left edge, col 12 = right edge.
+    @include media-down(lg) {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-m);
+    }
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: column;
+    grid-column: 1 / span 7;
+    gap: var(--space-4xl);
+    min-width: 0;
+
+    // Flatten into the parent grid so items can be reordered across columns.
+    @include media-down(lg) {
+      display: contents;
+    }
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    grid-column: 9 / span 4;
+    gap: var(--space-m);
+    min-width: 0;
+    min-height: 0;
+
+    @include media-down(lg) {
+      display: contents;
+    }
+  }
+
+  &__content {
+    color: $color-text;
+    max-width: 28rem;
+
+    // Text stays inside the 4-col track,
+    // with a slight inset from the screen edge.
+    @include media-up(lg) {
+      padding-inline-end: var(--space-m);
+    }
+
+    @include media-down(lg) {
+      order: 2;
+      padding-inline: var(--space-m);
+    }
+
+    p {
+      margin: 0 0 1em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__media {
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+
+    &--left-bottom {
+      @include media-down(lg) {
+        order: 1;
+      }
+    }
+
+    &--left-top {
+      @include media-down(lg) {
+        order: 3;
+      }
+    }
+
+    &--right {
+      @include media-up(lg) {
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: 0;
+      }
+
+      @include media-down(lg) {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html.js &:not(.is-visible) {
+        opacity: 0;
+        transform: scale(1.04);
+      }
+
+      html.js &.is-visible {
+        opacity: 1;
+        transform: scale(1);
+        transition:
+          opacity $mosaic-media-duration $mosaic-media-ease,
+          transform $mosaic-media-duration $mosaic-media-ease;
+      }
+    }
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+
+    .story-mosaic__media--right & {
+      @include media-up(lg) {
+        height: 100%;
+      }
+    }
+  }
+}

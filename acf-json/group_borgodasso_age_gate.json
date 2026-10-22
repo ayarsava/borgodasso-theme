@@ -1,0 +1,140 @@
+{
+  "key": "group_borgodasso_age_gate",
+  "title": "Legal Drinking Age",
+  "fields": [
+    {
+      "key": "field_borgodasso_age_gate_background",
+      "label": "Background image",
+      "name": "age_gate_background",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Full-bleed desktop background. Set alt text in the Media Library if needed for accessibility elsewhere; decorative here.",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_age_gate_background_mobile",
+      "label": "Background image (mobile)",
+      "name": "age_gate_background_mobile",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Optional. Falls back to the desktop image when empty.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_borgodasso_age_gate_question",
+      "label": "Question",
+      "name": "age_gate_question",
+      "aria-label": "",
+      "type": "textarea",
+      "instructions": "Shown in the cream panel above the Yes / No buttons.",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "Hai l’età legale per bere nel tuo Paese?",
+      "maxlength": "",
+      "rows": 3,
+      "placeholder": "Hai l’età legale per bere nel tuo Paese?",
+      "new_lines": ""
+    },
+    {
+      "key": "field_borgodasso_age_gate_yes_label",
+      "label": "Yes button label",
+      "name": "age_gate_yes_label",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "Continues to the shop (or the page the visitor was trying to open).",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "SÌ",
+      "maxlength": "",
+      "placeholder": "SÌ",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_borgodasso_age_gate_no_label",
+      "label": "No button label",
+      "name": "age_gate_no_label",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "Sends the visitor back to the homepage.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "NO",
+      "maxlength": "",
+      "placeholder": "NO",
+      "prepend": "",
+      "append": ""
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "page_template",
+        "operator": "==",
+        "value": "page-templates/legal-drinking-age.php"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": ["the_content"],
+  "active": true,
+  "description": "Background and Yes/No copy for the Legal Drinking Age Page template. Required before WooCommerce (shop, products, cart, checkout).",
+  "show_in_rest": 0,
+  "display_title": "",
+  "allow_ai_access": false,
+  "ai_description": "",
+  "modified": 1792094668
+}

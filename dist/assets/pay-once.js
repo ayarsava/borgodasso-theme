@@ -1,0 +1,1 @@
+function a(t){t.setAttribute("aria-disabled","true"),t.classList.add("is-disabled")}function i(){document.querySelectorAll("a[data-pay-once]").forEach(t=>{t.addEventListener("click",e=>{if(t.getAttribute("aria-disabled")==="true"){e.preventDefault(),e.stopPropagation();return}a(t)})})}export{i as initPayOnce};

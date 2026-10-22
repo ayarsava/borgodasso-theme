@@ -1,0 +1,162 @@
+@use 'sass:map';
+@use 'sass:string';
+@use 'variables' as *;
+
+// Site grid column spans (within the 12-column track).
+$site-grid-content-cols: 5;
+$site-grid-media-cols: 7;
+$site-grid-content-start: 2; // column 1 is the inline gutter (bleed-right / contained).
+$site-grid-media-start: $site-grid-content-start + $site-grid-content-cols;
+$site-grid-content-left-start: $site-grid-content-start + $site-grid-media-cols;
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/// Resolve a named breakpoint to its px value.
+@function breakpoint($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error 'Unknown breakpoint `#{$name}`. Use: #{map.keys($breakpoints)}.';
+  }
+
+  @return map.get($breakpoints, $name);
+}
+
+/// min-width: breakpoint (inclusive).
+@mixin media-up($name) {
+  @media (min-width: #{breakpoint($name)}) {
+    @content;
+  }
+}
+
+/// max-width: breakpoint - 1px (below that breakpoint).
+@mixin media-down($name) {
+  @media (max-width: #{breakpoint($name) - 1px}) {
+    @content;
+  }
+}
+
+/// Centered contained shell — 8xl max width with 40px inline padding.
+@mixin site-contained {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--site-max-width);
+  margin-inline: auto;
+  padding-inline: var(--site-inline-margin);
+}
+
+/// Alias — same as site-contained.
+@mixin site-container {
+  @include site-contained;
+}
+
+/// Full-width shell with 40px inline padding (header, footer).
+@mixin site-shell-inline {
+  padding-inline: var(--site-inline-margin);
+}
+
+/// Inline-start gutter aligning with the 8xl column (min 40px).
+@mixin site-align-gutter {
+  --site-gutter: max(var(--site-inline-margin), (100vw - var(--site-max-width)) / 2);
+}
+
+/// One column width inside the 12-column track.
+@function site-grid-col() {
+  @return string.unquote(
+    'minmax(0, calc(min(100vw - var(--site-gutter), var(--site-max-width)) / 12))'
+  );
+}
+
+/// Full-viewport 12-col grid (no site-max-width cap): margin | 12 cols | bleed.
+@mixin site-grid-12-viewport-bleed-right {
+  grid-template-columns: var(--site-inline-margin) repeat(12, minmax(0, 1fr)) minmax(0, 1fr);
+}
+
+/// Page header content — cols 1–5 of the 12-col track.
+@mixin site-grid-page-header-content {
+  grid-column: 2 / span 5;
+}
+
+/// Page header media — col 6 through viewport end (cols 6–12 + bleed).
+@mixin site-grid-page-header-media {
+  grid-column: 7 / -1;
+}
+
+/// 12-column site grid: gutter | 12 cols | gutter (fully contained).
+@mixin site-grid-12-contained {
+  @include site-align-gutter;
+
+  grid-template-columns: var(--site-gutter) repeat(12, #{site-grid-col()}) var(--site-gutter);
+}
+
+/// 12-column site grid: gutter | 12 cols | bleed to viewport end.
+@mixin site-grid-12-bleed-right {
+  @include site-align-gutter;
+
+  grid-template-columns: var(--site-gutter) repeat(12, #{site-grid-col()}) minmax(0, 1fr);
+}
+
+/// 12-column site grid: bleed from viewport start | 12 cols | gutter.
+@mixin site-grid-12-bleed-left {
+  @include site-align-gutter;
+
+  grid-template-columns: minmax(0, 1fr) repeat(12, #{site-grid-col()}) var(--site-gutter);
+}
+
+/// Content column placement (5/12) on bleed-right or contained grids.
+@mixin site-grid-content-right {
+  grid-column: #{$site-grid-content-start} / span #{$site-grid-content-cols};
+}
+
+/// Media column placement (7/12) on bleed-right grids.
+@mixin site-grid-media-bleed-right {
+  grid-column: #{$site-grid-media-start} / -1;
+}
+
+/// Media column placement (7/12) on bleed-left grids.
+@mixin site-grid-media-bleed-left {
+  grid-column: 2 / span #{$site-grid-media-cols};
+}
+
+/// Content column placement (5/12) on bleed-left or contained image-left grids.
+@mixin site-grid-content-left {
+  grid-column: #{$site-grid-content-left-start} / span #{$site-grid-content-cols};
+}
+
+/// Media column placement (7/12) inside a contained grid.
+@mixin site-grid-media-contained-right {
+  grid-column: #{$site-grid-media-start} / span #{$site-grid-media-cols};
+}
+
+/// Media column placement (7/12) inside a contained grid (image left).
+@mixin site-grid-media-contained-left {
+  grid-column: #{$site-grid-content-start} / span #{$site-grid-media-cols};
+}
+
+$space-1: 1rem;
+$space-2: 2rem;
+$space-3: 3rem;
+$space-4: 4rem;
+$space-5: 5rem;
+$space-6: 6rem;
+$space-10: 10rem;
+$space-13: 13rem;
+
+:root {
+  --space-1: #{$space-1};
+  --space-2: #{$space-2};
+  --space-3: #{$space-3};
+  --space-4: #{$space-4};
+  --space-5: #{$space-5};
+  --space-6: #{$space-6};
+  --space-10: #{$space-10};
+  --space-13: #{$space-13};
+}

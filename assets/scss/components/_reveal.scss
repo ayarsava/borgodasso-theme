@@ -1,0 +1,20 @@
+@use '../abstracts/variables' as *;
+
+$reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+$reveal-duration: 1.05s;
+$reveal-offset: 1.25rem;
+
+.reveal {
+  @media (prefers-reduced-motion: no-preference) {
+    opacity: 0;
+    transform: translate3d(0, $reveal-offset, 0);
+    transition:
+      opacity $reveal-duration $reveal-ease,
+      transform $reveal-duration $reveal-ease;
+  }
+
+  &.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}

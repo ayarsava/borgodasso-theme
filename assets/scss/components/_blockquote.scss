@@ -1,0 +1,24 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.blockquote {
+  &__inner {
+    @include site-contained;
+  }
+
+  &__quote {
+    margin: 0;
+    text-align: center;
+
+    @include media-down(lg) {
+      font-size: 1.6875rem;
+      text-align: left;
+    }
+  }
+
+  &__source {
+    margin: var(--space-m) 0 0;
+    font-style: normal;
+    color: $color-muted;
+  }
+}

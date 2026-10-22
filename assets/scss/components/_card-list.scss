@@ -1,0 +1,105 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/text-styles' as text;
+@use '../abstracts/mixins' as *;
+
+$card-reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+$card-reveal-duration: 0.9s;
+$card-reveal-offset: 1rem;
+$card-reveal-stagger: 0.1s;
+
+.card-list {
+  // Section-level reveal stays a trigger; motion is on each card.
+  &.reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  &__inner {
+    @include site-contained;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: rem(192) rem(42);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include media-down(lg) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: var(--space-3xl);
+    }
+
+    @include media-down(md) {
+      grid-template-columns: 1fr;
+      row-gap: var(--space-2xl);
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    @media (prefers-reduced-motion: no-preference) {
+      // Hide as soon as JS boots — do not wait for initReveal() after page-header.
+      html.js .card-list:not(.is-visible) & {
+        opacity: 0;
+        transform: translate3d(0, $card-reveal-offset, 0);
+      }
+
+      html.js .card-list.is-visible & {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        transition:
+          opacity $card-reveal-duration $card-reveal-ease,
+          transform $card-reveal-duration $card-reveal-ease;
+      }
+
+      @for $i from 1 through 12 {
+        html.js .card-list.is-visible &:nth-child(#{$i}) {
+          transition-delay: #{($i - 1) * $card-reveal-stagger};
+        }
+      }
+    }
+  }
+
+  &__figure {
+    margin: 0;
+    overflow: hidden;
+    aspect-ratio: 445 / 298;
+    margin-bottom: var(--space-m);
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__title {
+    @include text.text-h4;
+
+    margin: 0;
+    color: $color-black;
+    margin-bottom: var(--space-s);
+  }
+
+  &__description {
+    @include text.text-body;
+
+    color: $color-black;
+
+    p {
+      margin: 0 0 1em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
