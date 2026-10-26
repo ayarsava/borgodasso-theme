@@ -1052,6 +1052,11 @@
         "param": "page_template",
         "operator": "!=",
         "value": "page-templates\/legal-drinking-age.php"
+      },
+      {
+        "param": "page_template",
+        "operator": "!=",
+        "value": "page-templates\/homage.php"
       }
     ]
   ],
@@ -1067,5 +1072,5 @@
   "display_title": "",
   "allow_ai_access": false,
   "ai_description": "",
-  "modified": 1792095367
+  "modified": 1793022900
 }

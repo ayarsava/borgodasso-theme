@@ -93,6 +93,13 @@
   "location": [
     [
       {
+        "param": "page_template",
+        "operator": "==",
+        "value": "page-templates\/homage.php"
+      }
+    ],
+    [
+      {
         "param": "page_type",
         "operator": "==",
         "value": "front_page"
@@ -111,5 +118,5 @@
   "display_title": "",
   "allow_ai_access": false,
   "ai_description": "",
-  "modified": 1788359046
+  "modified": 1793022900
 }
