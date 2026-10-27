@@ -52,15 +52,17 @@ if ( empty( $panels ) ) {
 					continue;
 				}
 
-				$image_id        = isset( $panel['image'] ) ? (int) $panel['image'] : null;
-				$image_mobile_id = isset( $panel['image_mobile'] ) ? (int) $panel['image_mobile'] : null;
+				$image_id        = isset( $panel['image'] ) ? (int) $panel['image'] : 0;
+				$image_mobile_id = isset( $panel['image_mobile'] ) ? (int) $panel['image_mobile'] : 0;
 				$is_first        = 0 === $index;
 				$desktop_src     = $image_id ? wp_get_attachment_image_url( $image_id, 'full' ) : '';
 				$mobile_src      = $image_mobile_id ? wp_get_attachment_image_url( $image_mobile_id, 'large' ) : $desktop_src;
+				$blur_id         = $image_id > 0 ? $image_id : $image_mobile_id;
 				?>
 				<div class="swiper-slide home-panel">
 					<div class="home-panel__media" aria-hidden="true">
 						<?php if ( $desktop_src || $mobile_src ) : ?>
+							<?php $blur_open = borgodasso_blur_up_open( $blur_id ); ?>
 							<picture class="home-panel__picture">
 								<?php if ( $mobile_src && $mobile_src !== $desktop_src ) : ?>
 									<source media="(max-width: 767px)" srcset="<?php echo esc_url( $mobile_src ); ?>">
@@ -83,6 +85,7 @@ if ( empty( $panels ) ) {
 									>
 								<?php endif; ?>
 							</picture>
+							<?php borgodasso_blur_up_close( $blur_open ); ?>
 						<?php endif; ?>
 					</div>
 					<div class="home-panel__overlay" aria-hidden="true"></div>

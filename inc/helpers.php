@@ -303,6 +303,8 @@ function borgodasso_page_header_picture(
 		return;
 	}
 
+	$blur_open = borgodasso_blur_up_open( $desktop_id );
+
 	echo '<picture class="page-header__picture">';
 
 	if ( $mobile_id > 0 ) {
@@ -335,6 +337,7 @@ function borgodasso_page_header_picture(
 	);
 
 	echo '</picture>';
+	borgodasso_blur_up_close( $blur_open );
 }
 
 /**

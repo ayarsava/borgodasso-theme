@@ -680,7 +680,7 @@ $product-info-panel-duration-close: 0.95s;
 }
 
 .shop-catalog {
-  padding-block: var(--space-3xl) var(--space-4xl);
+  padding: 0 var(--space-3xl) var(--space-4xl);
   background-color: $color-background;
   color: $color-black;
 

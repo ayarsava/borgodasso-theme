@@ -49,7 +49,7 @@ function buildNumberPagination(el: HTMLElement, count: number): void {
  */
 function waitForImages(viewport: HTMLElement): Promise<void> {
   const images = Array.from(viewport.querySelectorAll('img')).filter(
-    (img) => img.loading !== 'lazy' || img.complete,
+    (img) => !img.classList.contains('blur-up__preview') && (img.loading !== 'lazy' || img.complete),
   );
 
   if (images.length === 0) {

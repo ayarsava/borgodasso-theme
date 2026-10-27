@@ -34,6 +34,7 @@ $mobile_src      = wp_get_attachment_image_src( $image_mobile_id, 'full' );
 	aria-label="<?php echo esc_attr__( 'Contact', 'borgodasso' ); ?>"
 	<?php endif; ?>>
 	<div class="contact__media" aria-hidden="true">
+		<?php $blur_open = borgodasso_blur_up_open( $image_id ); ?>
 		<picture class="contact__picture">
 			<?php if ( is_array( $mobile_src ) ) : ?>
 				<source
@@ -57,6 +58,7 @@ $mobile_src      = wp_get_attachment_image_src( $image_mobile_id, 'full' );
 			);
 			?>
 		</picture>
+		<?php borgodasso_blur_up_close( $blur_open ); ?>
 	</div>
 
 	<div class="contact__content">

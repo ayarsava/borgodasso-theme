@@ -2,10 +2,12 @@
  * Theme entry. Page modules load on demand (keeps GSAP off shop/checkout).
  */
 import '../scss/main.scss';
+import { initBlurUp } from './modules/blur-up';
 import { initPageTransition } from './modules/page-transition';
 import { initReveal, prepareReveal } from './modules/reveal';
 
 document.documentElement.classList.add('js');
+initBlurUp(document.body);
 prepareReveal();
 initPageTransition();
 

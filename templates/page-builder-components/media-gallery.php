@@ -63,6 +63,7 @@ $show_pagination  = 'none' !== $pagination;
 					<div class="media-gallery__slide">
 						<figure class="media-gallery__media">
 							<?php
+							$blur_open = borgodasso_blur_up_open( $image_id );
 							echo wp_get_attachment_image(
 								$image_id,
 								'borgodasso_gallery',
@@ -75,6 +76,7 @@ $show_pagination  = 'none' !== $pagination;
 									'sizes'    => '(min-width: 768px) 440px, 70vw',
 								)
 							);
+							borgodasso_blur_up_close( $blur_open );
 							?>
 						</figure>
 					</div>

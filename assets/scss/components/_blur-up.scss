@@ -1,0 +1,67 @@
+// Tiny inline preview under a slow image. The real image fades in once it loads.
+// Without JS the real image stays visible; the preview is only a backdrop.
+
+.blur-up {
+  position: relative;
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.blur-up__preview {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  filter: blur(20px);
+  transform: scale(1.15);
+}
+
+.media-gallery__media > .blur-up {
+  width: max-content;
+  max-width: none;
+  height: 100%;
+}
+
+.page-header__figure > .blur-up,
+.page-header--hero .page-header__media > .blur-up,
+.home-panel__media > .blur-up,
+.contact__media > .blur-up {
+  width: 100%;
+  height: 100%;
+}
+
+.page-header__figure > .blur-up .page-header__picture,
+.page-header--hero .page-header__media > .blur-up .page-header__picture,
+.home-panel__media > .blur-up .home-panel__picture,
+.contact__media > .blur-up .contact__picture {
+  height: 100%;
+}
+
+html.js .blur-up > :not(.blur-up__preview) {
+  position: relative;
+  z-index: 1;
+}
+
+html.js .blur-up:not(.is-loaded) > :not(.blur-up__preview) {
+  opacity: 0;
+}
+
+html.js .blur-up.is-loaded .blur-up__preview {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js .blur-up > :not(.blur-up__preview),
+  html.js .blur-up .blur-up__preview {
+    transition: opacity 0.7s ease;
+  }
+
+  html.js .blur-up.is-loaded .blur-up__preview {
+    transition-delay: 0.12s;
+  }
+}

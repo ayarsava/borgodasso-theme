@@ -17,6 +17,7 @@ define( 'BORGODASSO_URI', get_template_directory_uri() );
 
 require_once BORGODASSO_DIR . '/inc/templates.php';
 require_once BORGODASSO_DIR . '/inc/helpers.php';
+require_once BORGODASSO_DIR . '/inc/blur-up.php';
 require_once BORGODASSO_DIR . '/inc/setup.php';
 require_once BORGODASSO_DIR . '/inc/enqueue.php';
 require_once BORGODASSO_DIR . '/inc/acf.php';
