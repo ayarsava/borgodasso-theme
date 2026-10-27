@@ -218,9 +218,13 @@ function borgodasso_product_formato_display( $product = null ): string {
 		return '';
 	}
 
-	if ( $product->is_type( 'variable' ) && $product instanceof WC_Product_Variable ) {
-		$attributes = $product->get_variation_attributes();
-		if ( isset( $attributes['pa_formato'] ) || isset( $attributes['attribute_pa_formato'] ) ) {
+	foreach ( $product->get_attributes() as $attribute ) {
+		if ( ! $attribute instanceof WC_Product_Attribute ) {
+			continue;
+		}
+
+		$name = $attribute->get_name();
+		if ( 'pa_formato' === $name || 'formato' === $name ) {
 			return '';
 		}
 	}
@@ -233,6 +237,61 @@ function borgodasso_product_formato_display( $product = null ): string {
 	}
 
 	return '';
+}
+
+/**
+ * Visible attribute rows for a simple product (label + term names).
+ *
+ * Single-value attributes use the same static PDP rows as a variable product
+ * with one option. Multiple terms are listed together.
+ *
+ * @param WC_Product $product Product.
+ * @return array<int, array{label: string, value: string}>
+ */
+function borgodasso_product_attribute_rows( WC_Product $product ): array {
+	$rows = array();
+
+	foreach ( $product->get_attributes() as $attribute ) {
+		if ( ! $attribute instanceof WC_Product_Attribute ) {
+			continue;
+		}
+
+		$options = $attribute->get_options();
+		if ( ! is_array( $options ) || array() === $options ) {
+			continue;
+		}
+
+		$name   = $attribute->get_name();
+		$labels = array();
+
+		if ( $attribute->is_taxonomy() ) {
+			foreach ( $options as $option ) {
+				$term = is_numeric( $option ) ? get_term( (int) $option, $name ) : get_term_by( 'slug', (string) $option, $name );
+				if ( $term instanceof WP_Term ) {
+					$labels[] = $term->name;
+				}
+			}
+		} else {
+			foreach ( $options as $option ) {
+				$option = trim( (string) $option );
+				if ( '' !== $option ) {
+					$labels[] = $option;
+				}
+			}
+		}
+
+		$labels = array_values( array_filter( $labels, static fn( string $label ): bool => '' !== trim( $label ) ) );
+		if ( array() === $labels ) {
+			continue;
+		}
+
+		$rows[] = array(
+			'label' => wc_attribute_label( $name ),
+			'value' => implode( ', ', $labels ),
+		);
+	}
+
+	return $rows;
 }
 
 /**

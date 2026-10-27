@@ -15,6 +15,7 @@ if ( ! $product->is_purchasable() ) {
 	return;
 }
 
+$attribute_rows = borgodasso_product_attribute_rows( $product );
 $formato_static = borgodasso_product_formato_display( $product );
 $price_label    = borgodasso_format_add_button_price( $product->get_price() );
 
@@ -25,14 +26,39 @@ if ( $product->is_in_stock() ) :
 	?>
 
 	<form class="cart product-pdp__form" action="<?php echo esc_url( apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() ) ); ?>" method="post" enctype="multipart/form-data">
-		<?php if ( '' !== $formato_static ) : ?>
-			<div class="product-pdp__options">
-				<div class="product-pdp__option product-pdp__option--static">
-					<div class="product-pdp__option-trigger" aria-hidden="true">
-						<span class="product-pdp__option-prefix"><?php echo esc_html( strtoupper( __( 'Formato', 'borgodasso' ) ) ); ?>:</span>
-						<span class="product-pdp__option-value"><?php echo esc_html( $formato_static ); ?></span>
+		<?php if ( array() !== $attribute_rows || '' !== $formato_static ) : ?>
+			<div class="product-pdp__options" role="group" aria-label="<?php esc_attr_e( 'Opzioni prodotto', 'borgodasso' ); ?>">
+				<?php foreach ( $attribute_rows as $row ) : ?>
+					<div class="product-pdp__option product-pdp__option--static product-pdp__option--single">
+						<div class="product-pdp__option-trigger" aria-hidden="true">
+							<span class="product-pdp__option-prefix"><?php echo esc_html( strtoupper( $row['label'] ) ); ?>:</span>
+							<span class="product-pdp__option-value"><?php echo esc_html( $row['value'] ); ?></span>
+						</div>
+						<span class="screen-reader-text">
+							<?php echo esc_html( $row['label'] . ': ' . $row['value'] ); ?>
+						</span>
 					</div>
-				</div>
+				<?php endforeach; ?>
+
+				<?php if ( '' !== $formato_static ) : ?>
+					<div class="product-pdp__option product-pdp__option--static">
+						<div class="product-pdp__option-trigger" aria-hidden="true">
+							<span class="product-pdp__option-prefix"><?php echo esc_html( strtoupper( __( 'Formato', 'borgodasso' ) ) ); ?>:</span>
+							<span class="product-pdp__option-value"><?php echo esc_html( $formato_static ); ?></span>
+						</div>
+						<span class="screen-reader-text">
+							<?php
+							echo esc_html(
+								sprintf(
+									/* translators: %s: bottle/pack size */
+									__( 'Formato: %s', 'borgodasso' ),
+									$formato_static
+								)
+							);
+							?>
+						</span>
+					</div>
+				<?php endif; ?>
 			</div>
 		<?php endif; ?>
 
