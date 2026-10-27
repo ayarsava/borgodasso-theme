@@ -31,6 +31,57 @@ $variations_attr = function_exists( 'wc_esc_json' ) ? wc_esc_json( $variations_j
 $formato_static  = borgodasso_product_formato_display( $product );
 
 /**
+ * Attribute values WooCommerce will show (priced, published variations).
+ *
+ * Variations with an empty price are omitted from `$available_variations`, but
+ * `get_variation_attributes()` still lists every term. Null when variation JSON
+ * is not inlined (above the ajax threshold) — the select sync in product-pdp.ts
+ * hides those options once WooCommerce loads them.
+ *
+ * @param array<int, array<string, mixed>>|false $available_variations Variations.
+ * @return array<string, array<string, true>>|null
+ */
+$borgodasso_visible_attribute_values = static function ( $available_variations ): ?array {
+	if ( ! is_array( $available_variations ) ) {
+		return null;
+	}
+
+	$visible = array();
+
+	foreach ( $available_variations as $variation ) {
+		if ( ! is_array( $variation ) ) {
+			continue;
+		}
+
+		$variation_attributes = $variation['attributes'] ?? null;
+		if ( ! is_array( $variation_attributes ) ) {
+			continue;
+		}
+
+		foreach ( $variation_attributes as $attribute_key => $attribute_value ) {
+			$attribute_key   = (string) $attribute_key;
+			$attribute_value = html_entity_decode( (string) $attribute_value, ENT_QUOTES, 'UTF-8' );
+
+			if ( ! isset( $visible[ $attribute_key ] ) ) {
+				$visible[ $attribute_key ] = array();
+			}
+
+			// An empty value matches any option of this attribute.
+			if ( '' === $attribute_value ) {
+				$visible[ $attribute_key ]['*'] = true;
+				continue;
+			}
+
+			$visible[ $attribute_key ][ $attribute_value ] = true;
+		}
+	}
+
+	return $visible;
+};
+
+$visible_attribute_values = $borgodasso_visible_attribute_values( $available_variations );
+
+/**
  * Resolve a variation option's display label.
  *
  * @param string     $option         Option slug/value.
@@ -72,11 +123,34 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 					$options = array();
 				}
 
+				$attribute_key = 'attribute_' . $attr_id;
+				if (
+					is_array( $visible_attribute_values )
+					&& isset( $visible_attribute_values[ $attribute_key ] )
+					&& empty( $visible_attribute_values[ $attribute_key ]['*'] )
+				) {
+					$allowed = $visible_attribute_values[ $attribute_key ];
+					$options = array_values(
+						array_filter(
+							$options,
+							static function ( $option ) use ( $allowed ): bool {
+								return isset( $allowed[ (string) $option ] );
+							}
+						)
+					);
+				}
+
+				// No priced variation uses this attribute — don't render an empty control.
+				if ( array() === $options ) {
+					continue;
+				}
+
 				// Still show Annata/Formato when only one value exists.
-				// When nothing is chosen yet, pre-select the first available option.
-				$is_single = 1 === count( $options );
-				if ( '' === (string) $selected && array() !== $options ) {
-					$selected = (string) reset( $options );
+				// When nothing valid is chosen yet, pre-select the first priced option.
+				$is_single     = 1 === count( $options );
+				$option_values = array_map( 'strval', $options );
+				if ( ! in_array( (string) $selected, $option_values, true ) ) {
+					$selected = (string) reset( $option_values );
 				}
 
 				$selected_label = '' !== (string) $selected

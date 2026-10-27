@@ -16,7 +16,7 @@
         "class": "",
         "id": ""
       },
-      "message": "Background and optional page title come from the <strong>Page header</strong> fields above — enable it, choose <strong>Full screen</strong>, and set desktop + mobile images. Leave Header title empty to hide the title. These three blocks (max 236px each) sit centered over that image.",
+      "message": "Background and optional page title come from the <strong>Page header<\/strong> fields above — enable it, choose <strong>Full screen<\/strong>, and set desktop + mobile images. Leave Header title empty to hide the title. These three blocks (max 236px each) sit centered over that image.",
       "new_lines": "wpautop",
       "esc_html": 0
     },
@@ -149,7 +149,7 @@
       {
         "param": "page_template",
         "operator": "==",
-        "value": "page-templates/contact.php"
+        "value": "page-templates\/contact.php"
       }
     ]
   ],
@@ -165,5 +165,5 @@
   "display_title": "",
   "allow_ai_access": false,
   "ai_description": "",
-  "modified": 1788467737
+  "modified": 1793114027
 }

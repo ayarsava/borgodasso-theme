@@ -161,17 +161,35 @@ function ensureFirstOptionSelected(select: HTMLSelectElement): void {
   select.dispatchEvent(new Event('change', { bubbles: true }));
 }
 
+function visibleSelectValues(select: HTMLSelectElement): Set<string> {
+  return new Set(
+    Array.from(select.options)
+      .map((option) => option.value)
+      .filter((value) => value !== ''),
+  );
+}
+
 function syncOptionFromSelect(
   select: HTMLSelectElement,
   valueEl: HTMLElement,
   choices: NodeListOf<HTMLButtonElement>,
 ): void {
   const selected = select.selectedIndex >= 0 ? select.options[select.selectedIndex] : null;
-  const label = selected?.textContent?.trim() ?? '';
+  const label = selected && selected.value !== '' ? (selected.textContent?.trim() ?? '') : '';
   valueEl.textContent = label;
 
+  // WooCommerce removes attribute options that belong only to variations with no price.
+  const available = visibleSelectValues(select);
+
   choices.forEach((choice) => {
-    const isSelected = choice.dataset.value === select.value && select.value !== '';
+    const value = choice.dataset.value ?? '';
+    const item = choice.closest<HTMLElement>('.product-pdp__option-item');
+    const visible = available.has(value);
+    if (item) {
+      item.hidden = !visible;
+    }
+
+    const isSelected = visible && value === select.value && select.value !== '';
     choice.classList.toggle('is-selected', isSelected);
     if (isSelected) {
       choice.setAttribute('aria-current', 'true');
