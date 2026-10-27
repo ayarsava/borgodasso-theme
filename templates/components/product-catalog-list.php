@@ -37,10 +37,24 @@ if ( array() === $products ) {
 		if ( '' === $image_alt ) {
 			$image_alt = $title;
 		}
+
+		$hover_id = 0;
+		foreach ( $catalog_product->get_gallery_image_ids() as $gallery_id ) {
+			$gallery_id = (int) $gallery_id;
+			if ( $gallery_id > 0 && $gallery_id !== $image_id ) {
+				$hover_id = $gallery_id;
+				break;
+			}
+		}
+
+		$media_class = 'product-card__media';
+		if ( $hover_id > 0 ) {
+			$media_class .= ' product-card__media--swap';
+		}
 		?>
 		<li class="product-catalog__item">
 			<a class="product-card" href="<?php echo esc_url( $permalink ); ?>">
-				<span class="product-card__media">
+				<span class="<?php echo esc_attr( $media_class ); ?>">
 					<?php if ( $image_id ) : ?>
 						<?php
 						echo wp_get_attachment_image(
@@ -64,6 +78,24 @@ if ( array() === $products ) {
 							loading="lazy"
 							decoding="async"
 						/>
+					<?php endif; ?>
+
+					<?php if ( $hover_id > 0 ) : ?>
+						<?php
+						echo wp_get_attachment_image(
+							$hover_id,
+							'large',
+							false,
+							array(
+								'class'       => 'product-card__img product-card__img--swap',
+								'alt'         => '',
+								'aria-hidden' => 'true',
+								'loading'     => 'lazy',
+								'decoding'    => 'async',
+								'sizes'       => '(min-width: 1024px) 25vw, 50vw',
+							)
+						);
+						?>
 					<?php endif; ?>
 				</span>
 
