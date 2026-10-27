@@ -1,6 +1,7 @@
 @use '../abstracts/variables' as *;
 @use '../abstracts/functions' as *;
 @use '../abstracts/text-styles' as text;
+@use '../abstracts/mixins' as *;
 
 .home {
   position: relative;
@@ -71,6 +72,28 @@
   &__actions-inner {
     will-change: opacity;
     pointer-events: auto;
+  }
+
+  @include media-down(md) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: rem(10);
+
+    .home-layer__content {
+      position: relative;
+      inset: auto;
+      display: block;
+      padding: 0 var(--space-m);
+    }
+
+    .home-layer__actions {
+      position: relative;
+      bottom: auto;
+      left: auto;
+      transform: none;
+    }
   }
 }
 
