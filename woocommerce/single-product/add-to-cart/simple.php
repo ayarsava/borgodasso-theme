@@ -87,8 +87,10 @@ if ( $product->is_in_stock() ) :
 				value="<?php echo esc_attr( $product->get_id() ); ?>"
 				class="single_add_to_cart_button button alt product-pdp__add<?php echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); ?>"
 				data-product-add
+				data-adding-label="<?php echo esc_attr__( 'Aggiunta in corso', 'borgodasso' ); ?>"
+				data-added-label="<?php echo esc_attr__( 'Aggiunto al carrello', 'borgodasso' ); ?>"
 			>
-				<span class="product-pdp__add-label"><?php echo esc_html( __( 'AGGIUNGI', 'borgodasso' ) ); ?></span>
+				<span class="product-pdp__add-label" aria-live="polite"><?php echo esc_html( __( 'AGGIUNGI', 'borgodasso' ) ); ?></span>
 				<?php if ( '' !== $price_label ) : ?>
 					<span class="product-pdp__add-sep" aria-hidden="true"> — </span>
 					<span class="product-pdp__add-price"><?php echo esc_html( $price_label ); ?></span>

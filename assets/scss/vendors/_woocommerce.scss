@@ -70,6 +70,27 @@
       opacity: 0.45;
       cursor: not-allowed;
     }
+
+    &.is-added:disabled {
+      opacity: 1;
+      cursor: default;
+    }
+
+    .product-pdp__add-label,
+    .product-pdp__add-sep,
+    .product-pdp__add-price {
+      @media (prefers-reduced-motion: no-preference) {
+        transition: opacity 0.32s ease;
+      }
+    }
+
+    &.is-restoring {
+      .product-pdp__add-label,
+      .product-pdp__add-sep,
+      .product-pdp__add-price {
+        opacity: 0;
+      }
+    }
   }
 
   .quantity,

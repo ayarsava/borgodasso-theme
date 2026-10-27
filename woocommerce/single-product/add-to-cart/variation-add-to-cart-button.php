@@ -36,9 +36,11 @@ $price_label = borgodasso_format_add_button_price( $product->get_price() );
 		type="submit"
 		class="single_add_to_cart_button button alt product-pdp__add<?php echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); ?>"
 		data-add-label="<?php echo esc_attr( __( 'AGGIUNGI', 'borgodasso' ) ); ?>"
+		data-adding-label="<?php echo esc_attr__( 'Aggiunta in corso', 'borgodasso' ); ?>"
+		data-added-label="<?php echo esc_attr__( 'Aggiunto al carrello', 'borgodasso' ); ?>"
 		data-product-add
 	>
-		<span class="product-pdp__add-label"><?php echo esc_html( __( 'AGGIUNGI', 'borgodasso' ) ); ?></span>
+		<span class="product-pdp__add-label" aria-live="polite"><?php echo esc_html( __( 'AGGIUNGI', 'borgodasso' ) ); ?></span>
 		<?php if ( '' !== $price_label ) : ?>
 			<span class="product-pdp__add-sep" aria-hidden="true"> — </span>
 			<span class="product-pdp__add-price" data-add-price><?php echo esc_html( $price_label ); ?></span>

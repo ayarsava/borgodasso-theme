@@ -296,6 +296,82 @@ function resolveAddToCartProductId(form: HTMLFormElement): number {
   return Number.parseInt(button, 10) || 0;
 }
 
+const ADDED_VISIBLE_MS = 2000;
+const RESTORE_FADE_MS = 320;
+
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
+function setAddButtonPhase(button: HTMLButtonElement, phase: 'adding' | 'added' | 'idle'): void {
+  const labelEl = button.querySelector<HTMLElement>('.product-pdp__add-label');
+  const sepEl = button.querySelector<HTMLElement>('.product-pdp__add-sep');
+  const priceEl = button.querySelector<HTMLElement>('.product-pdp__add-price');
+
+  if (!labelEl) {
+    button.disabled = phase !== 'idle';
+    button.classList.toggle('is-adding', phase === 'adding');
+    button.classList.toggle('is-added', phase === 'added');
+    return;
+  }
+
+  if (!button.dataset.addLabelOriginal) {
+    button.dataset.addLabelOriginal = labelEl.textContent ?? '';
+  }
+
+  const addingLabel = button.dataset.addingLabel ?? 'Aggiunta in corso';
+  const addedLabel = button.dataset.addedLabel ?? 'Aggiunto al carrello';
+
+  if (phase === 'adding') {
+    if (sepEl) {
+      sepEl.dataset.wasHidden = sepEl.hidden ? '1' : '0';
+      sepEl.hidden = true;
+    }
+    if (priceEl) {
+      priceEl.dataset.wasHidden = priceEl.hidden ? '1' : '0';
+      priceEl.hidden = true;
+    }
+    labelEl.textContent = addingLabel;
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+  } else if (phase === 'added') {
+    labelEl.textContent = addedLabel;
+    button.disabled = true;
+    button.removeAttribute('aria-busy');
+  } else {
+    labelEl.textContent = button.dataset.addLabelOriginal ?? '';
+    if (sepEl) {
+      sepEl.hidden = sepEl.dataset.wasHidden === '1';
+      delete sepEl.dataset.wasHidden;
+    }
+    if (priceEl) {
+      priceEl.hidden = priceEl.dataset.wasHidden === '1';
+      delete priceEl.dataset.wasHidden;
+    }
+    button.disabled = false;
+    button.removeAttribute('aria-busy');
+  }
+
+  button.classList.toggle('is-adding', phase === 'adding');
+  button.classList.toggle('is-added', phase === 'added');
+}
+
+async function restoreAddButton(button: HTMLButtonElement): Promise<void> {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    setAddButtonPhase(button, 'idle');
+    return;
+  }
+
+  button.classList.add('is-restoring');
+  await wait(RESTORE_FADE_MS);
+  setAddButtonPhase(button, 'idle');
+  void button.offsetWidth;
+  button.classList.remove('is-restoring');
+}
+
 function resolveAddToCartQuantity(form: HTMLFormElement): number {
   const qty =
     form.querySelector<HTMLInputElement>('input.qty, input[name="quantity"]')?.value ?? '1';
@@ -614,9 +690,10 @@ export function initCartDrawer(): void {
       const source = button ?? form;
 
       void (async () => {
-        source.classList.add('is-adding');
-        if (source instanceof HTMLButtonElement) {
-          source.disabled = true;
+        if (button) {
+          setAddButtonPhase(button, 'adding');
+        } else {
+          source.classList.add('is-adding');
         }
 
         try {
@@ -627,6 +704,9 @@ export function initCartDrawer(): void {
           ]);
 
           if (response.error) {
+            if (button) {
+              setAddButtonPhase(button, 'idle');
+            }
             if (response.product_url) {
               window.location.assign(response.product_url);
             }
@@ -643,15 +723,21 @@ export function initCartDrawer(): void {
           if (window.history.replaceState) {
             window.history.replaceState(null, '', window.location.href);
           }
+
+          if (button) {
+            setAddButtonPhase(button, 'added');
+            await wait(ADDED_VISIBLE_MS);
+            await restoreAddButton(button);
+          }
         } catch {
+          if (button) {
+            setAddButtonPhase(button, 'idle');
+          }
           // Never fall back to form.submit() — that leaves a POST document and
           // refresh would add the product again. Soft-reload as GET instead.
           window.location.assign(window.location.pathname + window.location.search);
         } finally {
           source.classList.remove('is-adding');
-          if (source instanceof HTMLButtonElement) {
-            source.disabled = false;
-          }
         }
       })();
     },
