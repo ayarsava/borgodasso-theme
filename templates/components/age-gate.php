@@ -75,7 +75,14 @@ $section_id      = 'age-gate-question';
 
 			foreach ( $choices as $choice => $button ) :
 				?>
-				<form class="age-gate__form" method="post" action="<?php echo esc_url( $form_action ); ?>">
+				<form
+					class="age-gate__form"
+					method="post"
+					action="<?php echo esc_url( $form_action ); ?>"
+					<?php if ( 'yes' === $choice ) : ?>
+						onsubmit="<?php echo esc_attr( borgodasso_age_gate_client_cookie_js() ); ?>"
+					<?php endif; ?>
+				>
 					<?php wp_nonce_field( 'borgodasso_age_gate', 'borgodasso_age_gate_nonce' ); ?>
 					<input type="hidden" name="redirect_to" value="<?php echo esc_url( $redirect_to ); ?>" />
 					<input type="hidden" name="borgodasso_age_gate" value="<?php echo esc_attr( $choice ); ?>" />

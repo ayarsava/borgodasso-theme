@@ -13,6 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 const BORGODASSO_AGE_GATE_TEMPLATE = 'page-templates/legal-drinking-age.php';
 const BORGODASSO_AGE_GATE_COOKIE   = 'borgodasso_age_verified';
+// Cloudways Varnish ignores the age cookie and keeps serving the cached
+// "go back to the gate" redirect. This name is already on its bypass list.
+const BORGODASSO_AGE_GATE_CACHE_BYPASS_COOKIE = 'wordpress_no_cache';
 
 /**
  * Whether the current (or given) page uses the Legal Drinking Age template.
@@ -113,18 +116,21 @@ function borgodasso_age_gate_set_verified_cookie(): void {
 	$path   = defined( 'COOKIEPATH' ) && COOKIEPATH ? COOKIEPATH : '/';
 	$domain = defined( 'COOKIE_DOMAIN' ) ? COOKIE_DOMAIN : '';
 
-	setcookie(
-		BORGODASSO_AGE_GATE_COOKIE,
-		'1',
-		array(
-			'expires'  => $expire,
-			'path'     => $path,
-			'domain'   => $domain,
-			'secure'   => is_ssl(),
-			'httponly' => true,
-			'samesite' => 'Lax',
-		)
+	$cookie = array(
+		'expires'  => $expire,
+		'path'     => $path,
+		'secure'   => is_ssl(),
+		'httponly' => false,
+		'samesite' => 'Lax',
 	);
+
+	// An empty domain attribute makes some browsers drop the cookie.
+	if ( is_string( $domain ) && '' !== $domain ) {
+		$cookie['domain'] = $domain;
+	}
+
+	setcookie( BORGODASSO_AGE_GATE_COOKIE, '1', $cookie );
+	setcookie( BORGODASSO_AGE_GATE_CACHE_BYPASS_COOKIE, '1', $cookie );
 
 	$_COOKIE[ BORGODASSO_AGE_GATE_COOKIE ] = '1';
 }
@@ -244,8 +250,7 @@ function borgodasso_age_gate_handle_post(): void {
 
 	if ( 'yes' === $choice ) {
 		borgodasso_age_gate_set_verified_cookie();
-		wp_safe_redirect( borgodasso_age_gate_requested_redirect() );
-		exit;
+		borgodasso_age_gate_leave( borgodasso_age_gate_requested_redirect() );
 	}
 
 	if ( 'no' === $choice ) {
@@ -253,6 +258,64 @@ function borgodasso_age_gate_handle_post(): void {
 		exit;
 	}
 }
+/**
+ * Leave the gate after the cookie is stored.
+ *
+ * A 302 drops Set-Cookie in some mobile browsers, so the shop request looks
+ * unverified and bounces straight back here. A 200 lets the cookie stick,
+ * then the browser navigates.
+ */
+function borgodasso_age_gate_leave( string $url ): void {
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+
+	nocache_headers();
+	status_header( 200 );
+	header( 'Content-Type: text/html; charset=' . get_bloginfo( 'charset' ) );
+
+	$destination = esc_url( $url );
+
+	echo '<!DOCTYPE html><html><head>';
+	echo '<meta charset="' . esc_attr( get_bloginfo( 'charset' ) ) . '">';
+	echo '<meta http-equiv="refresh" content="0;url=' . esc_attr( $destination ) . '">';
+	echo '</head><body><script>location.replace(' . wp_json_encode( $url ) . ');</script></body></html>';
+	exit;
+}
+
+/**
+ * Inline statement that stores the age cookie before the yes form posts.
+ */
+function borgodasso_age_gate_client_cookie_js(): string {
+	$names = array(
+		BORGODASSO_AGE_GATE_COOKIE,
+		BORGODASSO_AGE_GATE_CACHE_BYPASS_COOKIE,
+	);
+	$lines = array();
+
+	foreach ( $names as $name ) {
+		$lines[] = "document.cookie='{$name}=1; Path=/; Max-Age=31536000; SameSite=Lax'+(location.protocol==='https:'?'; Secure':'')";
+	}
+
+	return implode( ';', $lines );
+}
+
+/**
+ * Keep Varnish from storing the bounce back to the gate.
+ */
+function borgodasso_age_gate_send_uncached_redirect( string $url ): void {
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+
+	nocache_headers();
+	header( 'Cache-Control: private, no-store, no-cache, must-revalidate, max-age=0' );
+	header( 'Pragma: no-cache' );
+	header( 'Expires: Wed, 11 Jan 1984 05:00:00 GMT' );
+	wp_safe_redirect( $url );
+	exit;
+}
+
 /**
  * The gate HTML contains a nonce, so a cached copy makes SÌ post and stay put.
  */
@@ -302,8 +365,7 @@ function borgodasso_age_gate_protect_commerce(): void {
 	$current = home_url( add_query_arg( array() ) );
 	$target  = add_query_arg( 'redirect_to', $current, $gate );
 
-	wp_safe_redirect( $target );
-	exit;
+	borgodasso_age_gate_send_uncached_redirect( $target );
 }
 add_action( 'template_redirect', 'borgodasso_age_gate_protect_commerce', 1 );
 
@@ -315,7 +377,6 @@ function borgodasso_age_gate_skip_if_verified(): void {
 		return;
 	}
 
-	wp_safe_redirect( borgodasso_age_gate_requested_redirect() );
-	exit;
+	borgodasso_age_gate_send_uncached_redirect( borgodasso_age_gate_requested_redirect() );
 }
 add_action( 'template_redirect', 'borgodasso_age_gate_skip_if_verified', 2 );
