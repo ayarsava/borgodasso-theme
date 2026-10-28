@@ -16,6 +16,7 @@ export function initProductPdp(): void {
   initInfoDrawer(root);
   initVariationPrice(root);
   initCustomOptionSelects(root);
+  initSummaryFeaturedAlign(root);
 }
 
 type JQueryLike = {
@@ -472,4 +473,62 @@ function initVariationPrice(root: HTMLElement): void {
       window.clearInterval(timer);
     }
   }, 50);
+}
+
+const PDP_DESKTOP_QUERY = '(min-width: 1024px)';
+
+/**
+ * Center the summary on the featured image. Gallery frames stay below that
+ * image, so they must not stretch the alignment box. A summary taller than
+ * the featured image stays top-aligned with it.
+ */
+function initSummaryFeaturedAlign(root: HTMLElement): void {
+  const featured = root.querySelector<HTMLElement>('.product-pdp__featured');
+  const summary = root.querySelector<HTMLElement>('.product-pdp__summary');
+  if (!featured || !summary) {
+    return;
+  }
+
+  const desktop = window.matchMedia(PDP_DESKTOP_QUERY);
+  let frame = 0;
+
+  const apply = (): void => {
+    if (!desktop.matches) {
+      summary.style.removeProperty('--pdp-summary-offset');
+      return;
+    }
+
+    const featuredHeight = featured.getBoundingClientRect().height;
+    if (featuredHeight <= 0) {
+      return;
+    }
+
+    const summaryHeight = summary.getBoundingClientRect().height;
+    const offset = Math.max(0, (featuredHeight - summaryHeight) / 2);
+    const next = `${offset}px`;
+    if (summary.style.getPropertyValue('--pdp-summary-offset') !== next) {
+      summary.style.setProperty('--pdp-summary-offset', next);
+    }
+  };
+
+  const schedule = (): void => {
+    window.cancelAnimationFrame(frame);
+    frame = window.requestAnimationFrame(apply);
+  };
+
+  schedule();
+
+  if (typeof ResizeObserver !== 'undefined') {
+    const observer = new ResizeObserver(schedule);
+    observer.observe(featured);
+    observer.observe(summary);
+  }
+
+  desktop.addEventListener('change', schedule);
+
+  featured.querySelectorAll('img').forEach((img) => {
+    if (!img.complete) {
+      img.addEventListener('load', schedule, { once: true });
+    }
+  });
 }

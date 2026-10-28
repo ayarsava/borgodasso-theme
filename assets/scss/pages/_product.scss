@@ -84,8 +84,9 @@ $nav-engine-bounce: cubic-bezier(0.34, 1.35, 0.64, 1);
     box-sizing: border-box;
     background-color: $color-background;
 
+    // Top offset is applied in vendors/_woocommerce.scss, after Woo's margin reset.
     @include media-up(lg) {
-      min-height: 100vh;
+      align-self: start;
     }
   }
 
@@ -99,9 +100,6 @@ $nav-engine-bounce: cubic-bezier(0.34, 1.35, 0.64, 1);
     @include media-up(lg) {
       padding-top: calc(var(--admin-bar-height) + 7.5rem);
       padding-bottom: var(--space-4xl);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
   }
 

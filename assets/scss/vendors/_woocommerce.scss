@@ -13,6 +13,14 @@
     clear: none !important;
   }
 
+  // Comes after the margin reset above. product-pdp.ts sets the variable so the
+  // summary centers on the featured image, not the gallery column.
+  @include media-up(lg) {
+    .product-pdp__summary {
+      margin-top: var(--pdp-summary-offset, 0) !important;
+    }
+  }
+
   .product_title {
     @include text.text-h1;
 
