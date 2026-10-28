@@ -253,6 +253,21 @@ function borgodasso_age_gate_handle_post(): void {
 		exit;
 	}
 }
+/**
+ * The gate HTML contains a nonce, so a cached copy makes SÌ post and stay put.
+ */
+function borgodasso_age_gate_nocache(): void {
+	if ( ! borgodasso_is_age_gate_template() ) {
+		return;
+	}
+
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+
+	nocache_headers();
+}
+add_action( 'template_redirect', 'borgodasso_age_gate_nocache', 0 );
 add_action( 'template_redirect', 'borgodasso_age_gate_handle_post', 0 );
 
 /**

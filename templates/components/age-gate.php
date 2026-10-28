@@ -59,28 +59,31 @@ $section_id      = 'age-gate-question';
 			<?php echo esc_html( $question ); ?>
 		</h1>
 
-		<form class="age-gate__form" method="post" action="">
-			<?php wp_nonce_field( 'borgodasso_age_gate', 'borgodasso_age_gate_nonce' ); ?>
-			<input type="hidden" name="redirect_to" value="<?php echo esc_url( $redirect_to ); ?>" />
+		<div class="age-gate__actions">
+			<?php
+			$form_action = get_permalink();
+			$choices     = array(
+				'yes' => array(
+					'label' => $yes_label,
+					'class' => 'age-gate__btn age-gate__btn--yes',
+				),
+				'no'  => array(
+					'label' => $no_label,
+					'class' => 'age-gate__btn age-gate__btn--no',
+				),
+			);
 
-			<div class="age-gate__actions">
-				<button
-					type="submit"
-					class="age-gate__btn age-gate__btn--yes"
-					name="borgodasso_age_gate"
-					value="yes"
-				>
-					<?php echo esc_html( $yes_label ); ?>
-				</button>
-				<button
-					type="submit"
-					class="age-gate__btn age-gate__btn--no"
-					name="borgodasso_age_gate"
-					value="no"
-				>
-					<?php echo esc_html( $no_label ); ?>
-				</button>
-			</div>
-		</form>
+			foreach ( $choices as $choice => $button ) :
+				?>
+				<form class="age-gate__form" method="post" action="<?php echo esc_url( $form_action ); ?>">
+					<?php wp_nonce_field( 'borgodasso_age_gate', 'borgodasso_age_gate_nonce' ); ?>
+					<input type="hidden" name="redirect_to" value="<?php echo esc_url( $redirect_to ); ?>" />
+					<input type="hidden" name="borgodasso_age_gate" value="<?php echo esc_attr( $choice ); ?>" />
+					<button type="submit" class="<?php echo esc_attr( $button['class'] ); ?>">
+						<?php echo esc_html( $button['label'] ); ?>
+					</button>
+				</form>
+			<?php endforeach; ?>
+		</div>
 	</div>
 </section>
