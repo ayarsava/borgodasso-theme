@@ -105,7 +105,10 @@ export async function initPageHeader(): Promise<void> {
   await waitForBrandFonts();
   await wait(FONT_SETTLE_MS);
 
-  const trigger = pageHeader ?? siteHeader;
+  // A hidden page header (mobile shop) has no box, so it can never intersect.
+  // Reveal from the site header instead, or the menu, logo, and icons stay invisible.
+  const pageHeaderVisible = !!pageHeader && pageHeader.getClientRects().length > 0;
+  const trigger = pageHeaderVisible ? pageHeader : siteHeader;
 
   if (!trigger) {
     return;
@@ -119,7 +122,7 @@ export async function initPageHeader(): Promise<void> {
   });
 
   // Let page-header title/description CSS delays start before page-builder reveals.
-  if (pageHeader) {
+  if (pageHeaderVisible) {
     await wait(700);
   }
 }

@@ -42,6 +42,11 @@ if ( function_exists( 'is_shop' ) && is_shop() ) {
 		<div class="shop-catalog">
 			<div class="shop-catalog__inner">
 				<?php
+				if ( function_exists( 'is_shop' ) && is_shop() ) {
+					borgodasso_template( 'components/shop-nav' );
+				}
+				?>
+				<?php
 				/**
 				 * Hook: woocommerce_shop_loop_header.
 				 *

@@ -73,6 +73,7 @@
     "src": "assets/js/main.ts",
     "isEntry": true,
     "dynamicImports": [
+      "assets/js/modules/shop-nav.ts",
       "assets/js/modules/nav.ts",
       "assets/js/modules/home.ts",
       "assets/js/modules/site-header-scroll.ts",
@@ -190,6 +191,12 @@
     "file": "assets/product-pdp.js",
     "name": "product-pdp",
     "src": "assets/js/modules/product-pdp.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/shop-nav.ts": {
+    "file": "assets/shop-nav.js",
+    "name": "shop-nav",
+    "src": "assets/js/modules/shop-nav.ts",
     "isDynamicEntry": true
   },
   "assets/js/modules/site-header-scroll.ts": {

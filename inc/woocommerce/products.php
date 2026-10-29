@@ -600,6 +600,69 @@ function borgodasso_product_catalog_category_slugs(): array {
 }
 
 /**
+ * Mobile shop filters, in the order shown on /shop.
+ *
+ * @return array<int, array{slug: string, label: string}>
+ */
+function borgodasso_shop_nav_items(): array {
+	$items = array(
+		array(
+			'slug'  => 'all',
+			'label' => __( 'Tutti', 'borgodasso' ),
+		),
+	);
+
+	$labels = array(
+		'vino'   => __( 'Vini', 'borgodasso' ),
+		'olio'   => __( 'Olio', 'borgodasso' ),
+		'pasta'  => __( 'Pasta', 'borgodasso' ),
+		'legumi' => __( 'Legumi', 'borgodasso' ),
+	);
+
+	foreach ( $labels as $slug => $label ) {
+		$term = get_term_by( 'slug', $slug, 'product_cat' );
+
+		if ( ! $term instanceof WP_Term || (int) $term->count < 1 ) {
+			continue;
+		}
+
+		$items[] = array(
+			'slug'  => $slug,
+			'label' => $label,
+		);
+	}
+
+	return $items;
+}
+
+/**
+ * Catalog category used by the mobile shop filter.
+ */
+function borgodasso_product_shop_category_slug( WC_Product $product ): string {
+	$terms = get_the_terms( $product->get_id(), 'product_cat' );
+
+	if ( ! is_array( $terms ) ) {
+		return '';
+	}
+
+	$slugs = array();
+
+	foreach ( $terms as $term ) {
+		if ( $term instanceof WP_Term ) {
+			$slugs[] = $term->slug;
+		}
+	}
+
+	foreach ( array( 'vino', 'olio', 'pasta', 'legumi' ) as $slug ) {
+		if ( in_array( $slug, $slugs, true ) ) {
+			return $slug;
+		}
+	}
+
+	return '';
+}
+
+/**
  * All published products ordered by catalog categories.
  *
  * Products in vino → pasta → legumi → olio come first (in that order).

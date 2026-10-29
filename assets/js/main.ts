@@ -11,6 +11,10 @@ initBlurUp(document.body);
 prepareReveal();
 initPageTransition();
 
+if (document.querySelector('[data-shop-nav]')) {
+  void import('./modules/shop-nav').then((mod) => mod.initShopNav());
+}
+
 if (document.querySelector('[data-menu-toggle]')) {
   void import('./modules/nav').then((mod) => mod.initNav());
 }

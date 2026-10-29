@@ -47,12 +47,14 @@ if ( array() === $products ) {
 			}
 		}
 
+		$category_slug = borgodasso_product_shop_category_slug( $catalog_product );
+
 		$media_class = 'product-card__media';
 		if ( $hover_id > 0 ) {
 			$media_class .= ' product-card__media--swap';
 		}
 		?>
-		<li class="product-catalog__item">
+		<li class="product-catalog__item"<?php echo '' !== $category_slug ? ' data-shop-category="' . esc_attr( $category_slug ) . '"' : ''; ?>>
 			<a class="product-card" href="<?php echo esc_url( $permalink ); ?>">
 				<span class="<?php echo esc_attr( $media_class ); ?>">
 					<?php if ( $image_id ) : ?>

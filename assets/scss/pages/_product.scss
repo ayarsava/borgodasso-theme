@@ -677,6 +677,59 @@ $product-info-panel-duration-close: 0.95s;
   }
 }
 
+// Shop page header is title + description. On a phone, /shop replaces it
+// with the category row and the catalog starts under the fixed header.
+@include media-down(md) {
+  .woocommerce-shop.has-page-header {
+    .page-header {
+      display: none;
+    }
+
+    .site-main {
+      padding-top: calc(var(--admin-bar-height, 0px) + var(--site-header-height, 5rem));
+    }
+  }
+}
+
+.shop-nav {
+  display: none;
+
+  @include media-down(md) {
+    display: block;
+    margin: var(--space-l) 0 var(--space-s);
+  }
+
+  &__list {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__entry {
+    margin: 0;
+  }
+
+  &__item {
+    @include text.text-menu;
+
+    margin: 0;
+    padding: 0 0 0.4rem;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    background: none;
+    color: $color-black;
+    cursor: pointer;
+
+    &.is-active {
+      border-bottom-color: currentColor;
+    }
+  }
+}
+
 .shop-catalog {
   padding: 0 var(--space-3xl) var(--space-4xl);
   background-color: $color-background;
