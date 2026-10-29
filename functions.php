@@ -34,3 +34,4 @@ require_once BORGODASSO_DIR . '/inc/woocommerce/checkout.php';
 require_once BORGODASSO_DIR . '/inc/woocommerce/orders.php';
 require_once BORGODASSO_DIR . '/inc/woocommerce/pricing.php';
 require_once BORGODASSO_DIR . '/inc/woocommerce/packages.php';
+require_once BORGODASSO_DIR . '/inc/open-graph.php';

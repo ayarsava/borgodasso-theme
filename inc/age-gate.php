@@ -334,6 +334,45 @@ add_action( 'template_redirect', 'borgodasso_age_gate_nocache', 0 );
 add_action( 'template_redirect', 'borgodasso_age_gate_handle_post', 0 );
 
 /**
+ * Link-preview and search crawlers have no age cookie, so they would scrape the gate.
+ *
+ * @return bool
+ */
+function borgodasso_age_gate_is_preview_crawler(): bool {
+	$ua = isset( $_SERVER['HTTP_USER_AGENT'] ) ? (string) wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) : '';
+
+	if ( '' === $ua ) {
+		return false;
+	}
+
+	$needles = array(
+		'facebookexternalhit',
+		'Facebot',
+		'FacebookBot',
+		'meta-externalagent',
+		'meta-externalfetcher',
+		'Twitterbot',
+		'LinkedInBot',
+		'WhatsApp',
+		'Slackbot',
+		'Slack-ImgProxy',
+		'Pinterest',
+		'Discordbot',
+		'TelegramBot',
+		'Googlebot',
+		'bingbot',
+	);
+
+	foreach ( $needles as $needle ) {
+		if ( false !== stripos( $ua, $needle ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Send unverified visitors away from WooCommerce to the age-gate page.
  */
 function borgodasso_age_gate_protect_commerce(): void {
@@ -342,6 +381,10 @@ function borgodasso_age_gate_protect_commerce(): void {
 	}
 
 	if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		return;
+	}
+
+	if ( borgodasso_age_gate_is_preview_crawler() ) {
 		return;
 	}
 

@@ -311,6 +311,24 @@
           "return_format": "array"
         }
       ]
+    },
+    {
+      "key": "field_borgodasso_to_tab_sharing",
+      "label": "Sharing",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_borgodasso_to_default_share_image",
+      "label": "Default share image",
+      "name": "default_share_image",
+      "type": "image",
+      "return_format": "id",
+      "preview_size": "medium",
+      "library": "all",
+      "mime_types": "jpg,jpeg,png,webp",
+      "instructions": "Link preview image when a page or product has no featured image. 1200×630 recommended."
     }
   ],
   "location": [
@@ -328,5 +346,5 @@
   "label_placement": "top",
   "instruction_placement": "label",
   "active": true,
-  "modified": 1788361200
+  "modified": 1793292800
 }
