@@ -12,25 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 $is_front = is_front_page();
 ?>
 <!DOCTYPE html>
-<html <?php language_attributes(); ?> class="is-page-pending">
+<html <?php language_attributes(); ?>>
 
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<style>
-		/* Hide before first paint; removed when page-transition.js marks ready. */
-		html.is-page-pending body {
-			opacity: 0;
-		}
-
-	</style>
-	<noscript>
-		<style>
-			html.is-page-pending body {
-				opacity: 1 !important;
-			}
-		</style>
-	</noscript>
+	<script>
+		/* Entrance styles key off html.js. Set it before first paint so the header and hero do not show, hide, then show again. */
+		document.documentElement.classList.add('js');
+	</script>
 	<?php wp_head(); ?>
 </head>
 

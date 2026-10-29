@@ -19,6 +19,7 @@ require_once BORGODASSO_DIR . '/inc/templates.php';
 require_once BORGODASSO_DIR . '/inc/helpers.php';
 require_once BORGODASSO_DIR . '/inc/blur-up.php';
 require_once BORGODASSO_DIR . '/inc/setup.php';
+require_once BORGODASSO_DIR . '/inc/speculation.php';
 require_once BORGODASSO_DIR . '/inc/enqueue.php';
 require_once BORGODASSO_DIR . '/inc/acf.php';
 require_once BORGODASSO_DIR . '/inc/page-builder.php';

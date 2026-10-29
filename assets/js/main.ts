@@ -3,13 +3,11 @@
  */
 import '../scss/main.scss';
 import { initBlurUp } from './modules/blur-up';
-import { initPageTransition } from './modules/page-transition';
 import { initReveal, prepareReveal } from './modules/reveal';
 
 document.documentElement.classList.add('js');
 initBlurUp(document.body);
 prepareReveal();
-initPageTransition();
 
 if (document.querySelector('[data-shop-nav]')) {
   void import('./modules/shop-nav').then((mod) => mod.initShopNav());

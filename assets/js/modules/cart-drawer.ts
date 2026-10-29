@@ -593,7 +593,7 @@ export function initCartDrawer(): void {
     }
   };
 
-  // Capture phase so we beat page-transition (also capture) on the cart link.
+  // Capture phase: the cart control is a link, so cancel navigation before it starts.
   document.addEventListener(
     'click',
     (event) => {
