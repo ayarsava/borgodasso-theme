@@ -208,7 +208,9 @@
 
   &__icon {
     width: 0.875rem;
-    height: auto;
+    max-width: none;
+    height: 0.875rem;
+    aspect-ratio: 1;
     transform: rotate(180deg);
 
     &--up {

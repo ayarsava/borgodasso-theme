@@ -156,7 +156,9 @@ $cart-drawer-ease: cubic-bezier(0.19, 1, 0.22, 1);
   &__close-icon {
     display: block;
     width: rem(16);
+    max-width: none;
     height: auto;
+    aspect-ratio: 1;
 
     @include media-up(lg) {
       width: rem(32);

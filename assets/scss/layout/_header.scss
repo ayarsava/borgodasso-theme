@@ -331,7 +331,9 @@ $nav-link-italic-duration: 0.55s;
   &__logo-svg {
     display: block;
     width: 6.25rem;
+    max-width: none;
     height: auto;
+    aspect-ratio: 73 / 33;
 
     @include media-down(lg) {
       width: 4.75rem;
@@ -395,6 +397,7 @@ $nav-link-italic-duration: 0.55s;
   &__mobile-icon {
     position: relative;
     display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
     color: inherit;
@@ -407,23 +410,28 @@ $nav-link-italic-duration: 0.55s;
 
   &__mobile-icon-svg {
     display: block;
+    flex-shrink: 0;
     width: auto;
+    max-width: none;
     height: auto;
   }
 
   &__mobile-icon--bedrooms &__mobile-icon-svg {
     width: auto;
     height: 0.8125rem;
+    aspect-ratio: 21 / 16;
   }
 
   &__mobile-icon--account &__mobile-icon-svg {
     width: auto;
     height: 0.9rem;
+    aspect-ratio: 13 / 14;
   }
 
   &__mobile-icon--shop &__mobile-icon-svg {
     width: auto;
     height: 0.92rem;
+    aspect-ratio: 12 / 13;
   }
 
   &__cart-badge {

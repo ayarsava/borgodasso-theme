@@ -313,7 +313,9 @@
   &__arrow-icon {
     display: block;
     width: rem(14);
+    max-width: none;
     height: auto;
+    aspect-ratio: 10 / 6;
 
     &--prev {
       transform: scaleX(-1);
@@ -670,12 +672,16 @@
   &__toggle-icon {
     display: block;
     width: rem(16);
+    max-width: none;
     height: auto;
+    aspect-ratio: 20 / 14;
 
     svg {
       display: block;
       width: 100%;
+      max-width: none;
       height: auto;
+      aspect-ratio: 20 / 14;
     }
 
     &--visible {

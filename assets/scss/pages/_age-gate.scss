@@ -194,7 +194,9 @@
     &__close-icon {
       display: block;
       width: rem(16);
+      max-width: none;
       height: rem(16);
+      aspect-ratio: 1;
     }
 
     &__media {

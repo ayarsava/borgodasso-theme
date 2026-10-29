@@ -72,7 +72,9 @@
   &__icon {
     display: block;
     width: 1rem;
+    max-width: none;
     height: auto;
+    aspect-ratio: 10 / 6;
     flex-shrink: 0;
 
     @include media-down(md) {
