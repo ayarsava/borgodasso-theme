@@ -682,6 +682,10 @@ $product-info-panel-duration-close: 0.95s;
   background-color: $color-background;
   color: $color-black;
 
+  @include media-down(lg) {
+    padding: 0 0 var(--space-4xl);
+  }
+
   // Section-level reveal stays a trigger; motion is on each card (same as card-list).
   &.reveal {
     opacity: 1;
