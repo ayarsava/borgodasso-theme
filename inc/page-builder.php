@@ -335,3 +335,77 @@ function borgodasso_media_block_spec_items( ?int $square_meters, ?int $bedrooms,
 
 	return $items;
 }
+
+/**
+ * Smaller files for a media block below 768px.
+ *
+ * A dedicated mobile image contributes its 768 and 1024 candidates.
+ * Without one, the desktop photo is served as the existing 960×720 crop,
+ * which matches the 1400×1050 desktop crop and skips the portrait thumbnail.
+ *
+ * @return array<int, array{0: string, 1: int, 2: int}>
+ */
+function borgodasso_media_block_mobile_candidates( int $desktop_id, int $mobile_id ): array {
+	if ( $mobile_id > 0 ) {
+		$dedicated = borgodasso_media_block_size_candidates(
+			$mobile_id,
+			array( 'medium_large', 'large' )
+		);
+
+		if ( count( $dedicated ) > 0 ) {
+			return $dedicated;
+		}
+	}
+
+	return borgodasso_media_block_size_candidates(
+		$desktop_id,
+		array( 'borgodasso_media_md' )
+	);
+}
+
+/**
+ * Attachment sizes that exist as real intermediates, not the original file.
+ *
+ * @param string[] $sizes Registered size names, smallest first.
+ * @return array<int, array{0: string, 1: int, 2: int}>
+ */
+function borgodasso_media_block_size_candidates( int $attachment_id, array $sizes ): array {
+	$full     = wp_get_attachment_image_src( $attachment_id, 'full' );
+	$full_url = is_array( $full ) ? (string) $full[0] : '';
+	$found    = array();
+
+	foreach ( $sizes as $size ) {
+		$src = wp_get_attachment_image_src( $attachment_id, $size );
+
+		if ( ! is_array( $src ) || '' === (string) $src[0] || (string) $src[0] === $full_url ) {
+			continue;
+		}
+
+		$width = (int) $src[1];
+
+		if ( $width <= 0 ) {
+			continue;
+		}
+
+		$found[ $width ] = array( (string) $src[0], $width, (int) $src[2] );
+	}
+
+	ksort( $found );
+
+	return array_values( $found );
+}
+
+/**
+ * srcset value for mobile candidates. Escape the result with esc_attr().
+ *
+ * @param array<int, array{0: string, 1: int, 2: int}> $candidates Candidates.
+ */
+function borgodasso_media_block_srcset( array $candidates ): string {
+	$parts = array();
+
+	foreach ( $candidates as $candidate ) {
+		$parts[] = $candidate[0] . ' ' . (int) $candidate[1] . 'w';
+	}
+
+	return implode( ', ', $parts );
+}

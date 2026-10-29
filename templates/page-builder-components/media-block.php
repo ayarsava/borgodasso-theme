@@ -54,22 +54,18 @@ if ( ! $desktop_src ) {
 	return;
 }
 
-// Only emit a mobile <source> when a dedicated mobile image is set.
-// Do not reuse a different hard-cropped size of the desktop attachment —
-// that forced a 768×960 portrait crop on mobile.
-$has_mobile = $image_mobile_id > 0;
-$mobile_src = $has_mobile ? wp_get_attachment_image_src( $image_mobile_id, 'large' ) : false;
-$mobile_url = is_array( $mobile_src ) ? $mobile_src[0] : '';
-$has_mobile = $has_mobile && '' !== $mobile_url;
+// Below 768px, serve a smaller file than the 1400px desktop crop.
+// A dedicated mobile image uses its own 768/1024 candidates. Otherwise use
+// borgodasso_media_md (960×720), the same 4:3 crop as the desktop image —
+// not borgodasso_media_sm, which is a 768×960 portrait crop.
+$mobile_candidates = borgodasso_media_block_mobile_candidates( $image_id, $image_mobile_id );
 
-// Picture keeps desktop width/height on <img>; pass the mobile file's real
-// ratio so CSS can size the frame correctly under md.
 $media_style = '';
-if ( $has_mobile && ! empty( $mobile_src[1] ) && ! empty( $mobile_src[2] ) ) {
+if ( isset( $mobile_candidates[0][1], $mobile_candidates[0][2] ) ) {
 	$media_style = sprintf(
 		'--media-block-mobile-aspect: %d / %d',
-		(int) $mobile_src[1],
-		(int) $mobile_src[2]
+		(int) $mobile_candidates[0][1],
+		(int) $mobile_candidates[0][2]
 	);
 }
 ?>
@@ -137,13 +133,13 @@ if ( $has_mobile && ! empty( $mobile_src[1] ) && ! empty( $mobile_src[2] ) ) {
 		<figure
 			class="media-block__media"
 			<?php echo $media_style ? ' style="' . esc_attr( $media_style ) . '"' : ''; ?>>
+			<?php $blur_open = borgodasso_blur_up_open( $image_id ); ?>
 			<picture class="media-block__picture">
-				<?php if ( $has_mobile ) : ?>
+				<?php if ( count( $mobile_candidates ) > 0 ) : ?>
 					<source
 						media="(max-width: 767px)"
-						srcset="<?php echo esc_url( $mobile_url ); ?>"
-						width="<?php echo esc_attr( (string) $mobile_src[1] ); ?>"
-						height="<?php echo esc_attr( (string) $mobile_src[2] ); ?>">
+						sizes="100vw"
+						srcset="<?php echo esc_attr( borgodasso_media_block_srcset( $mobile_candidates ) ); ?>">
 				<?php endif; ?>
 				<?php
 				echo wp_get_attachment_image(
@@ -160,6 +156,7 @@ if ( $has_mobile && ! empty( $mobile_src[1] ) && ! empty( $mobile_src[2] ) ) {
 				);
 				?>
 			</picture>
+			<?php borgodasso_blur_up_close( $blur_open ); ?>
 		</figure>
 	</div>
 </section>
