@@ -91,6 +91,10 @@
     margin-inline: auto;
   }
 
+  &__close {
+    display: none;
+  }
+
   &__btn {
     @include text.body-face;
 
@@ -154,5 +158,72 @@
   .content-area--age-gate {
     margin: 0;
     padding: 0;
+  }
+}
+
+@include media-down(md) {
+  .is-age-gate-page {
+    overflow: hidden;
+
+    .site-header {
+      display: none;
+    }
+  }
+
+  .age-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    height: 100dvh;
+    min-height: 0;
+    background-color: $color-background;
+
+    &__close {
+      position: absolute;
+      top: rem(22);
+      right: rem(22);
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      width: rem(44);
+      height: rem(44);
+      color: $color-black;
+      text-decoration: none;
+    }
+
+    &__close-icon {
+      display: block;
+      width: rem(16);
+      height: rem(16);
+    }
+
+    &__media {
+      display: none;
+    }
+
+    &__panel {
+      gap: rem(40);
+      width: 100%;
+      max-width: none;
+      padding-block: rem(32);
+      padding-inline: rem(28);
+      background-color: transparent;
+    }
+
+    &__question {
+      max-width: rem(256);
+      font-size: rem(32);
+      line-height: 1.35;
+    }
+
+    &__actions {
+      max-width: none;
+      gap: rem(12);
+    }
+
+    &__btn {
+      min-height: rem(52);
+      letter-spacing: text.ls-em(8);
+    }
   }
 }

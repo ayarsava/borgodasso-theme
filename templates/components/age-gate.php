@@ -28,6 +28,18 @@ $section_id      = 'age-gate-question';
 	data-age-gate
 	aria-labelledby="<?php echo esc_attr( $section_id ); ?>"
 >
+	<a class="age-gate__close" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+		<?php
+		borgodasso_template(
+			'objects/svg',
+			array(
+				'name'  => 'close',
+				'class' => 'age-gate__close-icon',
+			)
+		);
+		?>
+		<span class="screen-reader-text"><?php esc_html_e( 'Chiudi', 'borgodasso' ); ?></span>
+	</a>
 	<?php if ( $image_id > 0 ) : ?>
 		<div class="age-gate__media" aria-hidden="true">
 			<picture class="age-gate__picture">
