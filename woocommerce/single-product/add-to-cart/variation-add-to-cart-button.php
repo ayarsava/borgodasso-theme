@@ -40,9 +40,9 @@ $price_label = borgodasso_format_add_button_price( $product->get_price() );
 		data-added-label="<?php echo esc_attr__( 'Aggiunto al carrello', 'borgodasso' ); ?>"
 		data-product-add
 	>
-		<span class="product-pdp__add-label" aria-live="polite"><?php echo esc_html( __( 'AGGIUNGI', 'borgodasso' ) ); ?></span>
+		<span class="product-pdp__add-label" aria-live="polite"><?php echo esc_html( __( 'Aggiungi al carrello', 'borgodasso' ) ); ?></span>
 		<?php if ( '' !== $price_label ) : ?>
-			<span class="product-pdp__add-sep" aria-hidden="true"> — </span>
+			<span class="product-pdp__add-sep" aria-hidden="true"> - </span>
 			<span class="product-pdp__add-price" data-add-price><?php echo esc_html( $price_label ); ?></span>
 		<?php else : ?>
 			<span class="product-pdp__add-sep" aria-hidden="true" hidden> — </span>
