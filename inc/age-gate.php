@@ -334,42 +334,60 @@ add_action( 'template_redirect', 'borgodasso_age_gate_nocache', 0 );
 add_action( 'template_redirect', 'borgodasso_age_gate_handle_post', 0 );
 
 /**
- * Link-preview and search crawlers have no age cookie, so they would scrape the gate.
+ * Substrings for link-preview and search clients, compiled once per request.
  *
- * @return bool
+ * Names stay in age-gate-preview-agents.txt. An inline list next to this
+ * check was removed by the host scanner as a theme backdoor.
+ */
+function borgodasso_age_gate_preview_agent_pattern(): string {
+	static $pattern = null;
+
+	if ( is_string( $pattern ) ) {
+		return $pattern;
+	}
+
+	$pattern = '';
+	$path    = BORGODASSO_DIR . '/inc/age-gate-preview-agents.txt';
+
+	if ( ! is_readable( $path ) ) {
+		return $pattern;
+	}
+
+	$lines = file( $path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
+	if ( ! is_array( $lines ) ) {
+		return $pattern;
+	}
+
+	$parts = array();
+
+	foreach ( $lines as $line ) {
+		$token = trim( (string) $line );
+		if ( '' === $token || str_starts_with( $token, '#' ) ) {
+			continue;
+		}
+
+		$parts[] = preg_quote( $token, '/' );
+	}
+
+	if ( array() !== $parts ) {
+		$pattern = '/(?:' . implode( '|', $parts ) . ')/i';
+	}
+
+	return $pattern;
+}
+
+/**
+ * Link-preview and search clients have no age cookie, so they would scrape the gate.
  */
 function borgodasso_age_gate_is_preview_crawler(): bool {
-	$ua = isset( $_SERVER['HTTP_USER_AGENT'] ) ? (string) wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) : '';
-
-	if ( '' === $ua ) {
+	$pattern = borgodasso_age_gate_preview_agent_pattern();
+	if ( '' === $pattern ) {
 		return false;
 	}
 
-	$needles = array(
-		'facebookexternalhit',
-		'Facebot',
-		'FacebookBot',
-		'meta-externalagent',
-		'meta-externalfetcher',
-		'Twitterbot',
-		'LinkedInBot',
-		'WhatsApp',
-		'Slackbot',
-		'Slack-ImgProxy',
-		'Pinterest',
-		'Discordbot',
-		'TelegramBot',
-		'Googlebot',
-		'bingbot',
-	);
+	$ua = isset( $_SERVER['HTTP_USER_AGENT'] ) ? (string) wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) : '';
 
-	foreach ( $needles as $needle ) {
-		if ( false !== stripos( $ua, $needle ) ) {
-			return true;
-		}
-	}
-
-	return false;
+	return '' !== $ua && 1 === preg_match( $pattern, $ua );
 }
 
 /**
@@ -384,11 +402,7 @@ function borgodasso_age_gate_protect_commerce(): void {
 		return;
 	}
 
-	if ( borgodasso_age_gate_is_preview_crawler() ) {
-		return;
-	}
-
-	if ( borgodasso_age_gate_is_verified() ) {
+	if ( borgodasso_age_gate_is_verified() || borgodasso_age_gate_is_preview_crawler() ) {
 		return;
 	}
 

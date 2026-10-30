@@ -1,0 +1,18 @@
+# Substrings matched against the visitor's agent string, one per line.
+# Link-preview and search clients never store the age cookie, so they would
+# otherwise receive the gate instead of the page they are fetching.
+facebookexternalhit
+Facebot
+FacebookBot
+meta-externalagent
+meta-externalfetcher
+Twitterbot
+LinkedInBot
+WhatsApp
+Slackbot
+Slack-ImgProxy
+Pinterest
+Discordbot
+TelegramBot
+Googlebot
+bingbot
