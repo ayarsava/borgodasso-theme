@@ -225,7 +225,11 @@ function borgodasso_casa_spec_items( ?int $square_meters, ?int $bedrooms, ?int $
 		$items[] = array(
 			'key'  => 'square_meters',
 			'icon' => 'square-meters',
-			'text' => sprintf( '%d M²', $square_meters ),
+			'text' => sprintf(
+				/* translators: %d: floor area in square meters. */
+				__( '%d M²', 'borgodasso' ),
+				$square_meters
+			),
 		);
 	}
 
@@ -234,9 +238,9 @@ function borgodasso_casa_spec_items( ?int $square_meters, ?int $bedrooms, ?int $
 			'key'  => 'bedrooms',
 			'icon' => 'bedrooms',
 			'text' => sprintf(
-				'%d %s',
-				$bedrooms,
-				__( 'Camere da letto', 'borgodasso' )
+				/* translators: %d: number of bedrooms. */
+				_n( '%d Camera da letto', '%d Camere da letto', $bedrooms, 'borgodasso' ),
+				$bedrooms
 			),
 		);
 	}
@@ -246,9 +250,9 @@ function borgodasso_casa_spec_items( ?int $square_meters, ?int $bedrooms, ?int $
 			'key'  => 'bathrooms',
 			'icon' => 'bagni',
 			'text' => sprintf(
-				'%d %s',
-				$bathrooms,
-				__( 'Bagni', 'borgodasso' )
+				/* translators: %d: number of bathrooms. */
+				_n( '%d Bagno', '%d Bagni', $bathrooms, 'borgodasso' ),
+				$bathrooms
 			),
 		);
 	}
@@ -258,9 +262,9 @@ function borgodasso_casa_spec_items( ?int $square_meters, ?int $bedrooms, ?int $
 			'key'  => 'guests',
 			'icon' => 'ospiti',
 			'text' => sprintf(
-				'%d %s',
-				$guests,
-				__( 'Ospiti', 'borgodasso' )
+				/* translators: %d: number of guests. */
+				_n( '%d Ospite', '%d Ospiti', $guests, 'borgodasso' ),
+				$guests
 			),
 		);
 	}

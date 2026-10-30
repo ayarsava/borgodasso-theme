@@ -280,6 +280,8 @@ function borgodasso_acf_optional_int( string $name ): ?int {
 /**
  * Media block specification items for inline display.
  *
+ * Labels match the Casa specs, including singular and plural gettext forms.
+ *
  * @param int|null $square_meters Square meters.
  * @param int|null $bedrooms      Bedroom count.
  * @param int|null $bathrooms     Bathroom count (desktop only in layout).
@@ -287,53 +289,7 @@ function borgodasso_acf_optional_int( string $name ): ?int {
  * @return array<int, array{icon: string, text: string, key: string}>
  */
 function borgodasso_media_block_spec_items( ?int $square_meters, ?int $bedrooms, ?int $bathrooms, ?int $guests ): array {
-	$items = array();
-
-	if ( null !== $square_meters ) {
-		$items[] = array(
-			'key'  => 'square_meters',
-			'icon' => 'square-meters',
-			'text' => sprintf( '%d M²', $square_meters ),
-		);
-	}
-
-	if ( null !== $bedrooms ) {
-		$items[] = array(
-			'key'  => 'bedrooms',
-			'icon' => 'bedrooms',
-			'text' => sprintf(
-				'%d %s',
-				$bedrooms,
-				__( 'Camere da letto', 'borgodasso' )
-			),
-		);
-	}
-
-	if ( null !== $bathrooms ) {
-		$items[] = array(
-			'key'  => 'bathrooms',
-			'icon' => 'bagni',
-			'text' => sprintf(
-				'%d %s',
-				$bathrooms,
-				__( 'Bagni', 'borgodasso' )
-			),
-		);
-	}
-
-	if ( null !== $guests ) {
-		$items[] = array(
-			'key'  => 'guests',
-			'icon' => 'ospiti',
-			'text' => sprintf(
-				'%d %s',
-				$guests,
-				__( 'Ospiti', 'borgodasso' )
-			),
-		);
-	}
-
-	return $items;
+	return borgodasso_casa_spec_items( $square_meters, $bedrooms, $bathrooms, $guests );
 }
 
 /**
