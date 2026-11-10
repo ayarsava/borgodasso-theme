@@ -352,6 +352,50 @@ function borgodasso_product_shows_scheda( WC_Product $product ): bool {
 }
 
 /**
+ * Flatten nutrition rows into semicolon-separated prose for mobile.
+ *
+ * Indented “di cui …” rows stay attached to the previous top-level item.
+ *
+ * @param array<int, array{label?: string, value?: string, indent?: bool}> $rows Rows.
+ */
+function borgodasso_product_valori_prose( array $rows ): string {
+	$parts   = array();
+	$current = '';
+
+	foreach ( $rows as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+
+		$label  = isset( $row['label'] ) ? trim( (string) $row['label'] ) : '';
+		$value  = isset( $row['value'] ) ? trim( (string) $row['value'] ) : '';
+		$indent = ! empty( $row['indent'] );
+		$piece  = trim( $label . ' ' . $value );
+
+		if ( '' === $piece ) {
+			continue;
+		}
+
+		if ( $indent ) {
+			$current = trim( $current . ' ' . $piece );
+			continue;
+		}
+
+		if ( '' !== $current ) {
+			$parts[] = $current;
+		}
+
+		$current = $piece;
+	}
+
+	if ( '' !== $current ) {
+		$parts[] = $current;
+	}
+
+	return implode( '; ', $parts );
+}
+
+/**
  * Collect PDP side-panel field data.
  *
  * @param WC_Product $product Product.

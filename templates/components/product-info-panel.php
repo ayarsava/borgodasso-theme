@@ -136,6 +136,7 @@ if ( ! $has_scheda && ! $has_varieta && ! $has_ingredienti && ! $has_valori ) {
 			<?php endif; ?>
 
 			<?php if ( $has_valori ) : ?>
+				<?php $valori_prose = borgodasso_product_valori_prose( $valori_rows ); ?>
 				<section class="product-info-drawer__section" id="product-info-section-valori" data-product-info-section="valori">
 					<h3 class="product-info-drawer__heading">
 						<?php
@@ -164,6 +165,9 @@ if ( ! $has_scheda && ! $has_varieta && ! $has_ingredienti && ! $has_valori ) {
 							<?php endforeach; ?>
 						</tbody>
 					</table>
+					<?php if ( '' !== $valori_prose ) : ?>
+						<p class="product-info-drawer__valori-prose"><?php echo esc_html( $valori_prose ); ?></p>
+					<?php endif; ?>
 				</section>
 			<?php endif; ?>
 		</div>

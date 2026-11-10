@@ -680,6 +680,11 @@ $product-info-panel-duration-close: 0.95s;
     width: 100%;
     border-collapse: collapse;
     border-bottom: 1px solid $color-black;
+
+    // Mobile uses semicolon prose instead of the table.
+    @include media-down(lg) {
+      display: none;
+    }
   }
 
   &__table-row {
@@ -713,6 +718,22 @@ $product-info-panel-duration-close: 0.95s;
   &__table-value {
     width: 42%;
     text-align: right;
+  }
+
+  &__valori-prose {
+    @include text.body-face;
+
+    display: none;
+    margin: 0;
+    font-size: rem(14);
+    font-weight: 400;
+    letter-spacing: text.ls-em(0.3);
+    line-height: 1.55;
+    color: $color-black;
+
+    @include media-down(lg) {
+      display: block;
+    }
   }
 }
 
