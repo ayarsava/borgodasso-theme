@@ -1,6 +1,6 @@
 <?php
 /**
- * Mobile category filter for the main shop page.
+ * Mobile category filter — shop archive + PDP product-catalog.
  *
  * @package Borgodasso
  */

@@ -199,20 +199,34 @@ $nav-link-italic-duration: 0.55s;
       color: $color-background;
     }
 
-    // Product PDP (desktop): cream logo + burger over the image; black actions over the summary.
-    &.site-header--product {
+    // Product PDP desktop: cream logo + burger over the image; black actions over the summary.
+    // Mobile: solid cream bar stacked above the 3:4 image (not overlaying it).
+    &.site-header--overlay.site-header--product {
       @include media-up(lg) {
         color: $color-background;
       }
+
+      @include media-down(lg) {
+        &:not(.is-menu-open) {
+          color: $color-black;
+          background-color: $color-background;
+
+          .site-header__cart-badge {
+            border-color: $color-black;
+            background-color: $color-black;
+            color: $color-background;
+          }
+        }
+      }
     }
 
-    &.site-header--product .site-header__end {
+    &.site-header--overlay.site-header--product .site-header__end {
       @include media-up(lg) {
         color: $color-black;
       }
     }
 
-    &.site-header--product.is-menu-open .site-header__end {
+    &.site-header--overlay.site-header--product.is-menu-open .site-header__end {
       color: $color-background;
     }
   }

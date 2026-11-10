@@ -5,14 +5,10 @@ function setPressed(button: HTMLButtonElement, pressed: boolean): void {
   button.setAttribute('aria-pressed', pressed ? 'true' : 'false');
 }
 
-export function initShopNav(): void {
-  const nav = document.querySelector<HTMLElement>('[data-shop-nav]');
-  if (!nav) {
-    return;
-  }
-
+function initShopNavRoot(nav: HTMLElement): void {
   const buttons = Array.from(nav.querySelectorAll<HTMLButtonElement>('[data-shop-filter]'));
-  const items = Array.from(document.querySelectorAll<HTMLElement>('.shop-catalog [data-shop-category]'));
+  const root = nav.closest('.shop-catalog, .product-catalog') ?? document;
+  const items = Array.from(root.querySelectorAll<HTMLElement>('[data-shop-category]'));
 
   const apply = (slug: string): void => {
     buttons.forEach((button) => {
@@ -41,4 +37,10 @@ export function initShopNav(): void {
   };
 
   mobileQuery.addEventListener('change', showAllOnDesktop);
+}
+
+export function initShopNav(): void {
+  document.querySelectorAll<HTMLElement>('[data-shop-nav]').forEach((nav) => {
+    initShopNavRoot(nav);
+  });
 }

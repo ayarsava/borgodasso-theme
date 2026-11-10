@@ -23,8 +23,13 @@ if ( array() === $products ) {
 <section class="product-catalog" aria-labelledby="product-catalog-title">
 	<div class="product-catalog__inner">
 		<h2 id="product-catalog-title" class="product-catalog__title">
-			<?php echo esc_html__( 'Tutti i prodotti', 'borgodasso' ); ?>
+			<?php echo esc_html__( 'Dispensa biologica', 'borgodasso' ); ?>
 		</h2>
+
+		<?php
+		// Same mobile category filter as /shop/ (hidden from md up via CSS).
+		borgodasso_template( 'components/shop-nav' );
+		?>
 
 		<?php
 		borgodasso_template(
