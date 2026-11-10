@@ -641,8 +641,23 @@ function borgodasso_google_oauth_create_customer( string $email, array $profile,
 
 	$password = wp_generate_password( 32, true, true );
 
+	// Accedi registration requires Nome/Cognome via POST; Google OAuth has none.
+	$skip_names = static function (): bool {
+		return true;
+	};
+	add_filter( 'borgodasso_skip_registration_name_validation', $skip_names );
+
 	if ( function_exists( 'wc_create_new_customer' ) ) {
-		$user_id = wc_create_new_customer( $email, '', $password );
+		$user_id = wc_create_new_customer(
+			$email,
+			'',
+			$password,
+			array(
+				'first_name'   => $first,
+				'last_name'    => $last,
+				'display_name' => '' !== $display ? $display : $email,
+			)
+		);
 	} else {
 		$username = sanitize_user( current( explode( '@', $email ) ), true );
 		if ( '' === $username || username_exists( $username ) ) {
@@ -658,10 +673,14 @@ function borgodasso_google_oauth_create_customer( string $email, array $profile,
 				'user_email'   => $email,
 				'user_pass'    => $password,
 				'role'         => 'customer',
+				'first_name'   => $first,
+				'last_name'    => $last,
 				'display_name' => '' !== $display ? $display : $email,
 			)
 		);
 	}
+
+	remove_filter( 'borgodasso_skip_registration_name_validation', $skip_names );
 
 	if ( is_wp_error( $user_id ) ) {
 		return new WP_Error(

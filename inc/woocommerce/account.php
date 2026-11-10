@@ -261,6 +261,13 @@ function borgodasso_registration_posted_name( string $which ): string {
 }
 
 /**
+ * Whether My Account name validation should be skipped (e.g. Google OAuth create).
+ */
+function borgodasso_skip_registration_name_validation(): bool {
+	return (bool) apply_filters( 'borgodasso_skip_registration_name_validation', false );
+}
+
+/**
  * Require Nome / Cognome on registration.
  *
  * @param string   $username Username.
@@ -269,6 +276,10 @@ function borgodasso_registration_posted_name( string $which ): string {
  */
 function borgodasso_validate_registration_names( string $username, string $email, WP_Error $errors ): void {
 	unset( $username, $email );
+
+	if ( borgodasso_skip_registration_name_validation() ) {
+		return;
+	}
 
 	$first = borgodasso_registration_posted_name( 'first' );
 	$last  = borgodasso_registration_posted_name( 'last' );
