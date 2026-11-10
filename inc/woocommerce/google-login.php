@@ -147,6 +147,19 @@ function borgodasso_google_oauth_flush_on_switch(): void {
 add_action( 'after_switch_theme', 'borgodasso_google_oauth_flush_on_switch' );
 
 /**
+ * Prevent CDN/page cache from storing OAuth redirects (unique state per attempt).
+ */
+function borgodasso_google_oauth_nocache(): void {
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+
+	nocache_headers();
+	header( 'Cache-Control: private, no-store, no-cache, must-revalidate, max-age=0' );
+	header( 'Pragma: no-cache' );
+}
+
+/**
  * Handle OAuth start / callback on template_redirect.
  */
 function borgodasso_google_oauth_template_redirect(): void {
@@ -157,10 +170,12 @@ function borgodasso_google_oauth_template_redirect(): void {
 	}
 
 	if ( 'start' === $action ) {
+		borgodasso_google_oauth_nocache();
 		borgodasso_google_oauth_handle_start();
 	}
 
 	if ( 'callback' === $action ) {
+		borgodasso_google_oauth_nocache();
 		borgodasso_google_oauth_handle_callback();
 	}
 }
