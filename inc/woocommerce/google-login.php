@@ -18,6 +18,8 @@ const BORGODASSO_GOOGLE_OAUTH_REWRITE_VERSION = 1;
 const BORGODASSO_GOOGLE_OAUTH_STATE_TTL       = 600;
 const BORGODASSO_GOOGLE_OAUTH_META_SUB        = 'borgodasso_google_sub';
 const BORGODASSO_GOOGLE_OAUTH_META_PICTURE    = 'borgodasso_google_picture';
+const BORGODASSO_GOOGLE_OAUTH_COOKIE          = 'borgodasso_google_oauth';
+const BORGODASSO_GOOGLE_OAUTH_CACHE_BYPASS    = 'wordpress_no_cache';
 
 /**
  * Whether Google OAuth credentials are configured.
@@ -73,13 +75,16 @@ function borgodasso_google_oauth_redirect_uri(): string {
  * @param string $redirect Optional post-login return URL (validated later).
  */
 function borgodasso_google_oauth_start_url( string $redirect = '' ): string {
-	$url = home_url( '/oauth/google/start/' );
+	$args = array(
+		// Unique per render so CDN/page cache cannot reuse a start redirect + state.
+		'r' => wp_generate_password( 12, false, false ),
+	);
 
-	if ( '' === $redirect ) {
-		return $url;
+	if ( '' !== $redirect ) {
+		$args['redirect'] = $redirect;
 	}
 
-	return (string) add_query_arg( 'redirect', $redirect, $url );
+	return (string) add_query_arg( $args, home_url( '/oauth/google/start/' ) );
 }
 
 /**
@@ -230,13 +235,7 @@ function borgodasso_google_oauth_handle_start(): void {
 		: '';
 
 	$state = wp_generate_password( 32, false, false );
-	set_transient(
-		borgodasso_google_oauth_state_transient_key( $state ),
-		array(
-			'redirect' => $redirect,
-		),
-		BORGODASSO_GOOGLE_OAUTH_STATE_TTL
-	);
+	borgodasso_google_oauth_persist_state( $state, $redirect );
 
 	$params = array(
 		'client_id'     => borgodasso_google_oauth_client_id(),
@@ -261,7 +260,7 @@ function borgodasso_google_oauth_handle_callback(): void {
 		borgodasso_google_oauth_fail( __( 'Accesso Google non configurato.', 'borgodasso' ) );
 	}
 
-	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- OAuth callback; CSRF via state transient.
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- OAuth callback; CSRF via signed state cookie.
 	$error = isset( $_GET['error'] ) && is_string( $_GET['error'] )
 		? sanitize_text_field( wp_unslash( $_GET['error'] ) )
 		: '';
@@ -270,22 +269,20 @@ function borgodasso_google_oauth_handle_callback(): void {
 		borgodasso_google_oauth_fail( __( 'Accesso Google annullato o rifiutato.', 'borgodasso' ) );
 	}
 
-	$code  = isset( $_GET['code'] ) && is_string( $_GET['code'] )
-		? sanitize_text_field( wp_unslash( $_GET['code'] ) )
-		: '';
+	$code = '';
+	if ( isset( $_GET['code'] ) && is_string( $_GET['code'] ) ) {
+		$code = trim( wp_unslash( $_GET['code'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Charset-checked below.
+	}
 	$state = isset( $_GET['state'] ) && is_string( $_GET['state'] )
 		? sanitize_text_field( wp_unslash( $_GET['state'] ) )
 		: '';
 	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-	if ( '' === $code || '' === $state ) {
+	if ( '' === $code || '' === $state || ! preg_match( '#^[A-Za-z0-9._~+/-]+$#', $code ) ) {
 		borgodasso_google_oauth_fail( __( 'Risposta Google non valida.', 'borgodasso' ) );
 	}
 
-	$transient_key = borgodasso_google_oauth_state_transient_key( $state );
-	$payload       = get_transient( $transient_key );
-	delete_transient( $transient_key );
-
+	$payload = borgodasso_google_oauth_consume_state( $state );
 	if ( ! is_array( $payload ) ) {
 		borgodasso_google_oauth_fail( __( 'Sessione di accesso scaduta. Riprova.', 'borgodasso' ) );
 	}
@@ -315,7 +312,16 @@ function borgodasso_google_oauth_handle_callback(): void {
 
 	wp_set_current_user( $user_id );
 	wp_set_auth_cookie( $user_id, true );
+	/**
+	 * Fires after a user logs in via Google OAuth (same hook as core login).
+	 *
+	 * @param string  $user_login Username.
+	 * @param WP_User $user       User object.
+	 */
 	do_action( 'wp_login', wp_get_current_user()->user_login, wp_get_current_user() );
+
+	// Help Cloudways Varnish serve a fresh My Account after login.
+	borgodasso_google_oauth_set_cookie( BORGODASSO_GOOGLE_OAUTH_CACHE_BYPASS, '1', time() + HOUR_IN_SECONDS );
 
 	$redirect = '';
 	if ( isset( $payload['redirect'] ) && is_string( $payload['redirect'] ) ) {
@@ -328,6 +334,145 @@ function borgodasso_google_oauth_handle_callback(): void {
 
 	wp_safe_redirect( $redirect );
 	exit;
+}
+
+/**
+ * Persist OAuth state in a signed cookie (primary) and a transient (backup).
+ *
+ * @param string $state    CSRF state.
+ * @param string $redirect Post-login return URL.
+ */
+function borgodasso_google_oauth_persist_state( string $state, string $redirect ): void {
+	$payload = array(
+		'state'    => $state,
+		'redirect' => $redirect,
+		'exp'      => time() + BORGODASSO_GOOGLE_OAUTH_STATE_TTL,
+	);
+
+	set_transient(
+		borgodasso_google_oauth_state_transient_key( $state ),
+		$payload,
+		BORGODASSO_GOOGLE_OAUTH_STATE_TTL
+	);
+
+	$json = wp_json_encode( $payload );
+	if ( ! is_string( $json ) || '' === $json ) {
+		return;
+	}
+
+	$cookie = borgodasso_google_oauth_sign_payload( $json );
+	borgodasso_google_oauth_set_cookie( BORGODASSO_GOOGLE_OAUTH_COOKIE, $cookie, time() + BORGODASSO_GOOGLE_OAUTH_STATE_TTL );
+}
+
+/**
+ * Validate and consume OAuth state from cookie or transient.
+ *
+ * @param string $state State from Google callback.
+ * @return array<string, mixed>|null
+ */
+function borgodasso_google_oauth_consume_state( string $state ): ?array {
+	$payload = null;
+
+	$raw_cookie = '';
+	if ( isset( $_COOKIE[ BORGODASSO_GOOGLE_OAUTH_COOKIE ] ) ) {
+		$raw_cookie = (string) wp_unslash( $_COOKIE[ BORGODASSO_GOOGLE_OAUTH_COOKIE ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- HMAC-verified below.
+	}
+
+	if ( '' !== $raw_cookie ) {
+		$json = borgodasso_google_oauth_verify_payload( $raw_cookie );
+		if ( is_string( $json ) ) {
+			$decoded = json_decode( $json, true );
+			if ( is_array( $decoded ) ) {
+				$payload = $decoded;
+			}
+		}
+	}
+
+	borgodasso_google_oauth_set_cookie( BORGODASSO_GOOGLE_OAUTH_COOKIE, '', time() - YEAR_IN_SECONDS );
+
+	$transient_key = borgodasso_google_oauth_state_transient_key( $state );
+	if ( ! is_array( $payload ) ) {
+		$from_transient = get_transient( $transient_key );
+		if ( is_array( $from_transient ) ) {
+			$payload = $from_transient;
+		}
+	}
+	delete_transient( $transient_key );
+
+	if ( ! is_array( $payload ) ) {
+		return null;
+	}
+
+	$stored_state = isset( $payload['state'] ) && is_string( $payload['state'] ) ? $payload['state'] : '';
+	$exp          = isset( $payload['exp'] ) ? (int) $payload['exp'] : 0;
+
+	if ( '' === $stored_state || ! hash_equals( $stored_state, $state ) ) {
+		return null;
+	}
+
+	if ( $exp > 0 && $exp < time() ) {
+		return null;
+	}
+
+	return $payload;
+}
+
+/**
+ * Sign a JSON payload for the OAuth cookie.
+ *
+ * @param string $json Payload JSON.
+ */
+function borgodasso_google_oauth_sign_payload( string $json ): string {
+	$body = base64_encode( $json ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Opaque cookie payload.
+	$sig  = hash_hmac( 'sha256', $body, wp_salt( 'auth' ) );
+
+	return $body . '.' . $sig;
+}
+
+/**
+ * Verify a signed OAuth cookie and return the JSON body.
+ *
+ * @param string $cookie Cookie value.
+ */
+function borgodasso_google_oauth_verify_payload( string $cookie ): ?string {
+	$parts = explode( '.', $cookie, 2 );
+	if ( 2 !== count( $parts ) ) {
+		return null;
+	}
+
+	[ $body, $sig ] = $parts;
+	$expected       = hash_hmac( 'sha256', $body, wp_salt( 'auth' ) );
+
+	if ( ! hash_equals( $expected, $sig ) ) {
+		return null;
+	}
+
+	$json = base64_decode( $body, true ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- Opaque cookie payload.
+	return is_string( $json ) ? $json : null;
+}
+
+/**
+ * Set or clear an OAuth-related cookie.
+ *
+ * @param string $name    Cookie name.
+ * @param string $value   Cookie value.
+ * @param int    $expires Unix expiry.
+ */
+function borgodasso_google_oauth_set_cookie( string $name, string $value, int $expires ): void {
+	$options = array(
+		'expires'  => $expires,
+		'path'     => defined( 'COOKIEPATH' ) && COOKIEPATH ? COOKIEPATH : '/',
+		'secure'   => is_ssl(),
+		'httponly' => BORGODASSO_GOOGLE_OAUTH_CACHE_BYPASS !== $name,
+		'samesite' => 'Lax',
+	);
+
+	$domain = defined( 'COOKIE_DOMAIN' ) ? COOKIE_DOMAIN : '';
+	if ( is_string( $domain ) && '' !== $domain ) {
+		$options['domain'] = $domain;
+	}
+
+	setcookie( $name, $value, $options );
 }
 
 /**
@@ -593,6 +738,32 @@ function borgodasso_google_oauth_fail( string $message ): void {
 		? borgodasso_account_login_url()
 		: borgodasso_google_oauth_default_return_url();
 
+	// Query arg survives when WC session notices are missing on a cached Accedi page.
+	$login = (string) add_query_arg(
+		'google_oauth_error',
+		rawurlencode( wp_strip_all_tags( $message ) ),
+		$login
+	);
+
 	wp_safe_redirect( $login );
 	exit;
 }
+
+/**
+ * Surface Google OAuth errors passed via query arg on Accedi.
+ */
+function borgodasso_google_oauth_print_query_error(): void {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only error from OAuth redirect.
+	if ( empty( $_GET['google_oauth_error'] ) || ! is_string( $_GET['google_oauth_error'] ) ) {
+		return;
+	}
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	$message = sanitize_text_field( rawurldecode( wp_unslash( $_GET['google_oauth_error'] ) ) );
+	if ( '' === $message ) {
+		return;
+	}
+
+	echo '<div class="woocommerce-error account-auth__google-error" role="alert">' . esc_html( $message ) . '</div>';
+}
+add_action( 'woocommerce_before_customer_login_form', 'borgodasso_google_oauth_print_query_error', 5 );

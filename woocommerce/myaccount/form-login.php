@@ -16,6 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 do_action( 'woocommerce_before_customer_login_form' );
 
+if ( function_exists( 'wc_print_notices' ) ) {
+	wc_print_notices();
+}
+
 $registration_enabled = function_exists( 'borgodasso_account_registration_enabled' )
 	? borgodasso_account_registration_enabled()
 	: ( 'yes' === get_option( 'woocommerce_enable_myaccount_registration' ) );
