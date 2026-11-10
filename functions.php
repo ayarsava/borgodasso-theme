@@ -30,6 +30,7 @@ require_once BORGODASSO_DIR . '/inc/translatepress.php';
 require_once BORGODASSO_DIR . '/inc/woocommerce/setup.php';
 require_once BORGODASSO_DIR . '/inc/woocommerce/products.php';
 require_once BORGODASSO_DIR . '/inc/woocommerce/account.php';
+require_once BORGODASSO_DIR . '/inc/woocommerce/google-login.php';
 require_once BORGODASSO_DIR . '/inc/woocommerce/cart.php';
 require_once BORGODASSO_DIR . '/inc/woocommerce/checkout.php';
 require_once BORGODASSO_DIR . '/inc/woocommerce/orders.php';

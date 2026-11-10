@@ -214,13 +214,8 @@ function borgodasso_is_account_register_view(): bool {
 /**
  * Google OAuth login URL.
  *
- * Empty until a provider is configured. Example:
- *
- *   add_filter( 'borgodasso_google_login_url', static function (): string {
- *       return 'https://example.com/oauth/google'; // or plugin-generated auth URL
- *   } );
- *
- * See `woocommerce/README.md` → Google login.
+ * Empty until BORGODASSO_GOOGLE_CLIENT_ID + BORGODASSO_GOOGLE_CLIENT_SECRET
+ * are defined (see `inc/woocommerce/google-login.php` and woocommerce/README.md).
  *
  * @return string Absolute URL, or empty string when not ready.
  */

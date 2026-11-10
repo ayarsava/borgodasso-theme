@@ -235,7 +235,7 @@ $last_name_value  = ( ! empty( $_POST['account_last_name'] ) && is_string( $_POS
 								<span><?php echo esc_html__( 'Accedi con Google', 'borgodasso' ); ?></span>
 							</a>
 						<?php else : ?>
-							<?php // Stub: wire URL via filter `borgodasso_google_login_url` (see woocommerce/README.md). ?>
+							<?php // Enabled once Google OAuth constants are set (see woocommerce/README.md). ?>
 							<button
 								type="button"
 								class="<?php echo esc_attr( borgodasso_account_button_class( 'account-button--outline account-button--google account-button--pending' ) ); ?>"

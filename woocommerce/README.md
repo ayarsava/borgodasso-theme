@@ -81,24 +81,53 @@ Helpers live in `inc/woocommerce/account.php`:
 - Username is generated from email; customers set their own password on Registrati
 - `borgodasso_account_login_url()` / `borgodasso_account_register_url()`
 
-### Google login (stub)
+### Google login
 
-The Accedi screen always shows **Accedi con Google**. Until a provider is wired, the button is disabled.
+The Accedi screen always shows **Accedi con Google**. The button stays disabled until OAuth credentials are configured.
 
-To activate it, return an absolute OAuth URL from the filter:
+Implementation: `inc/woocommerce/google-login.php` (start `/oauth/google/start/`, callback `/oauth/google/callback/`). It hooks `borgodasso_google_login_url` when both constants below are set.
+
+#### Get Client ID + Client Secret (Google Cloud)
+
+1. Open [Google Cloud Console](https://console.cloud.google.com/) and sign in with the Google account that will own the app.
+2. Create or select a project (top bar → project picker → **New project**), e.g. `Borgo d'Asso`.
+3. Open **APIs & Services → OAuth consent screen**.
+   - User type: **External** (unless you only need Google Workspace users).
+   - App name: `Borgo d'Asso` (or your brand).
+   - User support email + developer contact: your email.
+   - Save. Scopes can stay at the defaults for now (`openid`, `email`, `profile` are requested by the theme).
+   - Under **Test users**, add any Gmail accounts that should try login while the app is in **Testing**.
+4. Open **APIs & Services → Credentials → Create credentials → OAuth client ID**.
+   - Application type: **Web application**.
+   - Name: e.g. `Borgo d'Asso web`.
+   - **Authorized JavaScript origins**:
+     - `https://borgodasso.ddev.site`
+     - `https://woocommerce-1682188-6743825.cloudwaysapps.com` (and the final production domain when you have it)
+   - **Authorized redirect URIs**:
+     - `https://borgodasso.ddev.site/oauth/google/callback/`
+     - `https://woocommerce-1682188-6743825.cloudwaysapps.com/oauth/google/callback/`
+   - Click **Create**.
+5. Copy **Client ID** and **Client Secret** from the dialog (Secret is shown only once — store it safely).
+6. Paste them into `wp-config.php` as below, then run `ddev wp rewrite flush` (or Settings → Permalinks → Save on the remote site).
+7. When ready for the public, return to the consent screen and click **Publish app** (Google may ask for verification if you leave Testing and open to all users).
+
+#### WordPress config
+
+In `wp-config.php` (or a local override that is not committed):
 
 ```php
-add_filter( 'borgodasso_google_login_url', static function (): string {
-	// e.g. Nextend Social Login / WP Social Login / custom Google OAuth start URL
-	return 'https://example.com/wp-login.php?loginSocial=google';
-} );
+define( 'BORGODASSO_GOOGLE_CLIENT_ID', '....apps.googleusercontent.com' );
+define( 'BORGODASSO_GOOGLE_CLIENT_SECRET', '...' );
+// Optional override (defaults to home_url( '/oauth/google/callback/' )):
+// define( 'BORGODASSO_GOOGLE_REDIRECT_URI', 'https://borgodasso.ddev.site/oauth/google/callback/' );
 ```
 
-Suggested later steps:
+Then flush permalinks once: `ddev wp rewrite flush`.
 
-1. Create a Google Cloud OAuth 2.0 Client (Web) with authorized redirect URIs for the chosen plugin or custom callback.
-2. Install a social-login plugin **or** implement a small OAuth start/callback in `inc/woocommerce/` that creates/logs in a WP user and redirects to My Account.
-3. Point `borgodasso_google_login_url` at that start URL (keep client secrets in env / WP options, never in the theme).
+Behaviour when configured:
+
+- Matches existing users by stored Google `sub`, else by verified email (links the Google account), else creates a WooCommerce **customer**.
+- Respects `?redirect=` / `?redirect_to=` after login (same as email/password Accedi).
 
 ## Legal drinking age gate
 
