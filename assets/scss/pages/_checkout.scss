@@ -590,7 +590,7 @@
   &:focus-visible {
     opacity: 0.88;
     background-color: $color-black !important;
-    color: $color-white !important;
+    color: $color-background !important;
   }
 }
 
@@ -813,7 +813,7 @@
     &:focus-visible {
       opacity: 0.88;
       background-color: $color-black !important;
-      color: $color-white !important;
+      color: $color-background !important;
     }
   }
 }
