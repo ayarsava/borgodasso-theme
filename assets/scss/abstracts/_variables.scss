@@ -56,9 +56,9 @@ $breakpoints: (
   --product-catalog-title-gap: 5.8125rem; // 93px — title → grid
   --product-catalog-col-gap: 2.3125rem; // 37px
   --product-catalog-row-gap: 5.625rem; // 90px
-  --product-card-media-gap: 1.5rem; // 24px
-  --product-card-title-gap: 1.5rem; // 24px
-  --product-card-meta-gap: 0.25rem; // 4px
+  --product-card-media-gap: 1.75rem; // 24px
+  --product-card-title-gap: 1.2rem; // 24px
+  --product-card-meta-gap: 0.45rem; // 4px
 
   // Below lg ($bp-lg - 1).
   @media (max-width: #{$bp-lg - 1px}) {

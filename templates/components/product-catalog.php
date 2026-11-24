@@ -23,7 +23,7 @@ if ( array() === $products ) {
 <section class="product-catalog" aria-labelledby="product-catalog-title">
 	<div class="product-catalog__inner">
 		<h2 id="product-catalog-title" class="product-catalog__title">
-			<?php echo esc_html__( 'Dispensa biologica', 'borgodasso' ); ?>
+			<?php echo esc_html__( 'Tutti i prodotti', 'borgodasso' ); ?>
 		</h2>
 
 		<?php

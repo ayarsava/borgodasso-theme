@@ -878,12 +878,9 @@ $product-info-panel-duration-close: 0.95s;
   }
 
   &__title {
-    @include text.heading-face;
+    @include text.text-h1-big;
 
     margin: 0 0 var(--product-catalog-title-gap);
-    font-size: rem(48);
-    letter-spacing: text.ls-em(0);
-    line-height: 1.1;
     text-align: center;
     text-transform: none;
     color: $color-black;
@@ -1004,7 +1001,7 @@ $product-info-panel-duration-close: 0.95s;
     margin: 0 0 var(--product-card-title-gap);
     font-size: rem(28);
     letter-spacing: text.ls-em(0);
-    line-height: 1.15;
+    line-height: 1;
     text-transform: none;
     transition: opacity 0.2s ease;
 
@@ -1016,17 +1013,17 @@ $product-info-panel-duration-close: 0.95s;
   &__format {
     display: block;
     margin: 0 0 var(--product-card-meta-gap);
-    font-size: rem(14);
+    font-size: rem(17);
     letter-spacing: text.ls-em(0.4);
-    line-height: 1.4;
+    line-height: 1;
   }
 
   &__price {
     display: block;
     margin: 0;
-    font-size: rem(14);
-    letter-spacing: text.ls-em(0.4);
-    line-height: 1.4;
+    font-size: rem(17);
+    letter-spacing: -0.015em;
+    line-height: 1;
 
     del {
       opacity: 0.55;
