@@ -54,7 +54,7 @@
       "name": "schede_tecniche",
       "aria-label": "",
       "type": "repeater",
-      "instructions": "Wine and olive oil only. One PDF per vintage year. Shown in the product info side panel under Scheda tecnica.",
+      "instructions": "Wine and olive oil only. One row per vintage: Italian PDF required, English PDF optional (falls back to ITA when empty). Shown in the product info side panel under Scheda tecnica.",
       "required": 0,
       "conditional_logic": 0,
       "wrapper": {
@@ -80,7 +80,7 @@
           "required": 1,
           "conditional_logic": 0,
           "wrapper": {
-            "width": "30",
+            "width": "20",
             "class": "",
             "id": ""
           },
@@ -93,15 +93,36 @@
         },
         {
           "key": "field_borgodasso_product_scheda_file",
-          "label": "PDF",
+          "label": "PDF (ITA)",
           "name": "file",
           "aria-label": "",
           "type": "file",
-          "instructions": "",
+          "instructions": "Italian sheet. Also used as fallback when ENG is empty.",
           "required": 1,
           "conditional_logic": 0,
           "wrapper": {
-            "width": "70",
+            "width": "40",
+            "class": "",
+            "id": ""
+          },
+          "return_format": "array",
+          "library": "all",
+          "min_size": "",
+          "max_size": "",
+          "mime_types": "pdf",
+          "parent_repeater": "field_borgodasso_product_schede_tecniche"
+        },
+        {
+          "key": "field_borgodasso_product_scheda_file_en",
+          "label": "PDF (ENG)",
+          "name": "file_en",
+          "aria-label": "",
+          "type": "file",
+          "instructions": "English sheet. Shown when the site language is EN.",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "40",
             "class": "",
             "id": ""
           },
@@ -283,5 +304,5 @@
   "display_title": "",
   "allow_ai_access": false,
   "ai_description": "",
-  "modified": 1795526000
+  "modified": 1795527000
 }

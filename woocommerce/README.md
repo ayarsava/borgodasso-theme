@@ -69,7 +69,7 @@ Editorial ACF on products (not prices/stock):
 
 - `hover_image` — optional catalog card hover image (desktop); no swap when empty
 - `formato_display` — optional unit-size override / static wine Formato row (defaults apply when empty)
-- `schede_tecniche` — repeater (annata + PDF); wine/oil only in the UI
+- `schede_tecniche` — repeater (annata + PDF ITA + optional PDF ENG); wine/oil only in the UI. EN falls back to ITA when empty.
 - `varieta` — grape/variety line in the info panel
 - `ingredienti` — WYSIWYG for the info panel
 - `valori_nutrizionali_title` + `valori_nutrizionali_rows` — nutrition table

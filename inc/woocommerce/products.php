@@ -471,6 +471,46 @@ function borgodasso_product_valori_prose( array $rows ): string {
 }
 
 /**
+ * Resolve a URL from an ACF file field value.
+ *
+ * @param mixed $file ACF file array, attachment ID, or URL string.
+ */
+function borgodasso_product_acf_file_url( $file ): string {
+	if ( is_array( $file ) && ! empty( $file['url'] ) ) {
+		return (string) $file['url'];
+	}
+
+	if ( is_numeric( $file ) ) {
+		$url = wp_get_attachment_url( (int) $file );
+		return is_string( $url ) ? $url : '';
+	}
+
+	if ( is_string( $file ) ) {
+		return trim( $file );
+	}
+
+	return '';
+}
+
+/**
+ * Scheda tecnica PDF URL for the current language (ENG when English, else ITA; ENG falls back to ITA).
+ *
+ * @param array<string, mixed> $row Schede tecniche repeater row.
+ */
+function borgodasso_product_scheda_url_for_language( array $row ): string {
+	$it = borgodasso_product_acf_file_url( $row['file'] ?? null );
+
+	if ( function_exists( 'borgodasso_is_english' ) && borgodasso_is_english() ) {
+		$en = borgodasso_product_acf_file_url( $row['file_en'] ?? null );
+		if ( '' !== $en ) {
+			return $en;
+		}
+	}
+
+	return $it;
+}
+
+/**
  * Collect PDP side-panel field data.
  *
  * @param WC_Product $product Product.
@@ -511,15 +551,7 @@ function borgodasso_product_info_panel_data( WC_Product $product ): array {
 					continue;
 				}
 				$year = isset( $row['annata'] ) ? trim( (string) $row['annata'] ) : '';
-				$file = isset( $row['file'] ) ? $row['file'] : null;
-				$url  = '';
-				if ( is_array( $file ) && ! empty( $file['url'] ) ) {
-					$url = (string) $file['url'];
-				} elseif ( is_numeric( $file ) ) {
-					$url = (string) wp_get_attachment_url( (int) $file );
-				} elseif ( is_string( $file ) ) {
-					$url = $file;
-				}
+				$url  = borgodasso_product_scheda_url_for_language( $row );
 				if ( '' === $year || '' === $url ) {
 					continue;
 				}
