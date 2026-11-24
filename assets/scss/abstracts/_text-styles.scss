@@ -180,10 +180,10 @@
 @mixin text-body-small {
   @include body-face;
 
-  font-size: rem(14);
+  font-size: 14px;
+  line-height: 22.67px;
   font-weight: 400;
   letter-spacing: ls-em(0);
-  line-height: 1.5;
   text-transform: none;
 }
 
@@ -200,9 +200,8 @@
 @mixin text-menu {
   @include body-face;
 
-  font-size: rem(12);
-  font-weight: 500;
-  letter-spacing: ls-em(8);
+  font-size: 12px;
+  letter-spacing: 1.224px;
   line-height: 1.2;
   text-transform: uppercase;
 

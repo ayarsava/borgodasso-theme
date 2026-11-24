@@ -74,7 +74,7 @@ if ( ! $has_scheda && ! $has_varieta && ! $has_ingredienti && ! $has_valori ) {
 		<div class="product-info-drawer__body">
 			<?php if ( $has_scheda ) : ?>
 				<section class="product-info-drawer__section" id="product-info-section-scheda" data-product-info-section="scheda">
-					<h3 class="product-info-drawer__heading"><?php esc_html_e( 'Scheda tecnica', 'borgodasso' ); ?></h3>
+					<h3 class="product-info-drawer__heading"><?php esc_html_e( 'SCHEDA TECNICA', 'borgodasso' ); ?></h3>
 					<ul class="product-info-drawer__scheda-list">
 						<?php foreach ( $schede as $scheda ) : ?>
 							<?php
@@ -121,14 +121,14 @@ if ( ! $has_scheda && ! $has_varieta && ! $has_ingredienti && ! $has_valori ) {
 
 			<?php if ( $has_varieta ) : ?>
 				<section class="product-info-drawer__section" id="product-info-section-varieta" data-product-info-section="varieta">
-					<h3 class="product-info-drawer__heading"><?php esc_html_e( 'Varietà', 'borgodasso' ); ?></h3>
+					<h3 class="product-info-drawer__heading"><?php esc_html_e( 'VARIETÀ', 'borgodasso' ); ?></h3>
 					<p class="product-info-drawer__text"><?php echo esc_html( $varieta ); ?></p>
 				</section>
 			<?php endif; ?>
 
 			<?php if ( $has_ingredienti ) : ?>
 				<section class="product-info-drawer__section" id="product-info-section-ingredienti" data-product-info-section="ingredienti">
-					<h3 class="product-info-drawer__heading"><?php esc_html_e( 'Ingredienti', 'borgodasso' ); ?></h3>
+					<h3 class="product-info-drawer__heading"><?php esc_html_e( 'INGREDIENTI', 'borgodasso' ); ?></h3>
 					<div class="product-info-drawer__rich o-content-from-editor">
 						<?php echo wp_kses_post( $ingredienti ); ?>
 					</div>
@@ -143,7 +143,7 @@ if ( ! $has_scheda && ! $has_varieta && ! $has_ingredienti && ! $has_valori ) {
 						echo esc_html(
 							'' !== $valori_title
 								? $valori_title
-								: __( 'Valori nutrizionali medi per 100 ml', 'borgodasso' )
+								: __( 'VALORI NUTRIZIONALI MEDI PER 100 ml', 'borgodasso' )
 						);
 						?>
 					</h3>

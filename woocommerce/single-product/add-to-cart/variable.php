@@ -209,6 +209,9 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 								$is_selected  = (string) $selected === $option;
 								?>
 								<li class="product-pdp__option-item">
+									<span class="product-pdp__option-prefix product-pdp__option-prefix--spacer" aria-hidden="true">
+										<?php echo esc_html( strtoupper( $attr_label ) ); ?>:
+									</span>
 									<button
 										type="button"
 										class="product-pdp__option-choice<?php echo $is_selected ? ' is-selected' : ''; ?>"

@@ -67,6 +67,7 @@ Display order: shop = label then price; cart = price → detail → vintage; che
 
 Editorial ACF on products (not prices/stock):
 
+- `hover_image` — optional catalog card hover image (desktop); no swap when empty
 - `formato_display` — optional unit-size override / static wine Formato row (defaults apply when empty)
 - `schede_tecniche` — repeater (annata + PDF); wine/oil only in the UI
 - `varieta` — grape/variety line in the info panel

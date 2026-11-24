@@ -39,12 +39,17 @@ if ( array() === $products ) {
 		}
 
 		$hover_id = 0;
-		foreach ( $catalog_product->get_gallery_image_ids() as $gallery_id ) {
-			$gallery_id = (int) $gallery_id;
-			if ( $gallery_id > 0 && $gallery_id !== $image_id ) {
-				$hover_id = $gallery_id;
-				break;
+		if ( function_exists( 'get_field' ) ) {
+			$hover_field = get_field( 'hover_image', $product_id );
+			if ( is_numeric( $hover_field ) ) {
+				$hover_id = (int) $hover_field;
+			} elseif ( is_array( $hover_field ) && ! empty( $hover_field['ID'] ) ) {
+				$hover_id = (int) $hover_field['ID'];
 			}
+		}
+
+		if ( $hover_id > 0 && $hover_id === $image_id ) {
+			$hover_id = 0;
 		}
 
 		$category_slug = borgodasso_product_shop_category_slug( $catalog_product );

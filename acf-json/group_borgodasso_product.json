@@ -3,6 +3,32 @@
   "title": "Product",
   "fields": [
     {
+      "key": "field_borgodasso_product_hover_image",
+      "label": "Catalog hover image",
+      "name": "hover_image",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Optional. Shown on desktop hover in shop / catalog cards. Leave empty for no hover swap.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 1,
+      "preview_size": "medium"
+    },
+    {
       "key": "field_borgodasso_product_formato_display",
       "label": "Formato display (static)",
       "name": "formato_display",
@@ -257,5 +283,5 @@
   "display_title": "",
   "allow_ai_access": false,
   "ai_description": "",
-  "modified": 1795525300
+  "modified": 1795526000
 }
