@@ -1,6 +1,7 @@
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 @use '../abstracts/text-styles' as *;
+@use '../abstracts/functions' as *;
 
 .site-footer {
   @include site-shell-inline;
@@ -13,7 +14,7 @@
   }
 
   &__inner {
-    padding-block: 1.625rem;
+    padding: 3.5rem 0 1.625rem;
     border-top: 1px solid $color-black;
   }
 
@@ -86,6 +87,16 @@
   }
 
   &__title {
+    @include heading-face;
+
+    font-size: rem(24);
+    font-weight: 200; // PP Editorial New Ultralight
+    // heading-face uses antialiased; on this light surface that makes Ultralight look washed out.
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+    letter-spacing: ls-em(0);
+    line-height: 1.2;
+    text-transform: none;
     margin: 0;
     color: $color-text;
     margin-bottom: 1rem;
@@ -104,40 +115,29 @@
 
   &__link {
     color: inherit;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-
     &:hover {
       opacity: 0.7;
     }
   }
 
   &__meta {
+    @include text-button;
+
     margin: 0;
     margin-top: auto;
     padding-top: var(--space-s);
-  }
-
-  &__meta--row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-m);
-  }
-
-  &__meta-text {
-    @include text-body-small;
-
-    color: $color-text;
-  }
-
-  &__meta-link {
-    @include text-button;
-
+    font-size: rem(11);
     color: $color-text;
     text-decoration: none;
 
     &:hover {
       opacity: 0.7;
     }
+  }
+
+  &__meta--row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-m);
   }
 }

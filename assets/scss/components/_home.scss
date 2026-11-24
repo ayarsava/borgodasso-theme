@@ -47,7 +47,7 @@
 
     margin: 0;
     font-size: clamp(#{rem(48)}, 8vw, #{rem(84)});
-    color: $color-white;
+    color: $color-background;
   }
 
   &__title-link {
@@ -192,7 +192,7 @@
     width: 2.5rem;
     height: 2.5rem;
     padding: 0;
-    color: $color-white;
+    color: $color-background;
     cursor: pointer;
     border: 0;
     border-radius: 50%;
