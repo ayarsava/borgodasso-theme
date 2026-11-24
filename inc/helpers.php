@@ -87,6 +87,41 @@ function borgodasso_menu_item_is_active( string $url ): bool {
 }
 
 /**
+ * Current TranslatePress / site language locale (e.g. it_IT, en_US).
+ */
+function borgodasso_current_language_locale(): string {
+	if ( class_exists( 'TRP_Translate_Press' ) ) {
+		$trp      = TRP_Translate_Press::get_trp_instance();
+		$settings = $trp->get_component( 'settings' )->get_settings();
+		$default  = is_array( $settings ) && isset( $settings['default-language'] )
+			? (string) $settings['default-language']
+			: 'it_IT';
+
+		$url_converter = $trp->get_component( 'url_converter' );
+		if ( is_object( $url_converter ) && method_exists( $url_converter, 'get_lang_from_url_string' ) ) {
+			$detected = $url_converter->get_lang_from_url_string( home_url( $GLOBALS['wp']->request ?? '' ) );
+			if ( is_string( $detected ) && '' !== $detected ) {
+				return $detected;
+			}
+		}
+
+		$locale = get_locale();
+		return is_string( $locale ) && '' !== $locale ? $locale : $default;
+	}
+
+	$locale = get_locale();
+
+	return is_string( $locale ) && '' !== $locale ? $locale : 'it_IT';
+}
+
+/**
+ * Whether the current front-end language is English.
+ */
+function borgodasso_is_english(): bool {
+	return str_starts_with( strtolower( borgodasso_current_language_locale() ), 'en' );
+}
+
+/**
  * Language switcher links for the mobile menu (TranslatePress when available).
  *
  * @return array<int, array{code: string, label: string, url: string, current: bool}>

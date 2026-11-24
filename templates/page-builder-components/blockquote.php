@@ -22,7 +22,7 @@ if ( '' === $quote ) {
 <section class="blockquote section">
 	<figure class="blockquote__inner">
 		<blockquote class="blockquote__quote text-h3">
-			<?php echo esc_html( $quote ); ?>
+			<?php echo nl2br( esc_html( $quote ), false ); ?>
 		</blockquote>
 
 		<?php if ( $source ) : ?>

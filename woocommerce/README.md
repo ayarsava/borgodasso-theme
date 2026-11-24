@@ -49,16 +49,25 @@ Filters: `borgodasso_order_stepper_index`, `borgodasso_order_stepper_should_show
 | Type            | WC product | Variations                                      | Sellable unit                         |
 | --------------- | ---------- | ----------------------------------------------- | ------------------------------------- |
 | Wine            | Variable   | `pa_annata` only                                | Cassa da 6 — price & stock per case   |
-| Olive oil       | Variable   | `pa_annata` × `pa_formato` (250 / 500 / 750 ml) | Selected bottle size                  |
-| Pasta / legumes | Simple     | none                                            | Pack size via ACF `sale_format_label` |
+| Olive oil       | Variable   | `pa_annata` × `pa_formato` (250 / 500 / 750 ml) | Cassa da 6 — size from Formato        |
+| Pasta / legumes | Simple     | none                                            | Set da 3 — default unit 500 g         |
 
 Global attributes: **Annata** (`pa_annata`), **Formato** (`pa_formato`).
 
-Editorial ACF on products **and variations** (not prices/stock):
+**Sale-format copy** is hardcoded in theme helpers (`__()` / TranslatePress), not ACF:
 
-- `sale_format_label` — parent: catalog line (e.g. Cassa da 6 bottiglie); variation: PDP line when selected (e.g. Cassa da 6 (6 × 250 ml)). Variation fields appear via `inc/acf.php` WooCommerce hooks (ACF does not show on variations by default).
-- Catalog cards with a price range show **A partire da {min}** instead of min–max
-- `formato_display` — static wine size (750 ml)
+| Surface        | Wine / oil                         | Pasta / legumes                |
+| -------------- | ---------------------------------- | ------------------------------ |
+| Shop / catalog | `Cassa da 6 bottiglie`             | `Set da 3 confezioni`          |
+| Cart / PDP     | `Cassa da 6 (6 x {size})`          | `Set da 3 (3 x {size})`        |
+
+Unit `{size}` comes from variation `pa_formato`, optional `formato_display`, then defaults (`750 ml` wine/oil, `500 g` pasta/legumi).
+
+Display order: shop = label then price; cart = price → detail → vintage; checkout = price → detail → vintage → Quantità; PDP = `detail – price`. Catalog cards with a price range show **A partire da {min}** instead of min–max.
+
+Editorial ACF on products (not prices/stock):
+
+- `formato_display` — optional unit-size override / static wine Formato row (defaults apply when empty)
 - `schede_tecniche` — repeater (annata + PDF); wine/oil only in the UI
 - `varieta` — grape/variety line in the info panel
 - `ingredienti` — WYSIWYG for the info panel

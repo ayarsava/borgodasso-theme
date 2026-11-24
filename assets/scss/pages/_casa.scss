@@ -258,6 +258,10 @@ html.is-casa-gallery-open {
 
 .casa-related {
   // Section-level reveal stays a trigger; motion is on each card.
+  @include media-up(lg) {
+    padding-bottom: 20rem;
+  }
+
   &.reveal {
     opacity: 1;
     transform: none;

@@ -779,7 +779,7 @@ function borgodasso_order_pay_summary_items( WC_Order $order ): array {
 /**
  * Line items for the checkout summary “Articoli” list.
  *
- * @return array<int, array{name: string, url: string, image_html: string, price_html: string, meta: string, quantity: int}>
+ * @return array<int, array{name: string, url: string, image_html: string, price_html: string, format: string, vintage: string, quantity: int}>
  */
 function borgodasso_checkout_summary_items(): array {
 	$items = array();
@@ -801,9 +801,12 @@ function borgodasso_checkout_summary_items(): array {
 		$parent    = wc_get_product( $parent_id );
 		$name      = $parent instanceof WC_Product ? $parent->get_name() : $product->get_name();
 		$url       = $product->is_visible() ? $product->get_permalink( $cart_item ) : '';
-		$meta      = function_exists( 'borgodasso_cart_item_meta_line' )
-			? borgodasso_cart_item_meta_line( $cart_item )
-			: '';
+		$meta      = function_exists( 'borgodasso_cart_item_meta_lines' )
+			? borgodasso_cart_item_meta_lines( $cart_item )
+			: array(
+				'format'  => '',
+				'vintage' => '',
+			);
 
 		$items[] = array(
 			'name'       => $name,
@@ -811,7 +814,8 @@ function borgodasso_checkout_summary_items(): array {
 			'image_html' => $product->get_image( 'borgodasso_cart_thumb', array( 'class' => 'checkout-summary__img' ) ),
 			// Unit price — quantity is shown on its own line.
 			'price_html' => WC()->cart->get_product_price( $product ),
-			'meta'       => $meta,
+			'format'     => $meta['format'],
+			'vintage'    => $meta['vintage'],
 			'quantity'   => (int) $cart_item['quantity'],
 		);
 	}

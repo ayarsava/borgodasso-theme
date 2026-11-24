@@ -12,49 +12,69 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Meta line under the cart item price (format + variation attrs).
+ * Vintage (annata) value from a cart item variation, if present.
  *
  * @param array<string, mixed> $cart_item Cart item.
  */
-function borgodasso_cart_item_meta_line( array $cart_item ): string {
+function borgodasso_cart_item_vintage( array $cart_item ): string {
+	if ( empty( $cart_item['variation'] ) || ! is_array( $cart_item['variation'] ) ) {
+		return '';
+	}
+
+	foreach ( $cart_item['variation'] as $key => $value ) {
+		$key   = strtolower( (string) $key );
+		$value = is_string( $value ) ? trim( $value ) : '';
+		if ( '' === $value ) {
+			continue;
+		}
+
+		if ( str_contains( $key, 'annata' ) ) {
+			return $value;
+		}
+	}
+
+	return '';
+}
+
+/**
+ * Structured cart/checkout lines under the price: format detail + optional vintage.
+ *
+ * @param array<string, mixed> $cart_item Cart item.
+ * @return array{format: string, vintage: string}
+ */
+function borgodasso_cart_item_meta_lines( array $cart_item ): array {
 	$product = isset( $cart_item['data'] ) && $cart_item['data'] instanceof WC_Product
 		? $cart_item['data']
 		: null;
 
-	if ( ! $product ) {
-		return '';
+	$format  = '';
+	$vintage = borgodasso_cart_item_vintage( $cart_item );
+
+	if ( $product instanceof WC_Product && function_exists( 'borgodasso_product_sale_format_detail' ) ) {
+		$format = borgodasso_product_sale_format_detail( $product );
 	}
 
-	$parts = array();
+	return array(
+		'format'  => $format,
+		'vintage' => $vintage,
+	);
+}
 
-	$parent_id    = ! empty( $cart_item['product_id'] ) ? (int) $cart_item['product_id'] : $product->get_id();
-	$variation_id = ! empty( $cart_item['variation_id'] ) ? (int) $cart_item['variation_id'] : 0;
-	$own_format   = function_exists( 'borgodasso_product_sale_format_label_own' )
-		? borgodasso_product_sale_format_label_own( $product )
-		: '';
+/**
+ * Single meta line under the cart item price (format + vintage).
+ *
+ * @param array<string, mixed> $cart_item Cart item.
+ */
+function borgodasso_cart_item_meta_line( array $cart_item ): string {
+	$lines = borgodasso_cart_item_meta_lines( $cart_item );
+	$parts = array_values(
+		array_filter(
+			array( $lines['format'], $lines['vintage'] ),
+			static fn( string $part ): bool => '' !== $part
+		)
+	);
 
-	// Variation-specific label is complete (e.g. “Cassa da 6 (6 × 250 ml)”).
-	if ( '' !== $own_format && $variation_id > 0 ) {
-		return $own_format;
-	}
-
-	$parent = wc_get_product( $parent_id );
-	$format = borgodasso_product_sale_format_label( $parent instanceof WC_Product ? $parent : $product );
-
-	if ( '' !== $format ) {
-		$parts[] = $format;
-	}
-
-	if ( ! empty( $cart_item['variation'] ) && is_array( $cart_item['variation'] ) ) {
-		foreach ( $cart_item['variation'] as $value ) {
-			$value = is_string( $value ) ? trim( $value ) : '';
-			if ( '' !== $value ) {
-				$parts[] = $value;
-			}
-		}
-	}
-
-	return implode( ' ', $parts );
+	return implode( ' · ', $parts );
 }
 
 /**

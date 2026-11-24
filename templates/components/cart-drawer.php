@@ -108,7 +108,12 @@ $title_id  = 'cart-drawer-title';
 						$thumbnail  = $product->get_image( 'borgodasso_cart_thumb', array( 'class' => 'cart-drawer__img' ) );
 						$quantity   = (int) $cart_item['quantity'];
 						$price_html = WC()->cart->get_product_subtotal( $product, $quantity );
-						$meta_line  = borgodasso_cart_item_meta_line( $cart_item );
+						$meta_lines = function_exists( 'borgodasso_cart_item_meta_lines' )
+							? borgodasso_cart_item_meta_lines( $cart_item )
+							: array(
+								'format'  => function_exists( 'borgodasso_cart_item_meta_line' ) ? borgodasso_cart_item_meta_line( $cart_item ) : '',
+								'vintage' => '',
+							);
 						$max_qty    = $product->get_max_purchase_quantity();
 						$min_qty    = max( 1, (int) $product->get_min_purchase_quantity() );
 						?>
@@ -171,8 +176,12 @@ $title_id  = 'cart-drawer-title';
 
 								<div class="cart-drawer__price"><?php echo wp_kses_post( $price_html ); ?></div>
 
-								<?php if ( '' !== $meta_line ) : ?>
-									<div class="cart-drawer__meta"><?php echo esc_html( $meta_line ); ?></div>
+								<?php if ( '' !== $meta_lines['format'] ) : ?>
+									<div class="cart-drawer__meta cart-drawer__meta--format"><?php echo esc_html( $meta_lines['format'] ); ?></div>
+								<?php endif; ?>
+
+								<?php if ( '' !== $meta_lines['vintage'] ) : ?>
+									<div class="cart-drawer__meta cart-drawer__meta--vintage"><?php echo esc_html( $meta_lines['vintage'] ); ?></div>
 								<?php endif; ?>
 							</div>
 						</li>

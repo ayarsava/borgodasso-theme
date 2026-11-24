@@ -198,10 +198,10 @@
   &__bullet {
     @include heading-face-regular;
 
-    font-size: rem(13);
+    font-size: rem(12);
     pointer-events: auto;
     width: auto;
-    height: auto;
+    line-height: 1;
     margin: 0;
     padding: 0;
     color: $color-black;
@@ -216,7 +216,7 @@
       transform 0.25s ease;
 
     &.is-active {
-      font-size: rem(15);
+      font-size: rem(14);
       opacity: 1;
       transform: scale(1.1);
     }
@@ -224,7 +224,7 @@
 
   &__counter {
     @include heading-face-regular;
-
+    font-size: rem(15);
     color: $color-black;
     pointer-events: none;
     white-space: nowrap;

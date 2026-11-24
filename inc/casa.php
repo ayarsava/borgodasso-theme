@@ -128,17 +128,7 @@ function borgodasso_casa_data( ?int $post_id = null ): ?array {
 		}
 	}
 
-	$floor_raw  = get_field( 'casa_floor_file', $post_id );
-	$floor_file = null;
-
-	if ( is_array( $floor_raw ) && ! empty( $floor_raw['url'] ) ) {
-		$floor_file = array(
-			'id'    => isset( $floor_raw['ID'] ) ? (int) $floor_raw['ID'] : 0,
-			'url'   => (string) $floor_raw['url'],
-			'title' => isset( $floor_raw['title'] ) ? (string) $floor_raw['title'] : '',
-			'mime'  => isset( $floor_raw['mime_type'] ) ? (string) $floor_raw['mime_type'] : '',
-		);
-	}
+	$floor_file = borgodasso_casa_floor_file_for_language( $post_id );
 
 	$cta_title = get_field( 'casa_cta_title', $post_id );
 	$cta_title = is_string( $cta_title ) ? trim( $cta_title ) : '';
@@ -186,6 +176,44 @@ function borgodasso_casa_data( ?int $post_id = null ): ?array {
 			(int) get_field( 'casa_mobile_portrait_2', $post_id ),
 		),
 	);
+}
+
+/**
+ * Normalize an ACF file field array for Casa floor plan links.
+ *
+ * @param mixed $raw ACF file return (array|false|null).
+ * @return array{id: int, url: string, title: string, mime: string}|null
+ */
+function borgodasso_casa_normalize_floor_file( mixed $raw ): ?array {
+	if ( ! is_array( $raw ) || empty( $raw['url'] ) || ! is_string( $raw['url'] ) ) {
+		return null;
+	}
+
+	return array(
+		'id'    => isset( $raw['ID'] ) ? (int) $raw['ID'] : 0,
+		'url'   => $raw['url'],
+		'title' => isset( $raw['title'] ) && is_string( $raw['title'] ) ? $raw['title'] : '',
+		'mime'  => isset( $raw['mime_type'] ) && is_string( $raw['mime_type'] ) ? $raw['mime_type'] : '',
+	);
+}
+
+/**
+ * Floor plan for the current language (ENG file when English, else ITA; ENG falls back to ITA).
+ *
+ * @param int $post_id Casa page ID.
+ * @return array{id: int, url: string, title: string, mime: string}|null
+ */
+function borgodasso_casa_floor_file_for_language( int $post_id ): ?array {
+	$it = borgodasso_casa_normalize_floor_file( get_field( 'casa_floor_file', $post_id ) );
+
+	if ( function_exists( 'borgodasso_is_english' ) && borgodasso_is_english() ) {
+		$en = borgodasso_casa_normalize_floor_file( get_field( 'casa_floor_file_en', $post_id ) );
+		if ( null !== $en ) {
+			return $en;
+		}
+	}
+
+	return $it;
 }
 
 /**

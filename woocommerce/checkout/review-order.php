@@ -104,8 +104,12 @@ $shipping  = function_exists( 'borgodasso_checkout_summary_shipping_value' )
 
 							<div class="checkout-summary__price"><?php echo wp_kses_post( $row['price_html'] ); ?></div>
 
-							<?php if ( '' !== $row['meta'] ) : ?>
-								<div class="checkout-summary__meta"><?php echo esc_html( $row['meta'] ); ?></div>
+							<?php if ( ! empty( $row['format'] ) ) : ?>
+								<div class="checkout-summary__meta checkout-summary__meta--format"><?php echo esc_html( (string) $row['format'] ); ?></div>
+							<?php endif; ?>
+
+							<?php if ( ! empty( $row['vintage'] ) ) : ?>
+								<div class="checkout-summary__meta checkout-summary__meta--vintage"><?php echo esc_html( (string) $row['vintage'] ); ?></div>
 							<?php endif; ?>
 
 							<div class="checkout-summary__qty">

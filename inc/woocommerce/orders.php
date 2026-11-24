@@ -304,7 +304,7 @@ function borgodasso_order_item_product_name( WC_Order_Item_Product $item ): stri
 }
 
 /**
- * Sale-format + variation lines for an order item (excluding name).
+ * Sale-format detail + vintage (and other meta) for an order item (excluding name).
  *
  * @param WC_Order_Item_Product $item Line item.
  * @return string[]
@@ -313,37 +313,34 @@ function borgodasso_order_item_meta_lines( WC_Order_Item_Product $item ): array 
 	$lines   = array();
 	$product = $item->get_product();
 
-	if ( $product instanceof WC_Product ) {
-		$own = function_exists( 'borgodasso_product_sale_format_label_own' )
-			? borgodasso_product_sale_format_label_own( $product )
-			: '';
-
-		if ( '' !== $own ) {
-			$lines[] = $own;
-		} else {
-			$parent_id = $product->get_parent_id() > 0 ? $product->get_parent_id() : $product->get_id();
-			$parent    = wc_get_product( $parent_id );
-			$format    = function_exists( 'borgodasso_product_sale_format_label' )
-				? borgodasso_product_sale_format_label( $parent instanceof WC_Product ? $parent : $product )
-				: '';
-			if ( '' !== $format ) {
-				$lines[] = $format;
-			}
+	if ( $product instanceof WC_Product && function_exists( 'borgodasso_product_sale_format_detail' ) ) {
+		$detail = borgodasso_product_sale_format_detail( $product );
+		if ( '' !== $detail ) {
+			$lines[] = $detail;
 		}
 	}
 
 	$meta = $item->get_formatted_meta_data( '_', true );
 	foreach ( $meta as $meta_item ) {
+		$label = isset( $meta_item->display_key )
+			? strtolower( trim( wp_strip_all_tags( (string) $meta_item->display_key ) ) )
+			: '';
 		$value = isset( $meta_item->display_value )
 			? trim( wp_strip_all_tags( (string) $meta_item->display_value ) )
 			: '';
 		if ( '' === $value ) {
 			continue;
 		}
-		// Avoid duplicating the sale-format string when WC also stores size attrs.
+
+		// Prefer the dedicated detail line over raw formato attributes.
+		if ( str_contains( $label, 'formato' ) || str_contains( $label, 'format' ) ) {
+			continue;
+		}
+
 		if ( in_array( $value, $lines, true ) ) {
 			continue;
 		}
+
 		$lines[] = $value;
 	}
 

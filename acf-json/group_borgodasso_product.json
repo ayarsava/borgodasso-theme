@@ -3,32 +3,12 @@
   "title": "Product",
   "fields": [
     {
-      "key": "field_borgodasso_product_sale_format_label",
-      "label": "Sale format label",
-      "name": "sale_format_label",
-      "aria-label": "",
-      "type": "text",
-      "instructions": "Parent product: catalog card line (e.g. “Cassa da 6 bottiglie”) and PDP fallback. Variation: PDP label when that size is selected (e.g. “Cassa da 6 (6 × 250 ml)”). Pasta/legumes: pack size (e.g. “500 g”).",
-      "required": 0,
-      "conditional_logic": 0,
-      "wrapper": {
-        "width": "",
-        "class": "",
-        "id": ""
-      },
-      "default_value": "",
-      "maxlength": "",
-      "placeholder": "Cassa da 6 bottiglie",
-      "prepend": "",
-      "append": ""
-    },
-    {
       "key": "field_borgodasso_product_formato_display",
       "label": "Formato display (static)",
       "name": "formato_display",
       "aria-label": "",
       "type": "text",
-      "instructions": "Static Formato control on wine PDPs (not a WooCommerce variation). Leave empty for olive oil (uses pa_formato) or products without a formato row.",
+      "instructions": "Optional override for the unit size in sale-format detail and the static Formato row on wine PDPs. Leave empty to use defaults (wine 750 ml, pasta/legumi 500 g). Olive oil uses the Formato variation (`pa_formato`) instead.",
       "required": 0,
       "conditional_logic": 0,
       "wrapper": {
@@ -277,5 +257,5 @@
   "display_title": "",
   "allow_ai_access": false,
   "ai_description": "",
-  "modified": 1791900000
+  "modified": 1795525300
 }

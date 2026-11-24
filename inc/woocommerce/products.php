@@ -6,7 +6,8 @@
  * - Global attributes: pa_annata, pa_formato
  * - Wine: Variable, Annata only; sell unit = Cassa da 6 (price/stock per case)
  * - Olive oil: Variable, Annata × Formato (250/500/750 ml)
- * - Pasta / legumes: Simple; size via ACF sale_format_label
+ * - Pasta / legumes: Simple; sell unit = Set da 3 (default 500 g)
+ * - Sale-format copy is hardcoded + TranslatePress; size comes from pa_formato / formato_display
  *
  * @package Borgodasso
  */
@@ -120,9 +121,61 @@ function borgodasso_hide_single_stock_html( string $html ): string {
 add_filter( 'woocommerce_get_stock_html', 'borgodasso_hide_single_stock_html' );
 
 /**
- * Sale format label from ACF (product or variation).
+ * Resolve the catalog parent for a product or variation.
  *
- * Variations fall back to the parent product label when empty.
+ * @param WC_Product $product Product or variation.
+ */
+function borgodasso_product_catalog_parent( WC_Product $product ): WC_Product {
+	if ( $product->is_type( 'variation' ) ) {
+		$parent_id = $product->get_parent_id();
+		if ( $parent_id > 0 ) {
+			$parent = wc_get_product( $parent_id );
+			if ( $parent instanceof WC_Product ) {
+				return $parent;
+			}
+		}
+	}
+
+	return $product;
+}
+
+/**
+ * Unit size string for sale-format detail (e.g. “750 ml”, “500 g”).
+ *
+ * Sources, in order: variation `pa_formato`, static `formato_display`, category default.
+ *
+ * @param WC_Product $product Product or variation.
+ */
+function borgodasso_product_unit_size( WC_Product $product ): string {
+	if ( $product->is_type( 'variation' ) ) {
+		$formato = trim( (string) $product->get_attribute( 'pa_formato' ) );
+		if ( '' === $formato ) {
+			$formato = trim( (string) $product->get_attribute( 'formato' ) );
+		}
+		if ( '' !== $formato ) {
+			return $formato;
+		}
+	}
+
+	$parent = borgodasso_product_catalog_parent( $product );
+	$static = borgodasso_product_formato_display( $parent );
+	if ( '' !== $static ) {
+		return $static;
+	}
+
+	$category = borgodasso_product_shop_category_slug( $parent );
+
+	return match ( $category ) {
+		'vino', 'olio' => '750 ml',
+		'pasta', 'legumi' => '500 g',
+		default => '',
+	};
+}
+
+/**
+ * Shop / catalog sale-format label (short).
+ *
+ * Hardcoded per category for TranslatePress (e.g. “Cassa da 6 bottiglie”).
  *
  * @param WC_Product|null $product Product or variation.
  */
@@ -132,40 +185,51 @@ function borgodasso_product_sale_format_label( $product = null ): string {
 		return '';
 	}
 
-	if ( ! function_exists( 'get_field' ) ) {
-		return '';
-	}
+	$category = borgodasso_product_shop_category_slug( borgodasso_product_catalog_parent( $product ) );
 
-	$label = get_field( 'sale_format_label', $product->get_id() );
-	if ( is_string( $label ) && '' !== trim( $label ) ) {
-		return trim( $label );
-	}
-
-	if ( $product->is_type( 'variation' ) ) {
-		$parent_id = $product->get_parent_id();
-		if ( $parent_id > 0 ) {
-			$parent_label = get_field( 'sale_format_label', $parent_id );
-			if ( is_string( $parent_label ) && '' !== trim( $parent_label ) ) {
-				return trim( $parent_label );
-			}
-		}
-	}
-
-	return '';
+	return match ( $category ) {
+		'vino', 'olio' => __( 'Cassa da 6 bottiglie', 'borgodasso' ),
+		'pasta', 'legumi' => __( 'Set da 3 confezioni', 'borgodasso' ),
+		default => '',
+	};
 }
 
 /**
- * Sale format label set directly on this product/variation (no parent fallback).
+ * Cart / checkout / PDP sale-format detail.
  *
- * @param WC_Product $product Product or variation.
+ * Hardcoded pattern + unit size from variation / formato_display.
+ *
+ * @param WC_Product|null $product Product or variation.
  */
-function borgodasso_product_sale_format_label_own( WC_Product $product ): string {
-	if ( ! function_exists( 'get_field' ) ) {
+function borgodasso_product_sale_format_detail( $product = null ): string {
+	$product = $product instanceof WC_Product ? $product : ( function_exists( 'wc_get_product' ) ? wc_get_product( get_the_ID() ) : null );
+	if ( ! $product ) {
 		return '';
 	}
 
-	$label = get_field( 'sale_format_label', $product->get_id() );
-	return is_string( $label ) ? trim( $label ) : '';
+	$parent   = borgodasso_product_catalog_parent( $product );
+	$category = borgodasso_product_shop_category_slug( $parent );
+	$size     = borgodasso_product_unit_size( $product );
+
+	if ( 'vino' === $category || 'olio' === $category ) {
+		if ( '' === $size ) {
+			return __( 'Cassa da 6 bottiglie', 'borgodasso' );
+		}
+
+		/* translators: %s: bottle size, e.g. "750 ml". */
+		return sprintf( __( 'Cassa da 6 (6 x %s)', 'borgodasso' ), $size );
+	}
+
+	if ( 'pasta' === $category || 'legumi' === $category ) {
+		if ( '' === $size ) {
+			return __( 'Set da 3 confezioni', 'borgodasso' );
+		}
+
+		/* translators: %s: pack unit size, e.g. "500 g". */
+		return sprintf( __( 'Set da 3 (3 x %s)', 'borgodasso' ), $size );
+	}
+
+	return '';
 }
 
 /**
@@ -178,7 +242,10 @@ function borgodasso_product_sale_format_label_own( WC_Product $product ): string
  */
 function borgodasso_available_variation_sale_format( array $data, WC_Product $product, WC_Product_Variation $variation ): array {
 	unset( $product );
-	$data['sale_format_label'] = borgodasso_product_sale_format_label_own( $variation );
+	$detail                     = borgodasso_product_sale_format_detail( $variation );
+	$data['sale_format_label']  = $detail; // Kept for product-pdp.ts.
+	$data['sale_format_detail'] = $detail;
+
 	return $data;
 }
 add_filter( 'woocommerce_available_variation', 'borgodasso_available_variation_sale_format', 10, 3 );
@@ -208,7 +275,9 @@ function borgodasso_product_catalog_price_html( WC_Product $product ): string {
 }
 
 /**
- * Static formato display (wine). Empty when Formato is a real variation attribute.
+ * Static formato display (wine / simple packs). Empty when Formato is a variation attribute.
+ *
+ * Defaults: wine → 750 ml. Optional ACF `formato_display` overrides.
  *
  * @param WC_Product|null $product Product.
  */
@@ -218,7 +287,9 @@ function borgodasso_product_formato_display( $product = null ): string {
 		return '';
 	}
 
-	foreach ( $product->get_attributes() as $attribute ) {
+	$parent = borgodasso_product_catalog_parent( $product );
+
+	foreach ( $parent->get_attributes() as $attribute ) {
 		if ( ! $attribute instanceof WC_Product_Attribute ) {
 			continue;
 		}
@@ -230,10 +301,14 @@ function borgodasso_product_formato_display( $product = null ): string {
 	}
 
 	if ( function_exists( 'get_field' ) ) {
-		$label = get_field( 'formato_display', $product->get_id() );
+		$label = get_field( 'formato_display', $parent->get_id() );
 		if ( is_string( $label ) && '' !== trim( $label ) ) {
 			return trim( $label );
 		}
+	}
+
+	if ( 'vino' === borgodasso_product_shop_category_slug( $parent ) ) {
+		return '750 ml';
 	}
 
 	return '';
@@ -304,7 +379,7 @@ function borgodasso_template_single_sale_line(): void {
 		return;
 	}
 
-	$format     = borgodasso_product_sale_format_label( $product );
+	$format     = borgodasso_product_sale_format_detail( $product );
 	$price_html = $product->get_price_html();
 	$has_format = '' !== $format;
 	?>
@@ -315,7 +390,7 @@ function borgodasso_template_single_sale_line(): void {
 		data-default-price="<?php echo esc_attr( $price_html ); ?>"
 	>
 		<span class="product-pdp__sale-format" data-sale-format<?php echo $has_format ? '' : ' hidden'; ?>><?php echo esc_html( $format ); ?></span>
-		<span class="product-pdp__sale-sep" data-sale-sep aria-hidden="true"<?php echo $has_format ? '' : ' hidden'; ?>> — </span>
+		<span class="product-pdp__sale-sep" data-sale-sep aria-hidden="true"<?php echo $has_format ? '' : ' hidden'; ?>> – </span>
 		<span class="product-pdp__sale-price price" data-sale-price><?php echo wp_kses_post( $price_html ); ?></span>
 	</p>
 	<?php
@@ -681,6 +756,8 @@ function borgodasso_shop_nav_items(): array {
 
 /**
  * Catalog category used by the mobile shop filter.
+ *
+ * @param WC_Product $product Product.
  */
 function borgodasso_product_shop_category_slug( WC_Product $product ): string {
 	$terms = get_the_terms( $product->get_id(), 'product_cat' );
