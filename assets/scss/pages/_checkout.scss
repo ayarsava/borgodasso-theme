@@ -24,6 +24,137 @@
   max-width: rem(560);
 }
 
+// Stripe + PayPal express block (woocommerce_checkout_before_customer_details).
+.checkout-express {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  row-gap: rem(24);
+  margin: 0 0 rem(48);
+
+  // Collapse chrome until a wallet button has mounted (keep mounts available).
+  &:not(:has(#wc-stripe-express-checkout-element iframe)):not(:has(.ppc-button-wrapper iframe)) {
+    margin-bottom: 0;
+    gap: 0;
+
+    .checkout-express__label,
+    .checkout-express__separator {
+      display: none;
+    }
+  }
+
+  &__label,
+  &__separator {
+    flex: 1 0 100%;
+    display: flex;
+    align-items: center;
+    gap: rem(16);
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1 1 auto;
+      height: 1px;
+      background-color: $color-black;
+    }
+  }
+
+  &__label-text,
+  &__separator-text {
+    @include text.body-face;
+
+    flex: 0 0 auto;
+    font-size: rem(13);
+    letter-spacing: text.ls-em(0.2);
+    line-height: 1.3;
+    color: $color-black;
+    white-space: nowrap;
+  }
+
+  &__label-text {
+    font-weight: 500;
+  }
+
+  &__label {
+    order: 0;
+  }
+
+  &__separator {
+    order: 3;
+  }
+
+  // Equal-width row: PayPal (when mounted) + each Stripe wallet.
+  .ppc-button-wrapper {
+    flex: 1 1 rem(140);
+    order: 1;
+    margin: 0;
+    min-width: 0;
+
+    > div,
+    iframe {
+      width: 100% !important;
+      max-width: none;
+    }
+
+    // Empty mount point was reserving a blank first column.
+    &:not(:has(iframe)) {
+      flex: 0 0 0;
+      width: 0;
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+    }
+  }
+
+  // Keep Apple Pay + Google Pay on one row (plugin min-width: 260px wraps).
+  #wc-stripe-express-checkout-element {
+    display: flex !important;
+    flex: 1 1 100%;
+    flex-wrap: nowrap !important;
+    order: 2;
+    gap: rem(12);
+    margin: 0 !important;
+    clear: none !important;
+    min-width: 0;
+    width: 100%;
+    justify-content: stretch;
+
+    > div {
+      flex: 1 1 0 !important;
+      min-width: 0 !important;
+      width: auto !important;
+      margin: 0 !important;
+    }
+
+    iframe {
+      width: 100% !important;
+      max-width: none !important;
+    }
+  }
+
+  // When PayPal is mounted, share the row ~1 + 2 (one PayPal, two Stripe wallets).
+  &:has(.ppc-button-wrapper iframe) {
+    .ppc-button-wrapper:has(iframe) {
+      flex: 1 1 0;
+    }
+
+    #wc-stripe-express-checkout-element {
+      flex: 2 1 0;
+      width: auto;
+    }
+  }
+
+  // Replace Stripe’s default “— OR —” with our themed separator.
+  #wc-stripe-express-checkout-button-separator {
+    display: none !important;
+  }
+}
+
 .checkout-layout__summary {
   box-sizing: border-box;
   min-width: 0;

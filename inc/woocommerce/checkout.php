@@ -298,6 +298,215 @@ function borgodasso_checkout_layout_hooks(): void {
 add_action( 'wp', 'borgodasso_checkout_layout_hooks' );
 
 /**
+ * Whether a shipping location looks like Google Pay’s sandbox / placeholder address
+ * (Mountain View, CA 94043) left in the WC customer session by Stripe ECE.
+ *
+ * @param WC_Customer $customer Customer (usually session-backed).
+ */
+function borgodasso_customer_shipping_looks_like_google_placeholder( WC_Customer $customer ): bool {
+	$country  = strtoupper( (string) $customer->get_shipping_country() );
+	$postcode = preg_replace( '/\s+/', '', (string) $customer->get_shipping_postcode() );
+	$city     = strtolower( (string) $customer->get_shipping_city() );
+
+	if ( 'US' !== $country ) {
+		return false;
+	}
+
+	if ( '94043' === $postcode ) {
+		return true;
+	}
+
+	return false !== strpos( $city, 'mountain view' );
+}
+
+/**
+ * On full checkout page load, restore logged-in account addresses into the session
+ * when Stripe/Google Pay express checkout has polluted them (e.g. Mountain View 94043).
+ *
+ * Skips AJAX `update_checkout` so in-form edits still stick for the visit.
+ */
+function borgodasso_checkout_restore_account_address_from_session_pollution(): void {
+	if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+		return;
+	}
+
+	if ( is_order_received_page() || is_wc_endpoint_url( 'order-pay' ) ) {
+		return;
+	}
+
+	if ( wp_doing_ajax() || isset( $_GET['wc-ajax'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return;
+	}
+
+	if ( ! is_user_logged_in() || ! function_exists( 'WC' ) || ! WC()->customer ) {
+		return;
+	}
+
+	$session_customer = WC()->customer;
+
+	if ( ! borgodasso_customer_shipping_looks_like_google_placeholder( $session_customer ) ) {
+		return;
+	}
+
+	$account = new WC_Customer( get_current_user_id(), false );
+
+	if ( '' === (string) $account->get_shipping_country() && '' === (string) $account->get_shipping_address_1() ) {
+		return;
+	}
+
+	$suffixes = array(
+		'first_name',
+		'last_name',
+		'company',
+		'address_1',
+		'address_2',
+		'city',
+		'state',
+		'postcode',
+		'country',
+		'phone',
+	);
+
+	foreach ( array( 'shipping', 'billing' ) as $type ) {
+		foreach ( $suffixes as $suffix ) {
+			$getter = "get_{$type}_{$suffix}";
+			$setter = "set_{$type}_{$suffix}";
+
+			if ( ! is_callable( array( $account, $getter ) ) || ! is_callable( array( $session_customer, $setter ) ) ) {
+				continue;
+			}
+
+			$session_customer->{$setter}( $account->{$getter}() );
+		}
+	}
+
+	// Billing email stays on the account customer object.
+	if ( is_callable( array( $account, 'get_billing_email' ) ) && is_callable( array( $session_customer, 'set_billing_email' ) ) ) {
+		$email = (string) $account->get_billing_email();
+		if ( '' !== $email ) {
+			$session_customer->set_billing_email( $email );
+		}
+	}
+
+	$session_customer->set_calculated_shipping( false );
+	$session_customer->save();
+}
+add_action( 'template_redirect', 'borgodasso_checkout_restore_account_address_from_session_pollution', 20 );
+
+/**
+ * Checkout field values: for logged-in users, prefer account meta over a session
+ * still holding the Google Pay placeholder shipping address.
+ *
+ * @param mixed  $value Default value (null to continue).
+ * @param string $input Field key.
+ * @return mixed
+ */
+function borgodasso_checkout_get_value_prefer_account( $value, string $input ) {
+	if ( null !== $value || ! is_user_logged_in() || ! function_exists( 'WC' ) || ! WC()->customer ) {
+		return $value;
+	}
+
+	if ( 0 !== strpos( $input, 'shipping_' ) && 0 !== strpos( $input, 'billing_' ) ) {
+		return $value;
+	}
+
+	if ( ! borgodasso_customer_shipping_looks_like_google_placeholder( WC()->customer ) ) {
+		return $value;
+	}
+
+	$account = new WC_Customer( get_current_user_id(), false );
+	$getter  = 'get_' . $input;
+
+	if ( ! is_callable( array( $account, $getter ) ) ) {
+		return $value;
+	}
+
+	$account_value = $account->{$getter}();
+
+	return '' === $account_value ? $value : $account_value;
+}
+add_filter( 'woocommerce_checkout_get_value', 'borgodasso_checkout_get_value_prefer_account', 10, 2 );
+
+/**
+ * Open express-checkout wrapper + “Express checkout” label (before Stripe / PayPal).
+ */
+function borgodasso_checkout_express_start(): void {
+	if ( ! function_exists( 'is_checkout' ) || ! is_checkout() || is_wc_endpoint_url( 'order-received' ) ) {
+		return;
+	}
+	?>
+	<div class="checkout-express">
+		<p class="checkout-express__label">
+			<span class="checkout-express__label-text"><?php echo esc_html__( 'Express checkout', 'borgodasso' ); ?></span>
+		</p>
+	<?php
+}
+add_action( 'woocommerce_checkout_before_customer_details', 'borgodasso_checkout_express_start', 0 );
+
+/**
+ * Custom separator under express buttons (Stripe’s default “OR” is hidden in CSS).
+ */
+function borgodasso_checkout_express_separator(): void {
+	if ( ! function_exists( 'is_checkout' ) || ! is_checkout() || is_wc_endpoint_url( 'order-received' ) ) {
+		return;
+	}
+	?>
+		<p class="checkout-express__separator">
+			<span class="checkout-express__separator-text"><?php echo esc_html__( 'Or continue below', 'borgodasso' ); ?></span>
+		</p>
+	<?php
+}
+add_action( 'woocommerce_checkout_before_customer_details', 'borgodasso_checkout_express_separator', 15 );
+
+/**
+ * Close express-checkout wrapper.
+ */
+function borgodasso_checkout_express_end(): void {
+	if ( ! function_exists( 'is_checkout' ) || ! is_checkout() || is_wc_endpoint_url( 'order-received' ) ) {
+		return;
+	}
+
+	echo '</div>';
+}
+add_action( 'woocommerce_checkout_before_customer_details', 'borgodasso_checkout_express_end', 20 );
+
+/**
+ * Render PayPal smart buttons in the express block (next to Stripe ECE).
+ *
+ * @param string $hook Default PayPal checkout button hook.
+ */
+function borgodasso_checkout_paypal_express_hook( string $hook ): string {
+	return 'woocommerce_checkout_before_customer_details';
+}
+add_filter( 'woocommerce_paypal_payments_checkout_button_renderer_hook', 'borgodasso_checkout_paypal_express_hook' );
+
+/**
+ * Prefer black rectangular PayPal buttons on classic checkout.
+ *
+ * @param array<string, mixed> $data Localized PayPal button script data.
+ * @return array<string, mixed>
+ */
+function borgodasso_checkout_paypal_button_style( array $data ): array {
+	if ( empty( $data['button']['style'] ) || ! is_array( $data['button']['style'] ) ) {
+		return $data;
+	}
+
+	if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+		return $data;
+	}
+
+	$data['button']['style']['color']  = 'black';
+	$data['button']['style']['shape']  = 'rect';
+	$data['button']['style']['label']  = 'paypal';
+	$data['button']['style']['layout'] = 'horizontal';
+	$data['button']['style']['tagline'] = false;
+	$data['button']['style']['height'] = 48;
+
+	return $data;
+}
+add_filter( 'woocommerce_paypal_payments_localized_script_data', 'borgodasso_checkout_paypal_button_style' );
+
+/**
  * Contact field keys shown under Contatti.
  *
  * @return string[]

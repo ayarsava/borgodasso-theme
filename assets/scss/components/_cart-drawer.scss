@@ -28,6 +28,7 @@ $cart-drawer-ease: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .cart-drawer {
+  $class: &;
   &[hidden] {
     display: none;
   }
@@ -287,7 +288,7 @@ $cart-drawer-ease: cubic-bezier(0.19, 1, 0.22, 1);
     @include text.body-face;
 
     min-width: 1ch;
-    font-size: rem(14);
+    font-size: rem(12);
     line-height: 1;
     text-align: center;
   }
@@ -364,10 +365,14 @@ $cart-drawer-ease: cubic-bezier(0.19, 1, 0.22, 1);
   &__summary-value {
     @include text.body-face;
 
-    font-size: rem(14);
+    font-size: rem(16);
     letter-spacing: text.ls-em(0.2);
     line-height: 1.35;
     color: $color-black;
+
+    #{$class}__summary-row--shipping & {
+      font-size: rem(13);
+    }
   }
 
   &__summary-value {
