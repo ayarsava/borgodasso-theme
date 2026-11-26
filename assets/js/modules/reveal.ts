@@ -8,6 +8,7 @@ const REVEAL_CLASS = 'reveal';
 
 const PAGE_BUILDER_SELECTOR = '.page-builder > section';
 const SHOP_CATALOG_SELECTOR = '.shop-catalog';
+const DEFERRED_FOOTER_SELECTOR = '.site-footer--deferred';
 const CASA_REVEAL_SELECTOR = [
   '.casa-intro',
   '.casa__mobile > .casa-details',
@@ -27,6 +28,9 @@ function revealTargets(): HTMLElement[] {
 
   const casa = Array.from(document.querySelectorAll<HTMLElement>(CASA_REVEAL_SELECTOR));
   const shop = Array.from(document.querySelectorAll<HTMLElement>(SHOP_CATALOG_SELECTOR));
+  const deferredFooter = Array.from(
+    document.querySelectorAll<HTMLElement>(DEFERRED_FOOTER_SELECTOR),
+  );
 
   // Also catch any other `.reveal` nodes (e.g. left mid-flight before initReveal).
   const marked = Array.from(document.querySelectorAll<HTMLElement>(`.${REVEAL_CLASS}`));
@@ -34,7 +38,7 @@ function revealTargets(): HTMLElement[] {
   const seen = new Set<HTMLElement>();
   const merged: HTMLElement[] = [];
 
-  [...pageBuilder, ...casa, ...shop, ...marked].forEach((el) => {
+  [...pageBuilder, ...casa, ...shop, ...deferredFooter, ...marked].forEach((el) => {
     if (seen.has(el)) {
       return;
     }

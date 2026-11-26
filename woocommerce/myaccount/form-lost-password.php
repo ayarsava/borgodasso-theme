@@ -16,7 +16,7 @@ do_action( 'woocommerce_before_lost_password_form' );
 	<div class="account__inner">
 		<div class="account__content">
 			<section class="account-section account-auth__lost" aria-labelledby="account-lost-title">
-				<h2 id="account-lost-title" class="account-section__title"><?php echo esc_html__( 'Password dimenticata', 'borgodasso' ); ?></h2>
+				<h2 id="account-lost-title" class="account-section__title"><?php echo esc_html__( 'Reimposta la password', 'borgodasso' ); ?></h2>
 
 				<form method="post" class="woocommerce-ResetPassword lost_reset_password account-form">
 
@@ -31,8 +31,16 @@ do_action( 'woocommerce_before_lost_password_form' );
 
 					<p class="account-form__actions">
 						<input type="hidden" name="wc_reset_password" value="true" />
-						<button type="submit" class="<?php echo esc_attr( borgodasso_account_button_class() ); ?>" value="<?php esc_attr_e( 'Reimposta password', 'borgodasso' ); ?>">
-							<?php echo esc_html__( 'Reimposta password', 'borgodasso' ); ?>
+						<button type="submit" class="<?php echo esc_attr( borgodasso_account_button_class() ); ?>" value="<?php esc_attr_e( 'Invia', 'borgodasso' ); ?>">
+							<?php echo esc_html__( 'Invia', 'borgodasso' ); ?>
+						</button>
+						<button
+							type="button"
+							class="<?php echo esc_attr( borgodasso_account_button_class( 'account-button--outline' ) ); ?>"
+							data-account-cancel
+							data-fallback-url="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>"
+						>
+							<?php echo esc_html__( 'Annulla', 'borgodasso' ); ?>
 						</button>
 					</p>
 

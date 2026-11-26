@@ -67,7 +67,7 @@ $stepper_index = function_exists( 'borgodasso_order_stepper_index' )
 <section class="order-detail" aria-labelledby="order-detail-title">
 	<?php if ( $show_title ) : ?>
 		<h2 id="order-detail-title" class="order-detail__title">
-			<?php echo esc_html__( "Dettagli dell'ordine", 'borgodasso' ); ?>
+			<?php echo esc_html__( "Dettagli dell’ordine", 'borgodasso' ); ?>
 		</h2>
 	<?php endif; ?>
 

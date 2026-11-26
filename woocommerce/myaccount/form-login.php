@@ -83,7 +83,19 @@ $last_name_value  = ( ! empty( $_POST['account_last_name'] ) && is_string( $_POS
 								<p class="account-field form-row account-field--password">
 									<label class="account-field__label" for="reg_password"><?php echo esc_html__( 'Password', 'borgodasso' ); ?></label>
 									<span class="account-field__control">
-										<input type="password" class="account-field__input woocommerce-Input input-text" name="password" id="reg_password" autocomplete="new-password" required aria-required="true" data-account-password />
+										<input
+											type="password"
+											class="account-field__input woocommerce-Input input-text"
+											name="password"
+											id="reg_password"
+											autocomplete="new-password"
+											required
+											aria-required="true"
+											minlength="<?php echo esc_attr( (string) borgodasso_account_password_min_length() ); ?>"
+											data-account-password
+											data-account-password-min
+											aria-describedby="reg_password_error"
+										/>
 										<button
 											type="button"
 											class="account-field__toggle"
@@ -116,6 +128,9 @@ $last_name_value  = ( ! empty( $_POST['account_last_name'] ) && is_string( $_POS
 											</span>
 										</button>
 									</span>
+									<span class="account-field__error" id="reg_password_error" data-account-password-error hidden>
+										<?php echo esc_html( borgodasso_account_password_min_message() ); ?>
+									</span>
 								</p>
 							<?php else : ?>
 								<p class="account-form__note"><?php echo esc_html__( 'Un link per impostare la password verrà inviato al tuo indirizzo email.', 'borgodasso' ); ?></p>
@@ -135,7 +150,7 @@ $last_name_value  = ( ! empty( $_POST['account_last_name'] ) && is_string( $_POS
 
 							<p class="account-form__links account-form__links--single">
 								<a class="<?php echo esc_attr( borgodasso_account_button_class( 'account-button--outline' ) ); ?>" href="<?php echo esc_url( $login_url ); ?>">
-									<?php echo esc_html__( 'Hai già un account? Accedi', 'borgodasso' ); ?>
+									<?php echo esc_html__( 'Accedi', 'borgodasso' ); ?>
 								</a>
 							</p>
 

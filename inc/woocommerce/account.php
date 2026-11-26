@@ -325,3 +325,186 @@ function borgodasso_save_registration_names( int $customer_id ): void {
 	}
 }
 add_action( 'woocommerce_created_customer', 'borgodasso_save_registration_names' );
+
+/**
+ * Minimum password length for account registration / change / reset.
+ */
+function borgodasso_account_password_min_length(): int {
+	return 10;
+}
+
+/**
+ * User-facing min-length message (IT source; TranslatePress → EN).
+ */
+function borgodasso_account_password_min_message(): string {
+	return __( 'La password deve essere lunga almeno 10 caratteri.', 'borgodasso' );
+}
+
+/**
+ * Drop WooCommerce password strength meter + hint tips.
+ */
+function borgodasso_dequeue_password_strength_meter(): void {
+	wp_dequeue_script( 'wc-password-strength-meter' );
+}
+add_action( 'wp_enqueue_scripts', 'borgodasso_dequeue_password_strength_meter', 100 );
+
+/**
+ * Do not enforce zxcvbn strength (length is handled separately).
+ *
+ * @return int
+ */
+function borgodasso_disable_min_password_strength(): int {
+	return 0;
+}
+add_filter( 'woocommerce_min_password_strength', 'borgodasso_disable_min_password_strength' );
+
+/**
+ * Hide WP/WC password hint text (“at least twelve characters…”).
+ *
+ * @return string
+ */
+function borgodasso_empty_password_hint(): string {
+	return '';
+}
+add_filter( 'password_hint', 'borgodasso_empty_password_hint' );
+
+/**
+ * @param string $password Password to check.
+ */
+function borgodasso_account_password_too_short( string $password ): bool {
+	return strlen( $password ) < borgodasso_account_password_min_length();
+}
+
+/**
+ * Registration: require ≥ 10 characters.
+ *
+ * @param WP_Error $errors   Errors.
+ * @param string   $username Username.
+ * @param string   $password Password.
+ * @param string   $email    Email.
+ * @return WP_Error
+ */
+function borgodasso_validate_registration_password_length( WP_Error $errors, string $username, string $password, string $email ): WP_Error {
+	unset( $username, $email );
+
+	if ( '' !== $password && borgodasso_account_password_too_short( $password ) ) {
+		$errors->add( 'registration-error-password-length', borgodasso_account_password_min_message() );
+	}
+
+	return $errors;
+}
+add_filter( 'woocommerce_process_registration_errors', 'borgodasso_validate_registration_password_length', 10, 4 );
+
+/**
+ * Edit account: when a new password is posted, require ≥ 10 characters.
+ *
+ * @param WP_Error  $errors Errors.
+ * @param WP_User   $user   User being updated.
+ */
+function borgodasso_validate_account_password_length( WP_Error $errors, $user ): void {
+	unset( $user );
+
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- WC verifies save_account_details nonce.
+	$password = isset( $_POST['password_1'] ) ? (string) wp_unslash( $_POST['password_1'] ) : '';
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
+
+	if ( '' !== $password && borgodasso_account_password_too_short( $password ) ) {
+		$errors->add( 'password-length', borgodasso_account_password_min_message() );
+	}
+}
+add_action( 'woocommerce_save_account_details_errors', 'borgodasso_validate_account_password_length', 10, 2 );
+
+/**
+ * Reset password: require ≥ 10 characters.
+ *
+ * @param WP_Error $errors Errors.
+ * @param WP_User  $user   User resetting.
+ */
+function borgodasso_validate_reset_password_length( WP_Error $errors, $user ): void {
+	unset( $user );
+
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- WC verifies reset_password nonce.
+	$password = isset( $_POST['password_1'] ) ? (string) wp_unslash( $_POST['password_1'] ) : '';
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
+
+	if ( borgodasso_account_password_too_short( $password ) ) {
+		$errors->add( 'password-length', borgodasso_account_password_min_message() );
+	}
+}
+add_action( 'validate_password_reset', 'borgodasso_validate_reset_password_length', 10, 2 );
+
+/**
+ * Clear billing or shipping address from My Account edit-address form.
+ *
+ * Address type comes from the form (query vars are not ready on `wp_loaded`).
+ */
+function borgodasso_process_delete_address(): void {
+	// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	if ( empty( $_POST['delete_address'] ) ) {
+		return;
+	}
+
+	if ( empty( $_POST['action'] ) || 'edit_address' !== $_POST['action'] ) {
+		return;
+	}
+
+	$nonce_value = isset( $_REQUEST['woocommerce-edit-address-nonce'] )
+		? (string) wp_unslash( $_REQUEST['woocommerce-edit-address-nonce'] )
+		: ( isset( $_REQUEST['_wpnonce'] ) ? (string) wp_unslash( $_REQUEST['_wpnonce'] ) : '' );
+
+	$address_type = isset( $_POST['address_type'] )
+		? sanitize_title( (string) wp_unslash( $_POST['address_type'] ) )
+		: '';
+	// phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+	if ( ! wp_verify_nonce( $nonce_value, 'woocommerce-edit_address' ) ) {
+		return;
+	}
+
+	$user_id = get_current_user_id();
+
+	if ( $user_id <= 0 || ! function_exists( 'WC' ) ) {
+		return;
+	}
+
+	$address_type = wc_edit_address_i18n( $address_type, true );
+
+	if ( ! in_array( $address_type, array( 'billing', 'shipping' ), true ) ) {
+		return;
+	}
+
+	$customer = new WC_Customer( $user_id );
+
+	// Full field set — don't rely on country locale fields (address_2 may already be unset).
+	$suffixes = array(
+		'first_name',
+		'last_name',
+		'company',
+		'address_1',
+		'address_2',
+		'city',
+		'state',
+		'postcode',
+		'country',
+		'phone',
+	);
+
+	foreach ( $suffixes as $suffix ) {
+		$key    = $address_type . '_' . $suffix;
+		$setter = 'set_' . $key;
+
+		if ( is_callable( array( $customer, $setter ) ) ) {
+			$customer->{$setter}( '' );
+		}
+
+		delete_user_meta( $user_id, $key );
+	}
+
+	$customer->save();
+
+	wc_add_notice( __( 'Indirizzo eliminato.', 'borgodasso' ), 'success' );
+
+	wp_safe_redirect( wc_get_endpoint_url( 'edit-address', '', wc_get_page_permalink( 'myaccount' ) ) );
+	exit;
+}
+add_action( 'wp_loaded', 'borgodasso_process_delete_address', 19 );

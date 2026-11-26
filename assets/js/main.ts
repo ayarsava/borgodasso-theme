@@ -33,7 +33,8 @@ const pageHeaderReady =
 const shouldInitReveal =
   document.querySelector('.page-builder') ||
   document.querySelector('[data-casa]') ||
-  document.querySelector('.shop-catalog');
+  document.querySelector('.shop-catalog') ||
+  document.querySelector('.site-footer--deferred');
 
 if (shouldInitReveal) {
   void pageHeaderReady.then(() => {
@@ -61,8 +62,20 @@ if (document.querySelector('[data-product-pdp]')) {
   void import('./modules/product-pdp').then((mod) => mod.initProductPdp());
 }
 
-if (document.querySelector('[data-account-password-toggle], .woocommerce-EditAccountForm')) {
+if (
+  document.querySelector(
+    '[data-account-password-toggle], [data-account-password-min], [data-account-cancel], .woocommerce-EditAccountForm, form.lost_reset_password',
+  )
+) {
   void import('./modules/account-forms').then((mod) => mod.initAccountForms());
+}
+
+if (
+  document.querySelector(
+    '.account-field, .checkout-form .form-row, .woocommerce-MyAccount-content .form-row, .woocommerce-Address-fields, .woocommerce-address-fields',
+  )
+) {
+  void import('./modules/floating-fields').then((mod) => mod.initFloatingFields());
 }
 
 if (document.querySelector('[data-account-order]')) {

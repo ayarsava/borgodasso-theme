@@ -487,6 +487,21 @@ function borgodasso_header_account_label( string $label, string $url ): string {
 }
 
 /**
+ * Account / checkout screens that keep the footer below the fold until scroll.
+ */
+function borgodasso_has_deferred_footer(): bool {
+	if ( function_exists( 'is_account_page' ) && is_account_page() ) {
+		return true;
+	}
+
+	if ( function_exists( 'is_checkout' ) && is_checkout() ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
  * Body classes for layout and header theme.
  *
  * @param string[] $classes Existing body classes.
@@ -517,6 +532,10 @@ function borgodasso_body_classes( array $classes ): array {
 
 	if ( function_exists( 'is_cart' ) && ( is_cart() || is_checkout() ) ) {
 		$classes[] = 'is-commerce-page';
+	}
+
+	if ( borgodasso_has_deferred_footer() ) {
+		$classes[] = 'has-deferred-footer';
 	}
 
 	return $classes;

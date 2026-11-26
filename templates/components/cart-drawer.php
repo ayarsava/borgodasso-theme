@@ -215,9 +215,6 @@ $title_id  = 'cart-drawer-title';
 					<a class="cart-drawer__button account-button" href="<?php echo esc_url( $checkout ); ?>">
 						<?php echo esc_html__( 'Procedi al checkout', 'borgodasso' ); ?>
 					</a>
-					<a class="cart-drawer__button account-button account-button--outline" href="<?php echo esc_url( $shop_url ); ?>">
-						<?php echo esc_html__( 'Continua lo shopping', 'borgodasso' ); ?>
-					</a>
 				</div>
 			</footer>
 

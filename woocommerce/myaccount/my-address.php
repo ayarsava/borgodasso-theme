@@ -15,8 +15,8 @@ if ( ! wc_ship_to_billing_address_only() && wc_shipping_enabled() ) {
 	$get_addresses = apply_filters(
 		'woocommerce_my_account_get_addresses',
 		array(
-			'billing'  => __( 'Indirizzo di fatturazione', 'borgodasso' ),
 			'shipping' => __( 'Indirizzo di spedizione', 'borgodasso' ),
+			'billing'  => __( 'Indirizzo di fatturazione', 'borgodasso' ),
 		),
 		$customer_id
 	);
@@ -39,7 +39,7 @@ if ( ! wc_ship_to_billing_address_only() && wc_shipping_enabled() ) {
 		?>
 
 		<section
-			class="woocommerce-Address account-section"
+			class="woocommerce-Address account-section<?php echo $address ? '' : ' woocommerce-Address--empty'; ?>"
 			aria-labelledby="<?php echo esc_attr( $title_id ); ?>"
 		>
 			<header class="woocommerce-Address-title title">
@@ -76,13 +76,7 @@ if ( ! wc_ship_to_billing_address_only() && wc_shipping_enabled() ) {
 								$address_title
 							)
 						)
-						: esc_html(
-							sprintf(
-								/* translators: %s: address title (billing/shipping). */
-								__( 'Aggiungi %s', 'borgodasso' ),
-								$address_title
-							)
-						);
+						: esc_html__( 'Aggiungi un nuovo indirizzo', 'borgodasso' );
 					?>
 				</a>
 			</p>

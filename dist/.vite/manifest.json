@@ -84,6 +84,7 @@
       "assets/js/modules/casa-gallery.ts",
       "assets/js/modules/product-pdp.ts",
       "assets/js/modules/account-forms.ts",
+      "assets/js/modules/floating-fields.ts",
       "assets/js/modules/account-orders.ts",
       "assets/js/modules/cart-drawer.ts",
       "assets/js/modules/wc-notices.ts",
@@ -149,6 +150,12 @@
     "file": "assets/checkout.js",
     "name": "checkout",
     "src": "assets/js/modules/checkout.ts",
+    "isDynamicEntry": true
+  },
+  "assets/js/modules/floating-fields.ts": {
+    "file": "assets/floating-fields.js",
+    "name": "floating-fields",
+    "src": "assets/js/modules/floating-fields.ts",
     "isDynamicEntry": true
   },
   "assets/js/modules/home.ts": {

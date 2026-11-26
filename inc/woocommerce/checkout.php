@@ -313,7 +313,7 @@ function borgodasso_checkout_contact_field_keys(): array {
  * @return string[]
  */
 function borgodasso_checkout_address_field_keys(): array {
-	return array( 'first_name', 'last_name', 'company', 'country', 'address_1', 'address_2', 'city', 'state', 'postcode', 'phone' );
+	return array( 'first_name', 'last_name', 'company', 'country', 'address_1', 'city', 'state', 'postcode', 'phone' );
 }
 
 /**
@@ -411,15 +411,11 @@ function borgodasso_default_address_fields( array $fields ): array {
 			'placeholder' => __( 'Azienda (opzionale)', 'borgodasso' ),
 		),
 		'country'    => array(
-			'label' => __( 'Paese / Regione', 'borgodasso' ),
+			'label' => __( 'Paese', 'borgodasso' ),
 		),
 		'address_1'  => array(
 			'label'       => __( 'Indirizzo', 'borgodasso' ),
 			'placeholder' => __( 'Numero civico e via', 'borgodasso' ),
-		),
-		'address_2'  => array(
-			'label'       => __( 'Indirizzo (facoltativo)', 'borgodasso' ),
-			'placeholder' => __( 'Indirizzo (facoltativo)', 'borgodasso' ),
 		),
 		'city'       => array(
 			'label'       => __( 'Città', 'borgodasso' ),
@@ -444,6 +440,9 @@ function borgodasso_default_address_fields( array $fields ): array {
 		}
 	}
 
+	// Drop optional line 2 — not used in account / checkout address forms.
+	unset( $fields['address_2'] );
+
 	// Nome → Cognome → Paese → … (shared by shipping + billing).
 	$priorities = array(
 		'first_name' => 10,
@@ -451,10 +450,9 @@ function borgodasso_default_address_fields( array $fields ): array {
 		'country'    => 30,
 		'company'    => 40,
 		'address_1'  => 50,
-		'address_2'  => 60,
-		'city'       => 70,
-		'postcode'   => 80,
-		'state'      => 90,
+		'city'       => 60,
+		'postcode'   => 70,
+		'state'      => 80,
 	);
 	foreach ( $priorities as $key => $priority ) {
 		if ( isset( $fields[ $key ] ) && is_array( $fields[ $key ] ) ) {
@@ -496,6 +494,8 @@ function borgodasso_checkout_fields( array $fields ): array {
 			$fields['billing']['billing_phone']['class']       = array( 'form-row-wide' );
 		}
 
+		unset( $fields['billing']['billing_address_2'] );
+
 		// Nome → Cognome → Paese → Address → City → Postcode/State → Phone.
 		$billing_priorities = array(
 			'billing_first_name' => 10,
@@ -503,10 +503,9 @@ function borgodasso_checkout_fields( array $fields ): array {
 			'billing_country'    => 30,
 			'billing_company'    => 40,
 			'billing_address_1'  => 50,
-			'billing_address_2'  => 60,
-			'billing_city'       => 70,
-			'billing_postcode'   => 80,
-			'billing_state'      => 90,
+			'billing_city'       => 60,
+			'billing_postcode'   => 70,
+			'billing_state'      => 80,
 			'billing_phone'      => 100,
 		);
 		foreach ( $billing_priorities as $key => $priority ) {
@@ -517,6 +516,8 @@ function borgodasso_checkout_fields( array $fields ): array {
 	}
 
 	if ( isset( $fields['shipping'] ) && is_array( $fields['shipping'] ) ) {
+		unset( $fields['shipping']['shipping_address_2'] );
+
 		if ( ! isset( $fields['shipping']['shipping_phone'] ) ) {
 			$fields['shipping']['shipping_phone'] = array(
 				'label'        => __( 'Numero di telefono', 'borgodasso' ),
@@ -542,10 +543,9 @@ function borgodasso_checkout_fields( array $fields ): array {
 			'shipping_country'    => 30,
 			'shipping_company'    => 40,
 			'shipping_address_1'  => 50,
-			'shipping_address_2'  => 60,
-			'shipping_city'       => 70,
-			'shipping_postcode'   => 80,
-			'shipping_state'      => 90,
+			'shipping_city'       => 60,
+			'shipping_postcode'   => 70,
+			'shipping_state'      => 80,
 			'shipping_phone'      => 100,
 		);
 		foreach ( $shipping_priorities as $key => $priority ) {

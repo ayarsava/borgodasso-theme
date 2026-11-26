@@ -3,6 +3,7 @@
 @use '../abstracts/text-styles' as text;
 @use '../abstracts/mixins' as *;
 @use '../objects/button' as button;
+@use '../objects/floating-field' as floating-field;
 
 .account {
   background-color: $color-background;
@@ -164,7 +165,7 @@
   &__title {
     @include text.text-h4;
 
-    margin: 0 0 rem(40);
+    margin: 0 0 rem(32);
     text-align: center;
     color: $color-black;
   }
@@ -196,7 +197,7 @@
     @include text.text-h4;
 
     margin: 0 0 rem(8);
-    font-size: rem(29);
+    font-size: rem(20);
     line-height: 1.15;
     color: $color-black;
   }
@@ -204,29 +205,31 @@
   &__meta {
     @include text.body-face;
 
-    margin: 0;
-    font-size: rem(11);
-    font-weight: 500;
-    letter-spacing: text.ls-em(4);
+    font-size: rem(12);
+    letter-spacing: 0.08em;
     line-height: 1.3;
     text-transform: uppercase;
     color: $color-black;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.7;
+    }
   }
 
   &__view {
-    margin: rem(12) 0 0;
+    margin: rem(8) 0 0;
   }
 
   &__view-link {
     @include text.body-face;
 
-    font-size: rem(13);
-    letter-spacing: text.ls-em(1.5);
+    font-size: rem(12);
+    letter-spacing: 0.08em;
     line-height: 1.3;
     text-transform: uppercase;
     color: $color-black;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
 
     &:hover,
     &:focus-visible {
@@ -278,7 +281,7 @@
     flex-shrink: 0;
     align-items: center;
     justify-content: space-between;
-    gap: rem(20);
+    gap: rem(0);
     margin-top: rem(6);
 
     @include media-up(lg) {
@@ -401,6 +404,15 @@
       width: rem(277);
     }
   }
+
+  // ≤3 items: no desktop arrows; tighter gaps so cards sit closer.
+  &__slider--few &__slide {
+    padding-right: rem(8);
+
+    @include media-up(lg) {
+      padding-right: rem(8);
+    }
+  }
 }
 
 .account-orders-pagination {
@@ -416,7 +428,7 @@
     @include text.text-h5;
 
     margin: 0 0 rem(16);
-    font-size: 1.75rem;
+    font-size: rem(20);
     color: $color-black;
   }
 
@@ -424,7 +436,7 @@
     @include text.body-face;
 
     margin: 0 0 rem(32);
-    font-size: rem(15);
+    font-size: rem(16);
     letter-spacing: text.ls-em(0.2);
     line-height: 1.45;
     color: $color-black;
@@ -470,6 +482,9 @@
   margin: 0;
 
   &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: rem(12);
     margin: rem(28) 0 0;
   }
 
@@ -544,86 +559,52 @@
   &__note {
     @include text.body-face;
 
-    margin: 0 0 rem(24);
-    font-size: rem(14);
+    margin: 0 rem(16) rem(42);
+    font-size: rem(16);
     letter-spacing: text.ls-em(0.2);
-    line-height: 1.45;
+    line-height: 1.5;
     text-align: center;
     color: $color-black;
   }
 }
 
+// Field chrome: objects/_floating-field.scss (single source).
+// Account-only extras: password eye + control wrapper + min-length error.
 .account-field {
-  position: relative;
-  margin: 0 0 rem(16);
-
-  &__label {
-    @include text.body-face;
-
-    position: absolute;
-    top: rem(10);
-    left: rem(14);
-    z-index: 1;
-    font-size: rem(8);
-    letter-spacing: text.ls-em(10);
-    line-height: 1.2;
-    text-transform: uppercase;
-    color: $color-black;
-    pointer-events: none;
-  }
-
   &__control {
     position: relative;
     display: block;
-    min-height: rem(45);
+    width: 100%;
   }
 
-  &__input {
+  &__error {
     @include text.body-face;
 
-    box-sizing: border-box;
     display: block;
-    width: 100%;
-    min-height: rem(64);
-    margin: 0;
-    padding: rem(28) rem(16) rem(12);
-    border: 1px solid $color-black;
-    border-radius: 0;
-    background: transparent !important;
-    background-color: transparent !important;
-    color: $color-black;
-    font-size: rem(15);
+    margin: rem(8) 0 0;
+    font-size: rem(14);
+    font-weight: 400;
     letter-spacing: text.ls-em(0.2);
-    line-height: 1.3;
-    appearance: none;
-    box-shadow: none !important;
+    line-height: 1.35;
+    color: #c00;
 
-    &::placeholder {
-      color: $color-black;
-      opacity: 0.55;
-    }
-
-    &:focus,
-    &:focus-visible {
-      outline: 1px solid $color-black;
-      outline-offset: 2px;
-    }
-
-    &:-webkit-autofill,
-    &:-webkit-autofill:hover,
-    &:-webkit-autofill:focus,
-    &:-webkit-autofill:active {
-      -webkit-text-fill-color: $color-black !important;
-      caret-color: $color-black;
-
-      // Autofill can’t stay transparent — match page cream instead of browser blue.
-      box-shadow: 0 0 0 1000px $color-background inset !important;
-      transition: background-color 99999s ease-out;
+    &[hidden] {
+      display: none;
     }
   }
 
+  // Beat shared control padding (eye needs right inset).
+  &.account-field--password &__input,
   &--password &__input {
-    padding-right: rem(48);
+    padding: floating-field.$floating-field-pad-top rem(48) 0 floating-field.$floating-field-pad-x !important;
+
+    // PP Neue Montreal lacks the password-mask glyph → squares; system face + disc.
+    &[type='password'] {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      /* stylelint-disable-next-line property-no-vendor-prefix */
+      -webkit-text-security: disc;
+      letter-spacing: 0.15em;
+    }
 
     // Hide Edge/Chrome native password reveal (we use .account-field__toggle).
     &::-ms-reveal,
@@ -645,9 +626,10 @@
     }
   }
 
+  // Pin to the input box center — ignores notices appended under the field.
   &__toggle {
     position: absolute;
-    top: 23px;
+    top: calc(#{floating-field.$floating-field-height} / 2);
     right: rem(12);
     z-index: 2;
     display: inline-flex;
@@ -722,6 +704,20 @@
     }
   }
 
+  &--ghost {
+    border: 1px solid $color-black;
+    background-color: transparent;
+    color: $color-black;
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      opacity: 0.7;
+      background-color: transparent;
+      color: $color-black;
+    }
+  }
+
   &--pending:disabled {
     cursor: not-allowed;
     opacity: 1;
@@ -771,8 +767,9 @@
   color: $color-black;
 
   &__title {
-    @include text.text-h4;
+    @include text.text-h5;
 
+    font-size: rem(30) !important;
     margin: 0 0 rem(40);
     text-align: center;
     color: $color-black;
@@ -886,8 +883,8 @@
       content: '';
       position: absolute;
       top: rem(4);
-      left: calc(50% + #{rem(10)});
-      right: calc(-50% + #{rem(10)});
+      left: calc(50% + #{rem(4)});
+      right: calc(-50% + #{rem(4)});
       height: 1px;
       background-color: $color-black;
       pointer-events: none;
@@ -913,7 +910,7 @@
     @include text.body-face;
 
     max-width: 100%;
-    font-size: rem(11);
+    font-size: rem(12);
     letter-spacing: text.ls-em(0.2);
     line-height: 1.3;
     color: $color-black;
@@ -941,9 +938,9 @@
   &__meta-label {
     @include text.body-face;
 
-    font-size: rem(11);
+    font-size: rem(12);
     font-weight: 500;
-    letter-spacing: text.ls-em(6);
+    letter-spacing: 0.102em;
     line-height: 1.3;
     text-transform: uppercase;
   }
@@ -951,7 +948,7 @@
   &__meta-value {
     @include text.body-face;
 
-    font-size: rem(15);
+    font-size: rem(16.6);
     letter-spacing: text.ls-em(0.2);
     line-height: 1.3;
   }
@@ -1000,7 +997,6 @@
   &__info {
     display: flex;
     flex-direction: column;
-    gap: rem(4);
     min-width: 0;
     padding-top: rem(2);
   }
@@ -1008,7 +1004,7 @@
   &__name {
     @include text.heading-face;
 
-    font-size: rem(28);
+    font-size: rem(24);
     letter-spacing: text.ls-em(0);
     line-height: 1.15;
     color: $color-black;
@@ -1024,11 +1020,10 @@
   &__price {
     @include text.body-face;
 
-    margin-top: rem(4);
     font-size: rem(14);
     letter-spacing: text.ls-em(0.2);
-    line-height: 1.35;
-
+    line-height: 21.33px;
+    margin-top: 4px;
     /* stylelint-disable selector-class-pattern -- WooCommerce price markup */
     .amount,
     .woocommerce-Price-amount {
@@ -1040,9 +1035,9 @@
   &__attr {
     @include text.body-face;
 
-    font-size: rem(13);
+    font-size: rem(14);
     letter-spacing: text.ls-em(0.2);
-    line-height: 1.4;
+    line-height: 21.33px;
     color: $color-black;
   }
 
@@ -1066,6 +1061,7 @@
       .order-detail__total-label,
       .order-detail__total-value {
         font-weight: 500;
+        font-size: rem(18);
       }
     }
   }
@@ -1074,7 +1070,7 @@
   &__total-value {
     @include text.body-face;
 
-    font-size: rem(14);
+    font-size: rem(16);
     letter-spacing: text.ls-em(0.2);
     line-height: 1.35;
   }
@@ -1097,8 +1093,8 @@
     border: 0;
     border-bottom: 1px solid $color-black;
 
-    &[open] .order-detail__data-icon::before {
-      content: '−';
+    &[open] .order-detail__data-icon::after {
+      opacity: 0;
     }
   }
 
@@ -1123,20 +1119,41 @@
   &__data-title {
     @include text.heading-face;
 
-    font-size: rem(28);
+    font-size: rem(26);
     letter-spacing: text.ls-em(0);
     line-height: 1.15;
   }
 
   &__data-icon {
-    @include text.body-face;
-
+    position: relative;
     flex-shrink: 0;
-    font-size: rem(22);
-    line-height: 1;
+    width: rem(14);
+    height: rem(14);
 
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      background-color: currentColor;
+    }
+
+    // Horizontal bar (also the open “−”).
     &::before {
-      content: '+';
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      transform: translateY(-50%);
+    }
+
+    // Vertical bar — hidden when open.
+    &::after {
+      top: 0;
+      left: 50%;
+      width: 1px;
+      height: 100%;
+      transform: translateX(-50%);
+      transition: opacity 0.15s ease;
     }
   }
 
@@ -1163,7 +1180,7 @@
     @include text.body-face;
 
     margin: 0;
-    font-size: rem(14);
+    font-size: rem(16);
     font-style: normal;
     letter-spacing: text.ls-em(0.2);
     line-height: 1.5;
@@ -1178,7 +1195,7 @@
     align-items: flex-start;
     gap: rem(6);
     margin: 0;
-    font-size: rem(14);
+    font-size: rem(16);
     letter-spacing: text.ls-em(0.2);
     line-height: 1.4;
     text-align: left;
@@ -1200,7 +1217,7 @@
   &__payment-holder {
     @include text.body-face;
 
-    font-size: rem(14);
+    font-size: rem(16);
     letter-spacing: text.ls-em(0.2);
     line-height: 1.35;
     color: $color-black;
@@ -1210,7 +1227,7 @@
     @include text.body-face;
 
     margin: 0;
-    font-size: rem(14);
+    font-size: rem(16);
     letter-spacing: text.ls-em(1);
     line-height: 1.35;
     color: $color-black;

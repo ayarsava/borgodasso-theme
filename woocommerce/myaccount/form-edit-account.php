@@ -110,7 +110,18 @@ $phone = (string) get_user_meta( get_current_user_id(), 'billing_phone', true );
 		<p class="account-field form-row account-field--password">
 			<label class="account-field__label" for="password_1"><?php echo esc_html__( 'Nuova password', 'borgodasso' ); ?></label>
 			<span class="account-field__control">
-				<input type="password" class="account-field__input woocommerce-Input input-text" name="password_1" id="password_1" autocomplete="new-password" data-account-password />
+				<input
+					type="password"
+					class="account-field__input woocommerce-Input input-text"
+					name="password_1"
+					id="password_1"
+					autocomplete="new-password"
+					minlength="<?php echo esc_attr( (string) borgodasso_account_password_min_length() ); ?>"
+					data-account-password
+					data-account-password-min
+					data-account-password-optional
+					aria-describedby="password_1_error"
+				/>
 				<button
 					type="button"
 					class="account-field__toggle"
@@ -142,6 +153,9 @@ $phone = (string) get_user_meta( get_current_user_id(), 'billing_phone', true );
 						?>
 					</span>
 				</button>
+			</span>
+			<span class="account-field__error" id="password_1_error" data-account-password-error hidden>
+				<?php echo esc_html( borgodasso_account_password_min_message() ); ?>
 			</span>
 		</p>
 

@@ -74,3 +74,15 @@
     padding: 0;
   }
 }
+
+// Account / checkout: keep the footer below the fold until the user scrolls.
+.has-deferred-footer {
+  .site {
+    min-height: 0;
+  }
+
+  .site-main {
+    flex: 0 0 auto;
+    min-height: var(--viewport-height);
+  }
+}

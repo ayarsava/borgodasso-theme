@@ -52,8 +52,18 @@ do_action( 'woocommerce_before_edit_account_address_form' );
 					>
 						<?php echo esc_html__( 'Salva indirizzo', 'borgodasso' ); ?>
 					</button>
+					<button
+						type="submit"
+						class="<?php echo esc_attr( borgodasso_account_button_class( 'account-button--ghost' ) ); ?>"
+						name="delete_address"
+						value="<?php esc_attr_e( 'Elimina indirizzo', 'borgodasso' ); ?>"
+						formnovalidate
+					>
+						<?php echo esc_html__( 'Elimina indirizzo', 'borgodasso' ); ?>
+					</button>
 					<?php wp_nonce_field( 'woocommerce-edit_address', 'woocommerce-edit-address-nonce' ); ?>
 					<input type="hidden" name="action" value="edit_address" />
+					<input type="hidden" name="address_type" value="<?php echo esc_attr( $load_address ); ?>" />
 				</p>
 			</div>
 		</section>

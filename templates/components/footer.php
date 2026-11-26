@@ -43,7 +43,13 @@ $render_link = static function ( array $link, string $link_class, string $fallba
 	<?php
 };
 ?>
-<footer class="site-footer">
+<?php
+$footer_class = 'site-footer';
+if ( function_exists( 'borgodasso_has_deferred_footer' ) && borgodasso_has_deferred_footer() ) {
+	$footer_class .= ' site-footer--deferred';
+}
+?>
+<footer class="<?php echo esc_attr( $footer_class ); ?>">
 	<div class="site-footer__inner">
 		<?php if ( $has_desktop_footer ) : ?>
 		<div class="site-footer__grid site-footer__grid--desktop">

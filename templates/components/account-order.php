@@ -32,21 +32,24 @@ $status_slug  = $order->get_status();
 			<h3 id="account-order-<?php echo esc_attr( (string) $order_id ); ?>-status" class="account-order__status">
 				<?php echo esc_html( $status_label ); ?>
 			</h3>
-			<?php if ( '' !== $meta ) : ?>
-				<p class="account-order__meta"><?php echo esc_html( $meta ); ?></p>
-			<?php endif; ?>
 			<p class="account-order__view">
-				<a class="account-order__view-link" href="<?php echo esc_url( $order->get_view_order_url() ); ?>">
-					<?php
-					echo esc_html(
-						sprintf(
-							/* translators: %s: order number. */
-							__( 'Vedi ordine n° %s', 'borgodasso' ),
-							$order->get_order_number()
-						)
-					);
-					?>
-				</a>
+				<?php if ( '' !== $meta ) : ?>
+					<a class="account-order__meta" href="<?php echo esc_url( $order->get_view_order_url() ); ?>">
+						<?php echo esc_html( $meta ); ?>
+					</a>
+				<?php else : ?>
+					<a class="account-order__view-link" href="<?php echo esc_url( $order->get_view_order_url() ); ?>">
+						<?php
+						echo esc_html(
+							sprintf(
+								/* translators: %s: order number. */
+								__( 'Vedi ordine n° %s', 'borgodasso' ),
+								$order->get_order_number()
+							)
+						);
+						?>
+					</a>
+				<?php endif; ?>
 			</p>
 			<?php
 			$tracking = function_exists( 'borgodasso_order_tracking' ) ? borgodasso_order_tracking( $order ) : array();
@@ -86,7 +89,7 @@ $status_slug  = $order->get_status();
 			<?php endif; ?>
 		</div>
 
-		<?php if ( $slide_count > 1 ) : ?>
+		<?php if ( $slide_count > 3 ) : ?>
 			<div class="account-order__arrows" data-account-order-arrows>
 				<button
 					type="button"
@@ -157,7 +160,15 @@ $status_slug  = $order->get_status();
 	<?php endif; ?>
 
 	<?php if ( $slide_count > 0 ) : ?>
-		<div class="account-order__slider<?php echo $slide_count > 1 ? '' : ' account-order__slider--single'; ?>" data-account-order-slider>
+		<?php
+		$slider_mods = '';
+		if ( 1 === $slide_count ) {
+			$slider_mods = ' account-order__slider--single';
+		} elseif ( $slide_count <= 3 ) {
+			$slider_mods = ' account-order__slider--few';
+		}
+		?>
+		<div class="account-order__slider<?php echo esc_attr( $slider_mods ); ?>" data-account-order-slider>
 			<div class="account-order__viewport" data-account-order-viewport>
 				<div class="account-order__track">
 					<?php foreach ( $slides as $slide ) : ?>

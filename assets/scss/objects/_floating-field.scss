@@ -1,0 +1,280 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/text-styles' as text;
+
+// =============================================================================
+// Floating field — single source of truth
+//
+// Register (keep `assets/js/modules/floating-fields.ts` FIELD_SELECTOR in sync):
+//   1. .account-field
+//        login · register · lost-password · edit-account
+//   2. .checkout-form .form-row (excl. checkbox / remember / save-card rows)
+//        checkout
+//   3. .woocommerce-account .woocommerce-MyAccount-content .form-row:not(.account-field)
+//        edit-address + other WC account rows (not BEM account-fields)
+//
+// Surface-only knobs: --floating-field-gap (row spacing).
+// Everything else (height, padding, label rest/float) lives here.
+// =============================================================================
+
+$floating-field-height: rem(45);
+$floating-field-pad-x: rem(9);
+$floating-field-pad-top: rem(10);
+$floating-field-label-left: rem(9);
+$floating-field-label-rest-size: rem(15);
+$floating-field-label-rest-pt: rem(3);
+$floating-field-label-float-size: rem(8);
+$floating-field-label-float-pt: rem(8);
+$floating-field-label-max-inset: rem(48);
+
+/// Text / select control chrome (45px, vendor padding).
+@mixin floating-field-control {
+  @include text.body-face;
+
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: $floating-field-height;
+  height: $floating-field-height;
+  margin: 0;
+  padding: $floating-field-pad-top $floating-field-pad-x 0;
+  border: 1px solid $color-black;
+  border-radius: 0;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: $color-black;
+  font-size: rem(15);
+  font-weight: 400;
+  letter-spacing: text.ls-em(0.2);
+  line-height: $floating-field-height;
+  appearance: none;
+  box-shadow: none;
+
+  &::placeholder {
+    color: transparent;
+    opacity: 0;
+  }
+
+  // No focus ring — border already marks the field; outline caused a double border.
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
+
+  // Chrome/Safari autofill can’t be truly transparent — match page cream.
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-text-fill-color: $color-black !important;
+    caret-color: $color-black;
+    box-shadow: 0 0 0 1000px $color-background inset !important;
+    transition: background-color 99999s ease-out;
+  }
+}
+
+/// Resting (empty) floating label — optically centered in the input box.
+@mixin floating-field-label {
+  @include text.body-face;
+
+  position: absolute;
+  top: 0;
+  left: $floating-field-label-left;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex !important;
+  align-items: center;
+  height: $floating-field-height;
+  max-width: calc(100% - #{$floating-field-label-max-inset});
+  margin: 0;
+  // PP Neue Montreal sits high in its em-square; nudge down for optical center.
+  padding-top: $floating-field-label-rest-pt;
+  overflow: hidden;
+  font-size: $floating-field-label-rest-size;
+  letter-spacing: text.ls-em(0.2);
+  line-height: 1 !important;
+  text-overflow: ellipsis;
+  text-transform: none;
+  white-space: nowrap;
+  color: $color-black;
+  pointer-events: none;
+  transition:
+    height 0.2s ease,
+    padding-top 0.2s ease,
+    font-size 0.2s ease,
+    letter-spacing 0.2s ease;
+}
+
+/// Focused / filled floating label — small uppercase tucked to the top.
+@mixin floating-field-label-floated {
+  align-items: flex-start;
+  height: auto;
+  padding-top: $floating-field-label-float-pt;
+  font-size: $floating-field-label-float-size;
+  letter-spacing: text.ls-em(10);
+  line-height: 1.2 !important;
+  text-transform: uppercase;
+}
+
+/// Row shell + label + control. Call inside a field selector.
+@mixin floating-field-row {
+  position: relative;
+  float: none !important;
+  box-sizing: border-box;
+  width: 100% !important;
+  margin: 0 0 var(--floating-field-gap, #{rem(16)});
+  // Kill WC `.woocommerce form .form-row { padding: 3px }` — shifts absolute labels.
+  padding: 0;
+
+  // WC native labels + BEM `.account-field__label`.
+  label:not(.checkbox, .woocommerce-form__label-for-checkbox),
+  .account-field__label {
+    @include floating-field-label;
+
+    .required,
+    .optional {
+      display: none;
+    }
+  }
+
+  &:focus-within label:not(.checkbox, .woocommerce-form__label-for-checkbox),
+  &:focus-within .account-field__label,
+  &.is-filled label:not(.checkbox, .woocommerce-form__label-for-checkbox),
+  &.is-filled .account-field__label,
+  &:has(.input-text:not(:placeholder-shown))
+    label:not(.checkbox, .woocommerce-form__label-for-checkbox),
+  &:has(.input-text:not(:placeholder-shown)) .account-field__label,
+  &:has(.account-field__input:not(:placeholder-shown))
+    label:not(.checkbox, .woocommerce-form__label-for-checkbox),
+  &:has(.account-field__input:not(:placeholder-shown)) .account-field__label,
+  &:has(textarea:not(:placeholder-shown))
+    label:not(.checkbox, .woocommerce-form__label-for-checkbox),
+  &:has(textarea:not(:placeholder-shown)) .account-field__label,
+  // Prefer checked option — bare `[value]` on <select> is unreliable when empty.
+  &:has(select option:checked:not([value='']))
+    label:not(.checkbox, .woocommerce-form__label-for-checkbox),
+  &:has(select option:checked:not([value=''])) .account-field__label {
+    @include floating-field-label-floated;
+  }
+
+  .input-text,
+  select,
+  .account-field__input {
+    @include floating-field-control;
+  }
+
+  // WC wraps selects; keep the row at the same height as text inputs.
+  .woocommerce-input-wrapper {
+    display: block;
+    width: 100%;
+  }
+
+  // Select2 sits a hair high optically vs text inputs — nudge the resting label.
+  &:has(.select2-container):not(.is-filled):not(:focus-within)
+    > label:not(.checkbox, .woocommerce-form__label-for-checkbox) {
+    padding-top: rem(5);
+  }
+
+  // Select2 (country / state) — same 45px box as text inputs.
+  .select2-container {
+    display: block !important;
+    width: 100% !important;
+    height: $floating-field-height !important;
+    min-height: $floating-field-height !important;
+    line-height: $floating-field-height !important;
+    vertical-align: top !important;
+  }
+
+  .select2-container .select2-selection--single,
+  .select2-container--default .select2-selection--single {
+    box-sizing: border-box !important;
+    height: $floating-field-height !important;
+    min-height: $floating-field-height !important;
+    padding: 0 !important;
+    border: 1px solid $color-black !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+
+    .select2-selection__rendered {
+      display: flex !important;
+      align-items: center !important;
+      box-sizing: border-box !important;
+      height: $floating-field-height !important;
+      min-height: $floating-field-height !important;
+      // Match resting floating-label optical nudge.
+      padding: rem(5) rem(36) 0 $floating-field-pad-x !important;
+      line-height: 1 !important;
+      font-size: rem(15) !important;
+      color: $color-black !important;
+    }
+
+    // Hide Select2 placeholder — floating label is the empty-state copy.
+    .select2-selection__placeholder {
+      color: transparent !important;
+    }
+
+    .select2-selection__arrow {
+      top: 0 !important;
+      right: rem(8) !important;
+      width: rem(24) !important;
+      height: $floating-field-height !important;
+    }
+  }
+
+  // Filled country/state: keep value under the floated label.
+  &.is-filled .select2-selection__rendered,
+  &:focus-within .select2-selection__rendered {
+    align-items: flex-end !important;
+    padding-top: 0 !important;
+    padding-bottom: rem(8) !important;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Registered surfaces
+// Prefix with `.woocommerce form` so we beat WC core
+// `.woocommerce form .form-row { padding: 3px }`.
+// -----------------------------------------------------------------------------
+
+.woocommerce form .account-field,
+.woocommerce-page form .account-field,
+.account-field {
+  --floating-field-gap: #{rem(16)};
+
+  @include floating-field-row;
+}
+
+.woocommerce
+  form
+  .checkout-form
+  .form-row:not(
+    .woocommerce-SavedPaymentMethods-saveNew,
+    .checkout-billing-choice__option,
+    .checkout-remember
+  ),
+.woocommerce-page
+  form
+  .checkout-form
+  .form-row:not(
+    .woocommerce-SavedPaymentMethods-saveNew,
+    .checkout-billing-choice__option,
+    .checkout-remember
+  ),
+.checkout-form
+  .form-row:not(
+    .woocommerce-SavedPaymentMethods-saveNew,
+    .checkout-billing-choice__option,
+    .checkout-remember
+  ) {
+  --floating-field-gap: #{rem(12)};
+
+  @include floating-field-row;
+}
+
+// Address + other WC rows on My Account (edit-account uses `.account-field` above).
+.woocommerce-account .woocommerce-MyAccount-content .form-row:not(.account-field),
+.woocommerce form .woocommerce-MyAccount-content .form-row:not(.account-field) {
+  --floating-field-gap: #{rem(8)};
+
+  @include floating-field-row;
+}
