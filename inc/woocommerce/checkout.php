@@ -298,6 +298,31 @@ function borgodasso_checkout_layout_hooks(): void {
 add_action( 'wp', 'borgodasso_checkout_layout_hooks' );
 
 /**
+ * Force classic shortcode checkout/cart so Blocks markup never bypasses theme templates
+ * (common when a Checkout page was created with the block editor on staging/prod).
+ *
+ * @param string $content Post content.
+ */
+function borgodasso_force_classic_cart_checkout_content( string $content ): string {
+	if ( is_admin() || ! is_main_query() || ! in_the_loop() ) {
+		return $content;
+	}
+
+	if ( function_exists( 'is_cart' ) && is_cart() ) {
+		return '[woocommerce_cart]';
+	}
+
+	if ( function_exists( 'is_checkout' ) && is_checkout()
+		&& ! is_order_received_page()
+		&& ! is_wc_endpoint_url( 'order-pay' ) ) {
+		return '[woocommerce_checkout]';
+	}
+
+	return $content;
+}
+add_filter( 'the_content', 'borgodasso_force_classic_cart_checkout_content', 1 );
+
+/**
  * Whether a shipping location looks like Google Pay’s sandbox / placeholder address
  * (Mountain View, CA 94043) left in the WC customer session by Stripe ECE.
  *

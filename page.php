@@ -17,22 +17,9 @@ while ( have_posts() ) :
 	$is_account  = function_exists( 'is_account_page' ) && is_account_page();
 	$is_commerce = function_exists( 'is_cart' ) && ( is_cart() || is_checkout() );
 
-	if ( borgodasso_page_has_header() ) :
-		borgodasso_template( 'components/page-header' );
-		?>
-		<div class="content-area content-area--page">
-			<article <?php post_class( 'page' ); ?>>
-				<?php if ( borgodasso_has_page_builder() ) : ?>
-					<?php borgodasso_render_page_builder(); ?>
-				<?php elseif ( get_the_content() ) : ?>
-					<div class="page__content">
-						<?php the_content(); ?>
-					</div>
-				<?php endif; ?>
-			</article>
-		</div>
-		<?php
-	elseif ( $is_account ) :
+	// Account / cart / checkout always use their contained shells — never the
+	// marketing page-header branch (that goes full-bleed and drops commerce-shell).
+	if ( $is_account ) :
 		?>
 		<div class="content-area content-area--account">
 			<article <?php post_class( 'page page--account' ); ?>>
@@ -51,6 +38,21 @@ while ( have_posts() ) :
 						<?php the_content(); ?>
 					</div>
 				</div>
+			</article>
+		</div>
+		<?php
+	elseif ( borgodasso_page_has_header() ) :
+		borgodasso_template( 'components/page-header' );
+		?>
+		<div class="content-area content-area--page">
+			<article <?php post_class( 'page' ); ?>>
+				<?php if ( borgodasso_has_page_builder() ) : ?>
+					<?php borgodasso_render_page_builder(); ?>
+				<?php elseif ( get_the_content() ) : ?>
+					<div class="page__content">
+						<?php the_content(); ?>
+					</div>
+				<?php endif; ?>
 			</article>
 		</div>
 		<?php
