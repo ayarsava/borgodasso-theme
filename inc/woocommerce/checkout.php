@@ -437,7 +437,7 @@ function borgodasso_checkout_express_start(): void {
 	?>
 	<div class="checkout-express">
 		<p class="checkout-express__label">
-			<span class="checkout-express__label-text"><?php echo esc_html__( 'Express checkout', 'borgodasso' ); ?></span>
+			<span class="checkout-express__label-text"><?php echo esc_html__( 'Pagamento rapido', 'borgodasso' ); ?></span>
 		</p>
 	<?php
 }
@@ -452,7 +452,7 @@ function borgodasso_checkout_express_separator(): void {
 	}
 	?>
 		<p class="checkout-express__separator">
-			<span class="checkout-express__separator-text"><?php echo esc_html__( 'Or continue below', 'borgodasso' ); ?></span>
+			<span class="checkout-express__separator-text"><?php echo esc_html__( 'Oppure continua qui sotto', 'borgodasso' ); ?></span>
 		</p>
 	<?php
 }
